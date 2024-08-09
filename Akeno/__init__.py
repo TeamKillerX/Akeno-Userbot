@@ -52,7 +52,7 @@ client = Client(
     api_id=API_ID,
     api_hash=API_HASH,
     session_string=SESSION,
-    plugins=dict(root="akeno.plugins"),
+    plugins=dict(root="Akeno.plugins"),
 )
 if not hasattr(client, "group_call"):
     setattr(client, "group_call", GroupCallFactory(client).get_group_call())
