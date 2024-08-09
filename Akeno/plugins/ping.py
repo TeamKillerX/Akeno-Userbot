@@ -1,6 +1,8 @@
 import time
 import asyncio
 from pyrogram import Client, filters
+from pyrogram.types import Message
+from pyrogram.types import *
 from datetime import datetime as dt
 from Akeno import StartTime
 from Akeno.utils.handler import Akeno
