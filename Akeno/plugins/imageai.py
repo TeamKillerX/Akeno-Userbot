@@ -44,7 +44,7 @@ async def schellwithflux(args):
     & filters.me
     & ~filters.forwarded
 )
-async def fluxai(client: Client, message: Message):
+async def imgfluxai_(client: Client, message: Message):
     question = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
     if not question:
         return await message.reply_text("Give ask from Flux")
@@ -53,10 +53,9 @@ async def fluxai(client: Client, message: Message):
             return await message.reply_text("Required `HUGGING_TOKEN`")
         image_bytes = await schellwithflux(question)
         pro = await message.reply_text("Image Generator wait...")
-        image = Image.open(io.BytesIO(image_bytes))
-        if image:
-            image.save("testing.jpg")
-            ok = await pro.edit_text("Uploading......")
+        with Image.open(io.BytesIO(image_bytes)) as img:
+            img.save("testing.jpg", format="JPEG")
+        ok = await pro.edit_text("Uploading......")
         await message.reply_photo("testing.jpg")
         await ok.delete()
     except Exception as e:
