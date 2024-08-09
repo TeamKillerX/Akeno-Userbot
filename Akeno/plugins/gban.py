@@ -32,7 +32,7 @@ from pyrogram.types import ChatPermissions, Message
 from pyrogram.raw.functions.messages import DeleteHistory
 from Akeno.utils.tools import get_ub_chats
 from Akeno.utils.help import add_command_help
-from Akeno.utils.spamwatch import auto_post_gban
+from Akeno.utils.spamwatch import auto_post_gban, auto_check_gban
 from Akeno.utils.handler import Akeno, Akeno_chat_member_updated
 from Akeno.utils.admin import extract_user_and_reason
 from config import FEDBAN_API_KEY
@@ -110,12 +110,9 @@ async def globalbanwatcher(_, u: ChatMemberUpdated):
     if not (member.new_chat_member and member.new_chat_member.status not in {CMS.BANNED, CMS.LEFT, CMS.RESTRICTED} and not member.old_chat_member):
         return
     user = member.new_chat_member.user if member.new_chat_member else member.from_user
-    url = "https://randydev-ryuzaki-api.hf.space/user/get-fedban"
-    headers = {"accept": "application/json", "api-key": api_key}
-    payload = {"user_id": user.id}
-    response = requests.get(url, json=payload, headers=headers).json()
-    if response["randydev"].get("is_banned") == True:
-        watchertext = f"**𝖦𝖻𝖺𝗇𝗇𝖾𝖽 𝖴𝗌𝖾𝗋 𝗃𝗈𝗂𝗇𝖾𝖽 𝗍𝗁𝖾 𝖼𝗁𝖺𝗍! \n\n𝖦𝖻𝖺𝗇 𝖱𝖾𝖺𝗌𝗈𝗇 𝗐𝖺𝗌:** __{response['randydev']['reason']}__\n\n"
+    response = await auto_check_gban(user.id)
+    if response[0] == True:
+        watchertext = f"**𝖦𝖻𝖺𝗇𝗇𝖾𝖽 𝖴𝗌𝖾𝗋 𝗃𝗈𝗂𝗇𝖾𝖽 𝗍𝗁𝖾 𝖼𝗁𝖺𝗍! \n\n𝖦𝖻𝖺𝗇 𝖱𝖾𝖺𝗌𝗈𝗇 𝗐𝖺𝗌:** __{response[1]}__\n\n"
         try:
             await _.ban_chat_member(u.chat.id, user.id)
             watchertext += f"**𝖲𝗈𝗋𝗋𝗒 𝖨 𝖼𝖺𝗇'𝗍 𝗌𝖾𝖾 𝗒𝗈𝗎 𝗂𝗇 𝗍𝗁𝗂𝗌 𝖼𝗁𝖺𝗍!**"
@@ -135,11 +132,8 @@ async def global_spammer(client: Client, message: Message):
     if not message or not message.from_user:
         return
     user_id = message.from_user.id
-    url = "https://randydev-ryuzaki-api.hf.space/user/get-fedban"
-    headers = {"accept": "application/json", "api-key": api_key}
-    payload = {"user_id": user_id}
-    response = requests.get(url, json=payload, headers=headers).json()
-    if response["randydev"].get("is_banned") == True:
+    response = await auto_check_gban(user_id)
+    if response[0] == True:
         if message.photo:
             await message.delete()
         elif message.video:
