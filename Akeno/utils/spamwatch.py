@@ -1,5 +1,6 @@
 import requests
 from Akeno.utils.logger import LOGS
+from config import FEDBAN_API_KEY as api_key
 
 async def auto_post_gban(user_id, reason):
     url = "https://randydev-ryuzaki-api.hf.space/user/fedban"
