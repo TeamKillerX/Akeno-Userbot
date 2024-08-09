@@ -18,7 +18,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from g4f.client import Client as Clients_g4f
-from Akeno.core.logger import LOGS
+from datetime import datetime as dt
+from Akeno.utils.logger import LOGS
 
 owner_base = f"""
 Your name is Randy Dev. A kind and friendly AI assistant that answers in
