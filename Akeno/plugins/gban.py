@@ -76,8 +76,8 @@ async def globalban(client: Client, message: Message):
     pro = await message.reply_text(f"Gban initiated on {user.mention}...")
     if not FEDBAN_API_KEY:
         return await pro.edit_text("Required `FEDBAN_API_KEY` from @randydev_bot use /getapikey")
-    response = await auto_post_gban(user.id, reason)
-    if response == True:
+    is_banned, get_message = await auto_post_gban(user.id, reason)
+    if is_banned == True:
         async for dialog in client.get_dialogs():
             if dialog.chat.type in [
                 ChatType.CHANNEL,
@@ -98,7 +98,7 @@ async def globalban(client: Client, message: Message):
                 except BaseException:
                     failed += 1
         messager = ""
-        messager += response["randydev"].get("message")
+        messager += get_message
         messager += f"\n\nSuccess: {success}\n"
         messager += f"Failed: {failed}\n"
         await pro.edit_text(messager)
