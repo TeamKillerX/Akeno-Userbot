@@ -27,6 +27,7 @@ from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
 
 from Akeno.utils.tools import *
 from Akeno.utils.handler import *
+from config import CMD_HANDLER
 
 @Akeno(
     ~filters.scheduled
