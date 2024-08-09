@@ -15,7 +15,9 @@ async def auto_post_gban(user_id, reason):
         LOGS.error("Error response status")
         return "Error response status"
     response_data = response.json()
-    return response_data["randydev"].get("is_banned")
+    is_banned = response_data["randydev"].get("is_banned")
+    get_message = response_data["randydev"].get("message")
+    return is_banned, get_message
 
 async def auto_check_gban(user_id):
     url = "https://randydev-ryuzaki-api.hf.space/user/get-fedban"
