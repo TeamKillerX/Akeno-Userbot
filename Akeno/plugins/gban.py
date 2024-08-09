@@ -20,6 +20,7 @@
 # Credits Developer by @xtdevs
 # NO NEED DATABASE USING API REST DB
 
+import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram import errors, filters
