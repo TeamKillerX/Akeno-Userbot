@@ -17,7 +17,7 @@ from pyrogram.types import *
 from pyrogram import filters
 from pyrogram.raw.all import layer
 from pyrogram.handlers import MessageHandler
-from config import API_HASH, API_ID, BOT_TOKEN, SESSION
+from config import API_HASH, API_ID, SESSION
 from pytgcalls import GroupCallFactory
 from aiohttp import ClientSession
 from Akeno.utils.logger import LOGS
@@ -43,15 +43,6 @@ db = {}
 SUDOERS = filters.user()
     
 aiohttpsession = ClientSession()
-
-app = Client(
-    "userbotme",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN,
-    plugins=dict(root="akeno.plugins.bot"),
-    in_memory=True,
-)
 
 client = Client(
     "one",
