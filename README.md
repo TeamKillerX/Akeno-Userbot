@@ -12,7 +12,7 @@
 ```
 ### IMPORTANT NOTICE:
 
-This project is no longer maintained, and should be considered deprecated. __Use at your own risk__.
+This project is no longer maintained. __Use at your own risk__.
 
 ### Custom Modules
 - you can check [`custom-modules`](https://github.com/TeamKillerX/custom_modules)
