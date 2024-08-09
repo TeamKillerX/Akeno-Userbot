@@ -20,7 +20,6 @@
 # Credits Developer by @xtdevs
 # NO NEED DATABASE USING API REST DB
 
-import requests
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram import errors, filters
@@ -33,7 +32,8 @@ from pyrogram.types import ChatPermissions, Message
 from pyrogram.raw.functions.messages import DeleteHistory
 from Akeno.utils.tools import get_ub_chats
 from Akeno.utils.help import add_command_help
-from Akeno.utils.spamwatch import auto_gban_watcher
+from Akeno.utils.spamwatch import auto_post_gban
+from Akeno.utils.handler import Akeno, Akeno_chat_member_updated
 from Akeno.utils.admin import extract_user_and_reason
 from config import FEDBAN_API_KEY
 
@@ -78,15 +78,8 @@ async def globalban(client: Client, message: Message):
     success = 0
     failed = 0
     pro = await message.reply_text(f"Gban initiated on {user.mention}...")
-    url = "https://randydev-ryuzaki-api.hf.space/user/fedban"
-    headers = {"accept": "application/json", "api-key": api_key}
-    payload = {
-        "user_id": user.id,
-        "hashtag": "#Spammer",
-        "reason": reason,
-        }
-    response = requests.post(url, json=payload, headers=headers).json()
-    if response["randydev"].get("is_banned") == True:
+    response = await auto_post_gban(user.id, reason)
+    if response == True:
         async for dialog in client.get_dialogs():
             if dialog.chat.type in [
                 ChatType.CHANNEL,
@@ -112,7 +105,7 @@ async def globalban(client: Client, message: Message):
         messager += f"Failed: {failed}\n"
         await pro.edit_text(messager)
 
-@ren.on_chat_member_updated()
+@Akeno_chat_member_updated
 async def globalbanwatcher(_, u: ChatMemberUpdated):
     if not (member.new_chat_member and member.new_chat_member.status not in {CMS.BANNED, CMS.LEFT, CMS.RESTRICTED} and not member.old_chat_member):
         return
