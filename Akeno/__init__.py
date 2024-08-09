@@ -27,9 +27,6 @@ from pyrogram import __version__ as pyrogram_version
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 logging.basicConfig(level=logging.INFO)
 
-if not BOT_TOKEN:
-    print("Warning no bot token")
-
 logger = logging.getLogger(__name__)
 
 StartTime = time.time()
