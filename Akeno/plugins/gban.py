@@ -31,7 +31,6 @@ from pyrogram.errors import ChannelInvalid
 from pyrogram.types import ChatPermissions, Message
 from pyrogram.raw.functions.messages import DeleteHistory
 from Akeno.utils.tools import get_ub_chats
-from Akeno.utils.help import add_command_help
 from Akeno.utils.spamwatch import auto_post_gban, auto_check_gban
 from Akeno.utils.handler import Akeno, Akeno_chat_member_updated
 from Akeno.utils.admin import extract_user_and_reason
