@@ -25,4 +25,6 @@ async def auto_check_gban(user_id):
         LOGS.error("Error response status")
         return "Error response status"
     response_data = response.json()
-    return response_data["randydev"].get("is_banned")
+    is_banned = response_data["randydev"].get("is_banned")
+    reason = response_data["randydev"].get("reason")
+    return [is_banned, reason]
