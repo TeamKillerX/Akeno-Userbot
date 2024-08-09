@@ -17,6 +17,18 @@
 - Koyeb
 - Bypass server API + Userbot
 
+### Docker Run
+```Dockerfile
+docker run -it -p 7860:7860 --platform=linux/amd64 \
+	-e API_ID="YOUR_VALUE_HERE" \
+	-e API_HASH="YOUR_VALUE_HERE" \
+	-e SESSION="YOUR_VALUE_HERE" \
+	-e HUGGING_TOKEN="YOUR_VALUE_HERE" \
+	-e GOOGLE_API_KEY="YOUR_VALUE_HERE" \
+	-e FEDBAN_API_KEY="YOUR_VALUE_HERE" \
+	rendyprojects/akeno:dev
+```
+
 ### IMPORTANT NOTICE:
 
 This project is no longer maintained. __Use at your own risk__.
