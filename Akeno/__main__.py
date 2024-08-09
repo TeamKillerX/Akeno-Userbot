@@ -25,7 +25,7 @@ import aiohttp
 from pyrogram import idle
 
 from Akeno import clients
-from Akeno.core.logger import LOGS
+from Akeno.utils.logger import LOGS
 from pyrogram.errors import *
 from contextlib import closing, suppress
 from uvloop import install

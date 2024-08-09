@@ -1,10 +1,13 @@
 import time
 import asyncio
 from pyrogram import Client, filters
+from pyrogram.types import Message
+from pyrogram.types import *
 from datetime import datetime as dt
 from Akeno import StartTime
 from Akeno.utils.handler import Akeno
 from datetime import datetime as dt
+from config import CMD_HANDLER
 
 def get_readable_time(seconds: int) -> str:
     count = 0
@@ -32,7 +35,7 @@ def get_readable_time(seconds: int) -> str:
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["ping"], ["."])
+    & filters.command(["ping"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
 )

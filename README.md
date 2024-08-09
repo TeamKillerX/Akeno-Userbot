@@ -10,6 +10,13 @@
 @root: nano .env
 @root: python3 -m Akeno
 ```
+### Support Hosting (bypass)
+- Heroku
+- Railway app
+- Render
+- Koyeb
+- Bypass server API + Userbot
+
 ### IMPORTANT NOTICE:
 
 This project is no longer maintained. __Use at your own risk__.

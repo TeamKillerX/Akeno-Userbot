@@ -34,7 +34,7 @@ from pyrogram.raw.functions.messages import DeleteHistory
 from Akeno.utils.tools import get_ub_chats
 from Akeno.utils.spamwatch import auto_post_gban, auto_check_gban
 from Akeno.utils.handler import Akeno, Akeno_chat_member_updated
-from config import FEDBAN_API_KEY
+from config import FEDBAN_API_KEY, CMD_HANDLER
 
 async def input_user(message: Message) -> str:
     """Get the input from the user"""
@@ -48,7 +48,7 @@ async def input_user(message: Message) -> str:
     return output
 
 @Akeno(
-    ~filters.scheduled & filters.command(["gban"], ["."]) & filters.me & ~filters.forwarded
+    ~filters.scheduled & filters.command(["gban"], CMD_HANDLER) & filters.me & ~filters.forwarded
 )
 async def globalban(client: Client, message: Message):
     if not message.reply_to_message:

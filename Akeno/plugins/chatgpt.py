@@ -20,7 +20,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import *
 from pyrogram import *
-from config import GOOGLE_API_KEY
+from config import GOOGLE_API_KEY, CMD_HANDLER
 
 from Akeno.utils.logger import LOGS
 from Akeno.utils.handler import Akeno
@@ -29,7 +29,7 @@ from RyuzakiLib import RendyDevChat, FullStackDev, GeminiLatest
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["askf"], ["."])
+    & filters.command(["askf"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
 )
@@ -59,7 +59,7 @@ async def googlegm(client: Client, message: Message):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["askm"], ["."])
+    & filters.command(["askm"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
 )
@@ -88,7 +88,7 @@ async def chatgpt_images(client: Client, message: Message):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["ask"], ["."])
+    & filters.command(["ask"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
 )
