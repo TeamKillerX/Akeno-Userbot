@@ -35,8 +35,6 @@ from Akeno.utils.spamwatch import auto_post_gban, auto_check_gban
 from Akeno.utils.handler import Akeno, Akeno_chat_member_updated
 from config import FEDBAN_API_KEY
 
-api_key = FEDBAN_API_KEY
-
 async def input_user(message: Message) -> str:
     """Get the input from the user"""
     if len(message.command) < 2:
