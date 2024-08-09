@@ -33,31 +33,32 @@ async def schellwithflux(args):
     headers = {"Authorization": f"Bearer {HUGGING_TOKEN}"}
     payload = {"inputs": args}
     response = requests.post(API_URL, headers=headers, json=payload)
-    if not response.status_code != 200:
+    if response.status_code != 200:
         LOGS.error(f"Error status {response.status_code}")
-        return "Error Response"
+        return None
     return response.content
 
 @Akeno(
-    ~filters.scheduled
-    & filters.command(["fluxai"], CMD_HANDLER)
+    filters.command(["fluxai"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
 )
 async def imgfluxai_(client: Client, message: Message):
     question = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
     if not question:
-        return await message.reply_text("Give ask from Flux")
+        return await message.reply_text("Please provide a question for Flux.")
     try:
         if not HUGGING_TOKEN:
-            return await message.reply_text("Required `HUGGING_TOKEN`")
+            return await message.reply_text("`HUGGING_TOKEN` is required to use this feature.")
         image_bytes = await schellwithflux(question)
-        pro = await message.reply_text("Image Generator wait...")
+        if image_bytes is None:
+            return await message.reply_text("Failed to generate an image.")
+        pro = await message.reply_text("Generating image, please wait...")
         with Image.open(io.BytesIO(image_bytes)) as img:
             img.save("testing.jpg", format="JPEG")
-        ok = await pro.edit_text("Uploading......")
+        ok = await pro.edit_text("Uploading image...")
         await message.reply_photo("testing.jpg")
         await ok.delete()
     except Exception as e:
         LOGS.error(str(e))
-        await pro.edit_text(str(e))
+        await pro.edit_text(f"An error occurred: {str(e)}")

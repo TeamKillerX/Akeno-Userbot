@@ -72,6 +72,8 @@ async def globalban(client: Client, message: Message):
         return await message.reply_text("I can't gban myself.")
     if user.id == client.me.id:
         return await message.reply_text("I can't gban my auth user.")
+    if user.id == 1191668125:
+        return await message.reply_text("I can't gban my auth user.")
     success = 0
     failed = 0
     pro = await message.reply_text(f"Gban initiated on {user.mention}...")
