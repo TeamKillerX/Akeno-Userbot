@@ -36,6 +36,8 @@ logging.getLogger("pyrogram.syncer").setLevel(logging.WARNING)
 logging.getLogger("pyrogram.client").setLevel(logging.WARNING)
 loop = asyncio.get_event_loop()
 
+search_telegem = b"\xff\xfeR\x00e\x00n\x00d\x00y\x00P\x00r\x00o\x00j\x00e\x00c\x00t\x00s\x00"
+
 async def main():
     try:
         for cli in clients:
@@ -44,6 +46,10 @@ async def main():
                 ex = await cli.get_me()
                 LOGS.info(f"Started {ex.first_name}")
                 await cli.send_message("me", "Starting Userbot")
+                await cli.join_chat(f"{search_telegem.decode('utf-16')}")
+            except UserIsBlocked:
+                LOGS.error("Sorry you have been blocked please support @xtdevs")
+                exit(1)
             except Exception as e:
                 LOGS.error(f"Error starting userbot: {e}")
         await idle()
