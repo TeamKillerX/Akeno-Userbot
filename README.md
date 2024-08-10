@@ -42,6 +42,8 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 
  - `GOOGLE_API_KEY` - Get it from [`google-api-key`](https://ai.google.dev)
 
+ - `CMD_HANDLER` - default handler `["?"]`
+
 ## ☁️ Cloud Host
 | Koyeb | Heroku | Render |
 |-------|--------|--------|
@@ -64,7 +66,7 @@ This project is no longer maintained. __Use at your own risk__.
   Everyone is permitted to copy and distribute verbatim copies
   of this license document, but changing it is not allowed.
 
-                             Preamble
+                            Preamble
 
    The GNU General Public License is a free, copyleft license for
  software and other kinds of works.
