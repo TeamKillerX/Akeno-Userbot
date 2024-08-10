@@ -27,7 +27,7 @@ from pyrogram.types import *
 
 from Akeno.utils.handler import Akeno
 from Akeno.utils.logger import LOGS
-from config import CMD_HANDLER, HUGGING_TOKEN
+from config import CMD_HANDLER
 from Akeno.utils.scripts import progress
 
 async def schellwithflux(args):
