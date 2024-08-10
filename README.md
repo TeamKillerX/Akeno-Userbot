@@ -1,6 +1,17 @@
 ### ❄️ Akeno-Userbot
 ![Screenshot_20240809-132044_Chrome](https://github.com/user-attachments/assets/2baee270-ae25-44f4-9cc4-101e89db51d4)
 
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/TeamKillerX/Akeno-Userbot)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-Yes-green)](https://github.com/TeamKillerX/Akeno-Userbot/graphs/commit-activity)
+[![GitHub Forks](https://img.shields.io/github/forks/TeamKillerX/Akeno-Userbot?&logo=github)](https://github.com/The-MoonTg-project/Moon-Userbot)
+[![GitHub Stars](https://img.shields.io/github/stars/TeamKillerX/Akeno-Userbot?&logo=github)](https://github.com/TeamKillerX/Akeno-Userbot/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/TeamKillerX/Akeno-Userbot?&logo=github)](https://github.com/TeamKillerX/Akeno-Userbot)
+[![Size](https://img.shields.io/github/repo-size/TeamKillerX/Akeno-Userbot?color=green)](https://github.com/TeamKillerX/Akeno-Userbot)
+[![Contributors](https://img.shields.io/github/contributors/TeamKillerX/Akeno-Userbot?color=green)](https://github.com/TeamKillerX/Akeno-Userbot/graphs/contributors)
+[![License](https://img.shields.io/badge/License-GPL-pink)](https://github.com/TeamKillerX/Akeno-Userbot/blob/main/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+
+
 ### 🚀 Deploy on VPS:
 ```console
 @root: git clone https://github.com/TeamKillerX/Akeno-Userbot
