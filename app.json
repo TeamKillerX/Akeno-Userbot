@@ -22,10 +22,6 @@
       "description": "Pyrogram V2 Session String. Don't use bots or else you'll be responsible for your actions..",
       "required": true
     },
-    "HUGGING_TOKEN": {
-      "description": "ONLY, If you want to use flux ai plugin You can get it from huggingface.co/settings/tokens",
-      "required": true
-    },
     "FEDBAN_API_KEY": {
       "description": "ONLY, If you want to use spamwatch plugin You can get it from @randydev_bot type /getapikey",
       "required": true

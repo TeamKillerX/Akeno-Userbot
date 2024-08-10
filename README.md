@@ -35,7 +35,6 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 	-e API_ID="YOUR_VALUE_HERE" \
 	-e API_HASH="YOUR_VALUE_HERE" \
 	-e SESSION="YOUR_VALUE_HERE" \
-	-e HUGGING_TOKEN="YOUR_VALUE_HERE" \
 	-e GOOGLE_API_KEY="YOUR_VALUE_HERE" \
 	-e FEDBAN_API_KEY="YOUR_VALUE_HERE" \
 	rendyprojects/akeno:dev
@@ -49,7 +48,6 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 
  - `SESSION` - Get it from [`@randydev_bot`](https://t.me/randydev_bot) or [`replit pyrogram`](https://replit.com/@ABHITHEMODDER/MoonUb-Session-Gen)
 
- - `HUGGING_TOKEN` - Get it from [`hugginface`](https://huggingface.co/settings/tokens)
  - `FEDBAN_API_KEY` - Get it from [`@randydev_bot`](https://t.me/randydev_bot) type `/getapikey` "read FEDBAN"
 
  - `GOOGLE_API_KEY` - Get it from [`google-api-key`](https://ai.google.dev)
@@ -69,9 +67,6 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 ### ⚠️ IMPORTANT NOTICE:
 
 This project is no longer maintained. __Use at your own risk__.
-
-### 📂 Custom Modules
-- you can check [`custom-modules`](https://github.com/TeamKillerX/custom_modules)
 
 ## Licence
 
