@@ -30,6 +30,7 @@ from uvloop import install
 
 from Akeno import clients
 from Akeno.utils.logger import LOGS
+from Akeno import aiohttpsession
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("pyrogram.syncer").setLevel(logging.WARNING)
