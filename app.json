@@ -1,0 +1,49 @@
+{
+  "name": "Akeno-userbot",
+  "description": "A Simple, Fast, Customizable, Ai powered Userbot for Telegram with most easiest installation.",
+  "logo": "https://telegra.ph/file/0534186604d2e51d4b48c.jpg",
+  "keywords": [
+    "telegram",
+    "Akeno-userbot",
+    "bot",
+    "python",
+    "pyrogram"
+  ],
+  "env": {
+    "API_ID": {
+      "description": "Get it from my.telegram.org",
+      "required": true
+    },
+    "API_HASH": {
+      "description": "Get it from my.telegram.org",
+      "required": true
+    },
+    "SESSION": {
+      "description": "Pyrogram V2 Session String. Don't use bots or else you'll be responsible for your actions..",
+      "required": true
+    },
+    "HUGGING_TOKEN": {
+      "description": "ONLY, If you want to use flux ai plugin You can get it from huggingface.co/settings/tokens",
+      "required": true
+    },
+    "FEDBAN_API_KEY": {
+      "description": "ONLY, If you want to use spamwatch plugin You can get it from @randydev_bot type /getapikey",
+      "required": true
+    },
+    "GOOGLE_API_KEY": {
+      "description": "ONLY, If you want to use gemini ai plugin You can get it from https://ai.google.dev",
+      "required": true
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    },
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-apt"
+    },
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-activestorage-preview"
+    }
+  ]
+}
