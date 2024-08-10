@@ -18,7 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import io
-
+import time
 import requests
 from PIL import Image
 from pyrogram import *
@@ -28,13 +28,15 @@ from pyrogram.types import *
 from Akeno.utils.handler import Akeno
 from Akeno.utils.logger import LOGS
 from config import CMD_HANDLER, HUGGING_TOKEN
-
+from Akeno.utils.scripts import progress
 
 async def schellwithflux(args):
-    API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
-    headers = {"Authorization": f"Bearer {HUGGING_TOKEN}"}
-    payload = {"inputs": args}
-    response = requests.post(API_URL, headers=headers, json=payload)
+    API_URL = "https://randydev-ryuzaki-api.hf.space/api/v1/akeno/fluxai"
+    payload = {
+        "user_id": 1191668125,  # Please don't edit here
+        "args": args
+    }
+    response = requests.post(API_URL, json=payload)
     if response.status_code != 200:
         LOGS.error(f"Error status {response.status_code}")
         return None
@@ -50,17 +52,17 @@ async def imgfluxai_(client: Client, message: Message):
     if not question:
         return await message.reply_text("Please provide a question for Flux.")
     try:
-        if not HUGGING_TOKEN:
-            return await message.reply_text("`HUGGING_TOKEN` is required to use this feature.")
         image_bytes = await schellwithflux(question)
         if image_bytes is None:
             return await message.reply_text("Failed to generate an image.")
         pro = await message.reply_text("Generating image, please wait...")
-        with Image.open(io.BytesIO(image_bytes)) as img:
-            img.save("testing.jpg", format="JPEG")
+        with open("flux_gen.jpg", "wb") as f:
+            f.write(image_bytes)
         ok = await pro.edit_text("Uploading image...")
-        await message.reply_photo("testing.jpg")
+        await message.reply_photo("flux_gen.jpg", progress=progress, progress_args=(ok, time.time(), "Uploading image..."))
         await ok.delete()
+        if os.path.exists("flux_gen.jpg"):
+            os.remove("flux_gen.jpg")
     except Exception as e:
         LOGS.error(str(e))
-        await pro.edit_text(f"An error occurred: {str(e)}")
+        await message.edit_text(str(e))
