@@ -56,10 +56,15 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 
  - `CMD_HANDLER` - default handler `["?"]`
 
-## ☁️ Cloud Host
-| Koyeb | Heroku | Render |
-|-------|--------|--------|
-| [![Deploy To Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=github.com/TeamKillerX/Akeno-Userbot&branch=main&name=akeno) | [![Deploy To Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/TeamKillerX/Akeno-Userbot) | [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TeamKillerX/Akeno-Userbot) |
+### ☁️ Cloud Host
+
+[![Deploy To Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=github.com/TeamKillerX/Akeno-Userbot&branch=main&name=akeno)
+
+[![Deploy To Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/TeamKillerX/Akeno-Userbot)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TeamKillerX/Akeno-Userbot)
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/Gl2-X1?referralCode=NzLfjZ)
 
 ### ⚠️ IMPORTANT NOTICE:
 
