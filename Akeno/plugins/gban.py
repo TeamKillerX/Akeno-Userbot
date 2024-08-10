@@ -21,20 +21,21 @@
 # NO NEED DATABASE USING API REST DB
 
 import asyncio
-from pyrogram import Client, filters
-from pyrogram.types import Message
-from pyrogram import errors, filters
+
 from pyrogram import *
-from pyrogram.types import *
-from pyrogram.enums import ChatType, ChatMemberStatus as CMS
-from pyrogram.errors import FloodWait
-from pyrogram.errors import ChannelInvalid
-from pyrogram.types import ChatPermissions, Message
+from pyrogram import Client, errors, filters
+from pyrogram.enums import ChatMemberStatus as CMS
+from pyrogram.enums import ChatType
+from pyrogram.errors import ChannelInvalid, FloodWait
 from pyrogram.raw.functions.messages import DeleteHistory
-from Akeno.utils.tools import get_ub_chats
-from Akeno.utils.spamwatch import auto_post_gban, auto_check_gban
+from pyrogram.types import *
+from pyrogram.types import ChatPermissions, Message
+
 from Akeno.utils.handler import Akeno, Akeno_chat_member_updated
-from config import FEDBAN_API_KEY, CMD_HANDLER
+from Akeno.utils.spamwatch import auto_check_gban, auto_post_gban
+from Akeno.utils.tools import get_ub_chats
+from config import CMD_HANDLER, FEDBAN_API_KEY
+
 
 async def input_user(message: Message) -> str:
     """Get the input from the user"""

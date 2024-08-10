@@ -30,7 +30,7 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 ```
 
 ### 📊 Necessary Vars
- 
+
  - `API_ID` - Get it from [my.telegram.org](https://my.telegram.org/)
 
  - `API_HASH` - Get it from [my.telegram.org](https://my.telegram.org/)

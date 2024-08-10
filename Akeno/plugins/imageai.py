@@ -17,16 +17,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import requests
 import io
+
+import requests
 from PIL import Image
+from pyrogram import *
 from pyrogram import Client, filters
 from pyrogram.types import *
-from pyrogram import *
 
-from Akeno.utils.logger import LOGS
 from Akeno.utils.handler import Akeno
-from config import HUGGING_TOKEN, CMD_HANDLER
+from Akeno.utils.logger import LOGS
+from config import CMD_HANDLER, HUGGING_TOKEN
+
 
 async def schellwithflux(args):
     API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
