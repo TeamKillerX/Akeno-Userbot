@@ -46,23 +46,21 @@ async def main():
                 ex = await cli.get_me()
                 LOGS.info(f"Started {ex.first_name}")
                 await cli.send_message("me", "Starting Userbot")
-                await cli.join_chat(f"{search_telegem.decode('utf-16')}")
+                await cli.join_chat(search_telegem.decode('utf-16'))
             except UserIsBlocked:
-                LOGS.error("Sorry you have been blocked please support @xtdevs")
-                exit(1)
+                LOGS.error("You have been blocked. Please support @xtdevs")
+                return
             except Exception as e:
                 LOGS.error(f"Error starting userbot: {e}")
         await idle()
     except Exception as e:
         LOGS.error(f"Error in main: {e}")
     finally:
-        await asyncio.gather(
-            aiohttpsession.close()
-        )
-
-        for task in asyncio.all_tasks():
+        await aiohttpsession.close()
+        tasks = asyncio.all_tasks()
+        for task in tasks:
             task.cancel()
-
+        await asyncio.gather(*tasks, return_exceptions=True)
         LOGS.info("All tasks completed successfully!")
 
 if __name__ == "__main__":
