@@ -80,3 +80,4 @@ qrcode
 pygments
 environs
 curl_cffi
+nest_asyncio
