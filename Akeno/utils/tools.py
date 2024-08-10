@@ -1,18 +1,16 @@
 import asyncio
-import shlex
-import asyncio
 import math
 import os
+import shlex
+import textwrap
+from io import BytesIO
+from typing import Tuple
+
 import cv2
 import requests
-from typing import Tuple
-import textwrap
-
-from PIL import Image, ImageDraw, ImageFont
-from io import BytesIO
-from pymediainfo import MediaInfo
 from bs4 import BeautifulSoup as bs
-
+from PIL import Image, ImageDraw, ImageFont
+from pymediainfo import MediaInfo
 from pyrogram import *
 from pyrogram.enums import *
 from pyrogram.errors import *
@@ -149,7 +147,7 @@ async def resize_media(media: str, video: bool, fast_forward: bool) -> str:
     image.save(resized_photo)
     os.remove(media)
     return resized_photo
-    
+
 def get_text(message: Message) -> [None, str]:
     """Extract Text From Commands"""
     text_to_return = message.text
@@ -300,7 +298,7 @@ def GetUserMentionable(user: User):
         username = "<a href='tg://user?id={}'>{}</a>".format(user.id, name_string)
 
     return username
-    
+
 def resize_image(image):
     im = Image.open(image)
     maxsize = (512, 512)

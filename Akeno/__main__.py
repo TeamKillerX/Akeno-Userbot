@@ -18,17 +18,18 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import asyncio
+import importlib
 import logging
 import sys
-import importlib
+from contextlib import closing, suppress
+
 import aiohttp
 from pyrogram import idle
+from pyrogram.errors import *
+from uvloop import install
 
 from Akeno import clients
 from Akeno.utils.logger import LOGS
-from pyrogram.errors import *
-from contextlib import closing, suppress
-from uvloop import install
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("pyrogram.syncer").setLevel(logging.WARNING)
