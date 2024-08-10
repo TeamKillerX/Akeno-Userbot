@@ -8,8 +8,8 @@
 #
 
 import asyncio
-from time import time as waktu
 import time
+from time import time as waktu
 
 from pyrogram import Client
 from pyrogram import Client as ren
@@ -18,9 +18,9 @@ from pyrogram import filters
 from pyrogram.errors import *
 from pyrogram.types import *
 
-from Akeno.utils.tools import global_no_spam_title
 from Akeno.utils.handler import Akeno
 from Akeno.utils.logger import LOGS
+from Akeno.utils.tools import global_no_spam_title
 from config import CMD_HANDLER
 
 admins_in_chat = {}
