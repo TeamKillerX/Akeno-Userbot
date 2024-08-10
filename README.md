@@ -10,6 +10,7 @@
 [![Contributors](https://img.shields.io/github/contributors/TeamKillerX/Akeno-Userbot?color=green)](https://github.com/TeamKillerX/Akeno-Userbot/graphs/contributors)
 [![License](https://img.shields.io/badge/License-GPL-pink)](https://github.com/TeamKillerX/Akeno-Userbot/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/RyuzakiLib/dev.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/Akeno-Userbot/main)
 
 
 ### 🚀 Deploy on VPS:
