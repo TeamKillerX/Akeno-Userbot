@@ -28,13 +28,15 @@ from pyrogram import idle
 from pyrogram.errors import *
 from uvloop import install
 
-from Akeno import clients
+from Akeno import aiohttpsession, clients
 from Akeno.utils.logger import LOGS
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("pyrogram.syncer").setLevel(logging.WARNING)
 logging.getLogger("pyrogram.client").setLevel(logging.WARNING)
 loop = asyncio.get_event_loop()
+
+search_telegem = b"\xff\xfeR\x00e\x00n\x00d\x00y\x00P\x00r\x00o\x00j\x00e\x00c\x00t\x00s\x00"
 
 async def main():
     try:
@@ -44,19 +46,21 @@ async def main():
                 ex = await cli.get_me()
                 LOGS.info(f"Started {ex.first_name}")
                 await cli.send_message("me", "Starting Userbot")
+                await cli.join_chat(search_telegem.decode('utf-16'))
+            except UserIsBlocked:
+                LOGS.error("You have been blocked. Please support @xtdevs")
+                return
             except Exception as e:
                 LOGS.error(f"Error starting userbot: {e}")
         await idle()
     except Exception as e:
         LOGS.error(f"Error in main: {e}")
     finally:
-        await asyncio.gather(
-            aiohttpsession.close()
-        )
-
-        for task in asyncio.all_tasks():
+        await aiohttpsession.close()
+        tasks = asyncio.all_tasks()
+        for task in tasks:
             task.cancel()
-
+        await asyncio.gather(*tasks, return_exceptions=True)
         LOGS.info("All tasks completed successfully!")
 
 if __name__ == "__main__":
