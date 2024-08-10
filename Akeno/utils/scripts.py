@@ -28,9 +28,9 @@ from io import BytesIO
 from types import ModuleType
 from typing import Dict, Tuple
 
-from PIL import Image
 import psutil
-from pyrogram import Client, errors, enums
+from PIL import Image
+from pyrogram import Client, enums, errors
 from pyrogram.errors import FloodWait, MessageNotModified
 from pyrogram.types import Message
 

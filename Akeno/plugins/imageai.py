@@ -19,6 +19,7 @@
 
 import io
 import time
+
 import requests
 from PIL import Image
 from pyrogram import *
@@ -27,8 +28,9 @@ from pyrogram.types import *
 
 from Akeno.utils.handler import Akeno
 from Akeno.utils.logger import LOGS
-from config import CMD_HANDLER
 from Akeno.utils.scripts import progress
+from config import CMD_HANDLER
+
 
 async def schellwithflux(args):
     API_URL = "https://randydev-ryuzaki-api.hf.space/api/v1/akeno/fluxai"
