@@ -10,10 +10,9 @@
 [![Contributors](https://img.shields.io/github/contributors/TeamKillerX/Akeno-Userbot?color=green)](https://github.com/TeamKillerX/Akeno-Userbot/graphs/contributors)
 [![License](https://img.shields.io/badge/License-GPL-pink)](https://github.com/TeamKillerX/Akeno-Userbot/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/TeamKillerX/RyuzakiLib/dev.svg)](https://results.pre-commit.ci/latest/github/TeamKillerX/Akeno-Userbot/main)
 
 
-### 🚀 Deploy on VPS:
+### 🚀 Deploy on VPS: (Python3.11+)
 ```console
 @root: git clone https://github.com/TeamKillerX/Akeno-Userbot
 @root: cd Akeno-Userbot
@@ -51,6 +50,8 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
  - `FEDBAN_API_KEY` - Get it from [`@randydev_bot`](https://t.me/randydev_bot) type `/getapikey` "read FEDBAN"
 
  - `GOOGLE_API_KEY` - Get it from [`google-api-key`](https://ai.google.dev)
+
+- `MONGO_URL` - Get it from [`here`](https://mongodb.com)
 
  - `CMD_HANDLER` - default handler `["?"]`
 
