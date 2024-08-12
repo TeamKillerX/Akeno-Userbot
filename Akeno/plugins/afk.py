@@ -67,7 +67,7 @@ async def _log(client: Client, tag: str, text: str, file: str = None):
         raise Exception(f"LogErr: {e}")
 
 @Akeno(
-    ~filters.scheduled & filters.command(["afk"]) & filters.me & ~filters.forwarded
+    ~filters.scheduled & filters.command(["afk"], CMD_HANDLER) & filters.me & ~filters.forwarded
 )
 async def afk(client: Client, message: Message):
     if await db.is_afk(message.from_user.id):
