@@ -29,7 +29,10 @@
     "GOOGLE_API_KEY": {
       "description": "ONLY, If you want to use gemini ai plugin You can get it from https://ai.google.dev",
       "required": true
-    }
+    },
+    "MONGO_URL": {
+      "description": "ONLY, If you want to use afk etc plugin You can get it from https://mongodb.com",
+      "required": true
   },
   "buildpacks": [
     {
