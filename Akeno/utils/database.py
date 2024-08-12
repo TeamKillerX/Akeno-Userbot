@@ -7,7 +7,6 @@ from motor.core import AgnosticClient
 from config import MONGO_URL
 from Akeno.utils.logger import LOGS
 
-
 class Database:
     def __init__(self, uri: str) -> None:
         self.client: AgnosticClient = motor_asyncio.AsyncIOMotorClient(uri)
@@ -35,10 +34,10 @@ class Database:
         try:
             await self.client.admin.command("ping")
             LOGS.info(
-                f"{Symbols.bullet * 3} Database Connection Established! {Symbols.bullet * 3}"
+                f"Database Connection Established!"
             )
         except Exception as e:
-            LOGS.info(f"{Symbols.cross_mark} DatabaseErr: {e} ")
+            LOGS.info(f"DatabaseErr: {e} ")
             quit(1)
 
     def get_datetime(self) -> str:
