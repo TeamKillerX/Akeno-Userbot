@@ -50,7 +50,7 @@ async def _log(client: Client, tag: str, text: str, file: str = None):
     try:
         if file:
             try:
-                await client.send_document(LOGGER_ID, file, caption=msg)
+                await client.send_document("me", file, caption=msg)
             except:
                 await client.send_message(
                     "me",
@@ -87,7 +87,7 @@ async def afk(client: Client, message: Message):
             media_type = "video"
         elif message.reply_to_message.media == MessageMediaType.VOICE:
             media_type = "voice"
-        media = await message.reply_to_message.forward(LOGGER_ID)
+        media = await message.reply_to_message.forward("me")
     reason = await input_user(message)
     reason = reason if reason else "Not specified"
     await db.set_afk(
