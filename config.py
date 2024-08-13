@@ -1,6 +1,5 @@
 import os
 from os import getenv
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,6 +10,7 @@ FEDBAN_API_KEY = os.environ["FEDBAN_API_KEY"]
 GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = ["?"]
+cohere_key = os.getenv("COHERE_KEY", "")
 
 AFK_CACHE = {}
 BOT_CMD_INFO = {}
