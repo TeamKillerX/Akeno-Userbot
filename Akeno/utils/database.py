@@ -21,6 +21,7 @@ class Database:
         self.filter = self.db["filter"]
         self.forcesub = self.db["forcesub"]
         self.gachabots = self.db["gachabots"]
+        self.cohere = self.db["cohere"]
         self.gban = self.db["gban"]
         self.gmute = self.db["gmute"]
         self.greetings = self.db["greetings"]
@@ -33,12 +34,13 @@ class Database:
     async def connect(self):
         try:
             await self.client.admin.command("ping")
-            LOGS.info(
-                f"Database Connection Established!"
-            )
+            LOGS.info(f"Database Connection Established!")
         except Exception as e:
             LOGS.info(f"DatabaseErr: {e} ")
             quit(1)
+
+    async def _close(self):
+        await self.client.close()
 
     def get_datetime(self) -> str:
         return datetime.datetime.now().strftime("%d/%m/%Y - %H:%M")
@@ -578,5 +580,28 @@ class Database:
     async def get_all_gachabots_id(self) -> list:
         data = await self.gachabots.distinct("bot")
         return data
+
+    async def _get_cohere_chat_from_db(self, user_id):
+        user_data = await self.cohere.find_one({"user_id": user_id})
+        return user_data.get("cohere_chat", []) if user_data else []
+
+    async def _update_cohere_chat_in_db(self, user_id, cohere_chat):
+        await self.cohere.update_one(
+            {"user_id": user_id},
+            {"$set": {"cohere_chat": cohere_chat}},
+            upsert=True
+        )
+
+    async def _clear_history_in_db(self, user_id):
+        unset_clear = {"cohere_chat": None}
+        return await self.cohere.update_one({"user_id": user_id}, {"$unset": unset_clear})
+
+    async def clear_database(self):
+        """Clear the cohere history for the current user."""
+        result = await self._clear_history_in_db()
+        if result.modified_count > 0:
+            return "Chat history cleared successfully."
+        else:
+            return "No chat history found to clear."
 
 db = Database(MONGO_URL)
