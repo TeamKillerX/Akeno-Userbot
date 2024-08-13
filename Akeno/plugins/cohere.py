@@ -6,7 +6,7 @@ from Akeno.utils.database import db
 from pyrogram import Client, filters, enums
 from pyrogram.types import Message
 import cohere
-from config import cohere_key
+from config import cohere_key, CMD_HANDLER
 
 co = cohere.Client(cohere_key)
 
@@ -21,7 +21,7 @@ async def cohere(c: Client, message: Message):
             prompt = message.reply_to_message.text
         else:
             await message.edit_text(
-                f"<b>Usage: </b><code>{prefix}cohere [prompt/reply to message]</code>"
+                f"<b>Usage: </b><code>{CMD_HANDLER}cohere [prompt/reply to message]</code>"
             )
             return
         chat_history.append({"role": "USER", "message": prompt})
