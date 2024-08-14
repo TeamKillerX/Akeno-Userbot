@@ -22,7 +22,7 @@ async def coheres_(c: Client, message: Message):
             prompt = message.reply_to_message.text
         else:
             await message.edit_text(
-                f"<b>Usage: </b><code>.cohere [prompt/reply to message]</code>"
+                "<b>Usage: </b><code>.cohere [prompt/reply to message]</code>"
             )
             return
         chat_history.append({"role": "USER", "message": prompt})
