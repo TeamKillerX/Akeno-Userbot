@@ -18,7 +18,7 @@ from pyrogram import filters
 from pyrogram.errors import *
 from pyrogram.types import *
 
-from Akeno.utils.handler import Akeno
+from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from Akeno.utils.tools import global_no_spam_title
 from config import CMD_HANDLER
@@ -349,3 +349,16 @@ async def demote_user(client: Client, message: Message):
     )
     umention = (await client.get_users(user_id)).mention
     await rd.edit_text(f"Demoted! {umention}")
+
+module = modules_help.add_module("admin", __file__)
+module.add_command("ban", "Ban someone.")
+module.add_command("dban", "dban a user deleting the replied to message")
+module.add_command("kick", "kick out someone from your group")
+module.add_command("dkick", "dkick a user deleting the replied to message")
+module.add_command("promote", "Promote someonen")
+module.add_command("demote", "Demote someone")
+module.add_command("mute", "Mute someone")
+module.add_command("dmute", "dmute a user deleting the replied to message"")
+module.add_command("pin", "to pin any message.")
+module.add_command("unpin", "To unpin any message")
+module.add_command("setgpic", "To set an group profile pic.")
