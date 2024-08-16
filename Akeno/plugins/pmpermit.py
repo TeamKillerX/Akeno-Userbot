@@ -6,7 +6,7 @@ from pyrogram.types import Message
 
 from config import ENV_TEMPLATE, CMD_HANDLER
 from Akeno.utils.database import db
-from Akeno.utils.handler import Akeno
+from Akeno.utils.handler import *
 
 blocked_messages = [
     "🤐 User has entered the silent zone.",
@@ -223,3 +223,8 @@ async def handle_incoming_pm(client: Client, message: Message):
 
     PREV_MESSAGE[client.me.id] = {message.from_user.id: msg}
     WARNS[client.me.id] = {message.from_user.id: warns - 1}
+
+module = modules_help.add_module("pmpermit", __file__)
+module.add_command("allow", "Allow a user to pm you.")
+module.add_command("disallow", "Disallow a user to pm you.")
+module.add_command("allowlist", "List all users allowed to pm you.")
