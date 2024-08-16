@@ -23,7 +23,7 @@ from pyrogram.types import *
 from RyuzakiLib import FullStackDev, GeminiLatest, RendyDevChat
 
 from Akeno.utils.chat import chat_message
-from Akeno.utils.handler import Akeno
+from Akeno.utils.handler import "
 from Akeno.utils.logger import LOGS
 from config import CMD_HANDLER, GOOGLE_API_KEY
 
@@ -112,3 +112,8 @@ async def chatgpt(client: Client, message: Message):
     except Exception as e:
         LOGS.error(str(e))
         return await message.reply_text(str(e))
+
+module = modules_help.add_module("chatgpt", __file__)
+module.add_command("askf", "to read in the picture")
+module.add_command("askm", "to give random image questions")
+module.add_command("ask", "to question from chatgpt-4o")
