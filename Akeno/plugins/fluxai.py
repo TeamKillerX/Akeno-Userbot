@@ -26,7 +26,7 @@ from pyrogram import *
 from pyrogram import Client, filters
 from pyrogram.types import *
 
-from Akeno.utils.handler import Akeno
+from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from Akeno.utils.scripts import progress
 from config import CMD_HANDLER
@@ -68,3 +68,6 @@ async def imgfluxai_(client: Client, message: Message):
     except Exception as e:
         LOGS.error(str(e))
         await message.edit_text(str(e))
+
+module = modules_help.add_module("fluxai", __file__)
+module.add_command("fluxai", "to question flux image generator.")
