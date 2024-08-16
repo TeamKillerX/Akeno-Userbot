@@ -48,3 +48,6 @@ async def coheres_(c: Client, message: Message):
         await db._update_cohere_chat_in_db(user_id, chat_history)
     except Exception as e:
         await message.edit_text(f"An error occurred: {e}")
+
+module = modules_help.add_module("cohere", __file__)
+module.add_command("cohere", "to question from cohere ai.")
