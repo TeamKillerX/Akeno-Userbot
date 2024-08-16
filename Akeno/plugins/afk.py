@@ -10,7 +10,7 @@ from pyrogram import Client as ren
 from config import *
 from Akeno.utils.database import db
 from Akeno.utils.formatter import add_to_dict, get_from_dict, readable_time
-from Akeno.utils.handler import Akeno, group_only
+from Akeno.utils.handler import *
 
 afk_quotes = [
     "🚶‍♂️ Taking a break, be back soon!",
@@ -184,3 +184,6 @@ async def remove_afk(_, message: Message):
                 tag="afk",
                 text=f"Returned from AFK! \n\n**Time:** `{total_afk_time}`\n**Link:** {x.link}"
             )
+
+module = modules_help.add_module("afk", __file__)
+module.add_command("afk", "to be offline on telegram.")
