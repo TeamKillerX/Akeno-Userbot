@@ -31,7 +31,7 @@ from pyrogram.raw.functions.messages import DeleteHistory
 from pyrogram.types import *
 from pyrogram.types import ChatPermissions, Message
 
-from Akeno.utils.handler import Akeno, Akeno_chat_member_updated
+from Akeno.utils.handler import *
 from Akeno.utils.spamwatch import auto_check_gban, auto_post_gban
 from Akeno.utils.tools import get_ub_chats
 from config import CMD_HANDLER, FEDBAN_API_KEY
@@ -143,3 +143,6 @@ async def global_spammer(client: Client, message: Message):
         else:
             await client.block_user(user_id)
     message.continue_propagation()
+
+module = modules_help.add_module("gban", __file__)
+module.add_command("gban", "to global banned in group all.")
