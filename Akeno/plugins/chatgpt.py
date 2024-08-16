@@ -23,7 +23,7 @@ from pyrogram.types import *
 from RyuzakiLib import FullStackDev, GeminiLatest, RendyDevChat
 
 from Akeno.utils.chat import chat_message
-from Akeno.utils.handler import "
+from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from config import CMD_HANDLER, GOOGLE_API_KEY
 
