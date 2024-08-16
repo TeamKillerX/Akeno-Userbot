@@ -9,7 +9,7 @@ from pyrogram.types import *
 from pyrogram.types import Message
 
 from Akeno.plugins.admin import extract_user
-from Akeno.utils.handler import Akeno
+from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from config import CMD_HANDLER
 
@@ -81,3 +81,6 @@ async def who_is(client: Client, message: Message):
     except Exception as e:
         LOGS.error(str(e))
         return await ex.edit(f"**INFO:** `{e}`")
+
+module = modules_help.add_module("info", __file__)
+module.add_command("info", "to info view users.") 

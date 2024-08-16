@@ -6,7 +6,7 @@ from pyrogram.errors import *
 from pyrogram.types import *
 from pyrogram.types import Message
 
-from Akeno.utils.handler import Akeno
+from Akeno.utils.handler import *
 from config import CMD_HANDLER
 
 
@@ -36,3 +36,6 @@ async def akundeak(client: Client, message: Message):
         await m.edit_text(f"Banned {banned_users} Deleted Accounts")
     else:
         await m.edit_text("There are no deleted accounts in this chat")
+
+module = modules_help.add_module("zombies", __file__)
+module.add_command("zombies", "to account deleted.")

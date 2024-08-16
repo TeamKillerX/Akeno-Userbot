@@ -7,7 +7,7 @@ from pyrogram.types import *
 from pyrogram.types import Message
 
 from Akeno import StartTime
-from Akeno.utils.handler import Akeno
+from Akeno.utils.handler import *
 from config import CMD_HANDLER
 
 
@@ -51,3 +51,6 @@ async def custom_ping_handler(client: Client, message: Message):
     await lol.edit_text(
         f" **Pong !!** " f"`%sms` \n" f" **Uptime** - " f"`{uptime}` " % (duration)
     )
+
+module = modules_help.add_module("ping", __file__)
+module.add_command("ping", "to testing ping.")

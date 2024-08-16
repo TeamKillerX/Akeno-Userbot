@@ -9,7 +9,7 @@ from pyrogram.raw import *
 from pyrogram.types import *
 from pyrogram.types import Message
 
-from Akeno.utils.handler import Akeno
+from Akeno.utils.handler import *
 from config import CMD_HANDLER
 
 
@@ -34,3 +34,6 @@ async def spamban(client: Client, message: Message):
     spambot_msg = response.updates[1].message.id + 1
     status = await client.get_messages(chat_id="SpamBot", message_ids=spambot_msg)
     await wait_msg.edit_text(f"~ {status.text}")
+
+module = modules_help.add_module("limited", __file__)
+module.add_command("limit", "to limit spam from @spambot.")
