@@ -7,7 +7,7 @@ from pyrogram import filters
 from pyrogram.types import *
 from pyrogram.types import Message
 
-from Akeno.utils.handler import Akeno
+from Akeno.utils.handler import *
 from config import CMD_HANDLER
 
 
@@ -107,3 +107,7 @@ async def purgefunc(client: Client, message: Message):
             message_ids=message_ids,
             revoke=True,
         )
+
+module = modules_help.add_module("purge", __file__)
+module.add_command("purgeme", "to fast purge me.")
+module.add_command("purge", "to fast reply to message.")
