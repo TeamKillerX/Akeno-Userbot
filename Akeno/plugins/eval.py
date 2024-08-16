@@ -106,3 +106,6 @@ async def shell_exec(code, treat=True):
     if treat:
         stdout = stdout.decode().strip()
     return stdout, process
+
+module = modules_help.add_module("eval", __file__)
+module.add_command("eval", "to eval code in python")
