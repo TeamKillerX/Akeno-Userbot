@@ -42,7 +42,7 @@ def extract_text(message: Message) -> str:
     )
 
 @Akeno(
-    ~filters.scheduled & filters.command(["antiarabic"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & filters.command(["antiarab"], CMD_HANDLER) & filters.me & ~filters.forwarded
 )
 async def antiarabic_setting(client: Client, message: Message):
     args = message.text.lower().split()[1:]
@@ -89,4 +89,4 @@ async def antiarabic_filter(client: Client, message: Message):
                 return await message.delete()
 
 module = modules_help.add_module("antiarabic", __file__)
-module.add_command("askf", "to antarabic auto delete messages")
+module.add_command("antiarab", "to antarabic auto delete messages")
