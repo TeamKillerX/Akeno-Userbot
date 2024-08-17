@@ -27,6 +27,13 @@ from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from config import CMD_HANDLER, GOOGLE_API_KEY
 
+async def mistraai(messagestr):
+    url = "https://randydev-ryuzaki-api.hf.space/api/v1/akeno/mistralai"
+    payload = {"args": messagestr}
+    response = requests.post(url, json=payload)
+    if response.status_code != 200:
+        return None
+    return response.json()
 
 @Akeno(
     ~filters.scheduled
@@ -89,6 +96,35 @@ async def chatgpt_images(client: Client, message: Message):
 
 @Akeno(
     ~filters.scheduled
+    & filters.command(["mistralai"], CMD_HANDLER)
+    & filters.me
+    & ~filters.forwarded
+)
+async def mistralai_(client: Client, message: Message):
+    question = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
+    if not question:
+        return await message.reply_text("Give ask from mistraai")
+    try:
+        messager = await mistraai(question)
+        if messager is None:
+            return await message.reply_text("No response")
+        output = messager["randydev"].get("message")
+        if len(output) > 4096:
+            with open("chat.txt", "w+", encoding="utf8") as out_file:
+                out_file.write(output)
+            await message.reply_document(
+                document="chat.txt",
+                disable_notification=True
+            )
+            os.remove("chat.txt")
+        else:
+            await message.reply_text(output)
+    except Exception as e:
+        LOGS.error(str(e))
+        return await message.reply_text(str(e))
+
+@Akeno(
+    ~filters.scheduled
     & filters.command(["ask"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
@@ -117,3 +153,4 @@ module = modules_help.add_module("chatgpt", __file__)
 module.add_command("askf", "to read in the picture")
 module.add_command("askm", "to give random image questions")
 module.add_command("ask", "to question from chatgpt-4o")
+module.add_command("mistralai", "to question from mistralai")
