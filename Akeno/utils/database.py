@@ -606,14 +606,14 @@ class Database:
             return "No chat history found to clear."
 
     async def set_chat_setting(self, chat_id, isboolean):
-        await antiarabic.update_one(
+        await self.antiarabic.update_one(
             {"chat_id": chat_id},
             {"$set": {"arabic": isboolean}},
             upsert=True
         )
 
     async def chat_antiarabic(self, chat_id):
-        user_data = await antiarabic.find_one({"chat_id": chat_id})
+        user_data = await self.antiarabic.find_one({"chat_id": chat_id})
         if user_data:
             return user_data.get("arabic", False)
         return False
