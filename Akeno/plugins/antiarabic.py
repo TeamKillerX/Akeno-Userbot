@@ -18,7 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from pyrogram import Client, filters, idle, enums
-from pyrogram.types import Chat, Message, InlineKeyboardButton, InlineKeyboardMarkup, ChatPrivileges, ChatMember
+from pyrogram.types import Chat, Message, ChatPrivileges, ChatMember
 from pyrogram.enums.parse_mode import ParseMode
 import logging
 from Akeno.utils.database import db
@@ -58,7 +58,6 @@ async def antiarabic_setting(client: Client, message: Message):
                 await message.reply_text("Turned off AntiArabic! Messages containing Arabic text won't be deleted.")
         else:
             reply_text = f"AntiArabic Mode: {'On' if await db.chat_antiarabic(chat.id) else 'Off'}"
-            await client.send_message(LOGS_CHANNEL, get_user_check)
             await message.reply_text(reply_text, parse_mode=ParseMode.MARKDOWN)
 
 @Akeno(
