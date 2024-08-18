@@ -54,23 +54,7 @@ async def alive(client: Client, message: Message):
     pro = await message.reply_text("Processing ...")
     img = await db.get_env(ENV_TEMPLATE.alive_pic)
     if not img:
-        if message.from_user.photo:
-            user_pfp = await client.download_media(message.from_user.photo.big_file_id)
-            del_path = True
-        else:
-            user_pfp = "resources/images/logo.png"
-            del_path = False
-        img = [
-            generate_alive_image(
-                message.from_user.first_name,
-                user_pfp,
-                del_path,
-                FONT_PATH
-            )
-        ]
-    else:
-        img = img.split(" ")
-    img = random.choice(img)
+        img = "https://telegra.ph/file/316e8e52a723e06d59bbf.jpg"
     uptime = get_readable_time(time.time() - StartTime)
     caption = await alive_template(client.me.first_name, uptime)
     if img.endswith(".mp4"):
@@ -78,7 +62,8 @@ async def alive(client: Client, message: Message):
     else:
         await message.reply_photo(img, caption=caption)
     await pro.delete()
-    try:
-        os.remove(img)
-    except:
-        pass
+    if os.path.exists(img):
+        try:
+            os.remove(img)
+        except:
+            pass
