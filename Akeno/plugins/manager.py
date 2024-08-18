@@ -1,10 +1,12 @@
+from pyrogram import *
 from pyrogram import Client, filters
 from pyrogram.types import *
-from pyrogram import *
-from Akeno.utils.handler import *
+
 from Akeno.utils.database import db
+from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from config import *
+
 
 @Akeno(
     ~filters.scheduled & filters.command(["setvar"], CMD_HANDLER) & filters.me & ~filters.forwarded

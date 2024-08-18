@@ -4,8 +4,9 @@ import time
 from motor import motor_asyncio
 from motor.core import AgnosticClient
 
-from config import MONGO_URL
 from Akeno.utils.logger import LOGS
+from config import MONGO_URL
+
 
 class Database:
     def __init__(self, uri: str) -> None:

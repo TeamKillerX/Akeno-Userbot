@@ -12,6 +12,7 @@ from unidecode import unidecode
 
 from Akeno.utils.formatter import format_text, limit_per_page
 
+
 def convert_to_png(image: str) -> str:
     output_img = f"png_{round(time.time())}.png"
     img = Image.open(image)
