@@ -61,3 +61,16 @@ class ENV_TEMPLATE:
     unsplash_api = "UNSPLASH_API"
     usage_template = "USAGE_TEMPLATE"
     user_info_template = "USER_INFO_TEMPLATE"
+
+os_configs = [
+    "API_HASH",
+    "API_ID",
+    "SESSION",
+    "FEDBAN_API_KEY",
+    "GOOGLE_API_KEY",
+    "CMD_HANDLER",
+    "cohere_key",
+    "HUGGING_TOKEN",
+]
+all_env: list[str] = [
+    value for key, value in ENV_TEMPLATE.__dict__.items() if not key.startswith("__")
