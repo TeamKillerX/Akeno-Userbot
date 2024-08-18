@@ -82,3 +82,4 @@ environs
 curl_cffi
 nest_asyncio
 cohere
+icrawler
