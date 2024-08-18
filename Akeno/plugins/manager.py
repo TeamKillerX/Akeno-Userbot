@@ -6,17 +6,6 @@ from Akeno.utils.database import db
 from Akeno.utils.logger import LOGS
 from config import *
 
-async def input_user(message: Message) -> str:
-    """Get the input from the user"""
-    if len(message.command) < 2:
-        output = ""
-    else:
-        try:
-            output = message.text.split(" ", 1)[1].strip() or ""
-        except IndexError:
-            output = ""
-    return output
-
 @Akeno(
     ~filters.scheduled & filters.command(["setvar"], CMD_HANDLER) & filters.me & ~filters.forwarded
 )
@@ -62,14 +51,15 @@ async def getvar(_, message: Message):
     if len(message.command) < 2:
         return await message.reply_text("Give a varname to fetch value.")
     varname = message.command[1]
+    value = None
     if varname.upper() in os_configs:
         value = await db.get_env(varname.upper())
     if isinstance(value, str):
         await message.reply_text(
-            f"**𝖵𝖺𝗋𝗂𝖺𝖻𝗅𝖾 𝖭𝖺𝗆𝖾:** `{varname.upper()}`\n**𝖵𝖺𝗅𝗎𝖾:** `{value}`",
+            f"**Variable Name:** `{varname.upper()}`\n**Value:** `{value}`",
         )
     elif value is None:
-        await message.reply_text(f"**𝖵𝖺𝗋𝗂𝖺𝖻𝗅𝖾 {varname} 𝖽𝗈𝖾𝗌 𝗇𝗈𝗍 𝖾𝗑𝗂𝗌𝗍𝗌!**")
+        await message.reply_text(f"**Variable {varname} does not exist!**")
 
 @Akeno(
     ~filters.scheduled & filters.command(["getallvar", "getallvars"], CMD_HANDLER) & filters.me & ~filters.forwarded
