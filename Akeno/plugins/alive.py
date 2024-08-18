@@ -67,3 +67,6 @@ async def alive(client: Client, message: Message):
             os.remove(img)
         except:
             pass
+
+module = modules_help.add_module("alive", __file__)
+module.add_command("alive", "Get the alive message of the bot.")
