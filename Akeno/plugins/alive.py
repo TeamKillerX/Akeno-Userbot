@@ -1,11 +1,47 @@
 import random
+import os
 import time
 import asyncio
 from Akeno.utils.images import generate_alive_image
 from Akeno.utils.handler import *
+from Akeno.plugins.ping import get_readable_time
+from Akeno import __version__
 from config import *
 
-@Akeno(filters.command("alive", CMD_HANDLER), & filters.me)
+ALIVE_TEMPLATES = [
+    (
+        "•────────────────•\n"
+        "•       Aᴋᴇɴᴏ ɪs ᴀʟɪᴠᴇ        •\n"
+        "╭────────────────•\n"
+        "╰➢ ᴏᴡɴᴇʀ » {owner}\n"
+        "╰➢ ᴘʏʀᴏɢʀᴀᴍ » {pyrogram}\n"
+        "╰➢ ᴘʏᴛʜᴏɴ » {python}\n"
+        "╰➢ ᴜᴘᴛɪᴍᴇ » {uptime}\n"
+        "╰────────────────•\n"
+        "𝖡𝗒 © @xtdevs\n"
+        "•────────────────•\n"
+    ),
+]
+
+async def alive_template(owner: str, uptime: str) -> str:
+    template = await db.get_env(ENV_TEMPLATE.alive_template)
+    if template:
+        message = template
+    else:
+        message = random.choice(ALIVE_TEMPLATES)
+    return message.format(
+        owner=owner,
+        pyrogram=__version__["pyrogram"],
+        python=__version__["python"],
+        uptime=uptime,
+    )
+
+@Akeno(
+    ~filters.scheduled
+    & filters.command(["alive"], CMD_HANDLER)
+    & filters.me
+    & ~filters.forwarded
+)
 async def alive(client: Client, message: Message):
     pro = await message.reply_text("Processing ...")
     img = await db.get_env(ENV_TEMPLATE.alive_pic)
@@ -24,7 +60,7 @@ async def alive(client: Client, message: Message):
     else:
         img = img.split(" ")
     img = random.choice(img)
-    uptime = readable_time(time.time() - START_TIME)
+    uptime = get_readable_time(time.time() - START_TIME)
     caption = await alive_template(client.me.first_name, uptime)
     if img.endswith(".mp4"):
         await message.reply_video(img, caption=caption)
