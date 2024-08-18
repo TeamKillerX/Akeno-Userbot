@@ -38,11 +38,11 @@ def get_readable_time(seconds: int) -> str:
     return readable_time
 
 PING_TEMPLATES = [
-    """**Ping !!**
-
-    🔷  **Speed:** {speed} m/s
-    🔷  **Uptime:** {uptime}
-    🔷  **Onwer:** {owner}""",
+"""
+🔷  **Speed:** {speed} m/s
+🔷  **Uptime:** {uptime}
+🔷  **Onwer:** {owner}
+""",
 ]
 
 async def ping_template(speed: float, uptime: str, owner: str) -> str:
