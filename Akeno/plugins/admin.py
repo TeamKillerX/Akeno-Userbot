@@ -120,7 +120,7 @@ async def list_admins(client: Client, chat_id: int):
 
 
 @Akeno(
-    ~filters.scheduled & filters.command(["ban", "dban"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & filters.command(["ban", "dban", "hban"], CMD_HANDLER) & filters.me & ~filters.forwarded
 )
 async def member_ban_user(client: Client, message: Message):
     user_id, reason = await extract_user_and_reason(message, sender_chat=True)
@@ -150,6 +150,8 @@ async def member_ban_user(client: Client, message: Message):
     )
     if message.command[0][0] == "d":
         await message.reply_to_message.delete()
+    elif message.command[0][0] == "h":
+        await client.delete_user_history(message.chat.id, user_id)
     if reason:
         msg += f"**Reason:** {reason}"
     await message.chat.ban_member(user_id)
@@ -205,7 +207,7 @@ async def pin_message(client: Client, message: Message):
     )
 
 @Akeno(
-    ~filters.scheduled & filters.command(["mute", "dmute"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & filters.command(["mute", "dmute", "hmute"], CMD_HANDLER) & filters.me & ~filters.forwarded
 )
 async def mute_user(client: Client, message: Message):
     user_id, reason = await extract_user_and_reason(message)
@@ -228,6 +230,8 @@ async def mute_user(client: Client, message: Message):
     )
     if message.command[0][0] == "d":
         await message.reply_to_message.delete()
+    elif message.command[0][0] == "h":
+        await client.delete_user_history(message.chat.id, user_id)
     if reason:
         msg += f"**Reason:** {reason}"
     await message.chat.restrict_member(user_id, permissions=ChatPermissions())
@@ -249,7 +253,7 @@ async def unmute_user(client: Client, message: Message):
     await rd.edit_text(f"Unmuted! {umention}")
 
 @Akeno(
-    ~filters.scheduled & filters.command(["kick", "dkick"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & filters.command(["kick", "dkick", "hkick"], CMD_HANDLER) & filters.me & ~filters.forwarded
 )
 async def kick_user(client: Client, message: Message):
     user_id, reason = await extract_user_and_reason(message)
@@ -271,6 +275,8 @@ async def kick_user(client: Client, message: Message):
 **Kicked By:** {message.from_user.mention if message.from_user else 'Anon'}"""
     if message.command[0][0] == "d":
         await message.reply_to_message.delete()
+    elif message.command[0][0] == "h":
+        await client.delete_user_history(message.chat.id, user_id)
     if reason:
         msg += f"\n**Reason:** `{reason}`"
     try:
@@ -353,12 +359,15 @@ async def demote_user(client: Client, message: Message):
 module = modules_help.add_module("admin", __file__)
 module.add_command("ban", "Ban someone.")
 module.add_command("dban", "dban a user deleting the replied to message")
+module.add_command("hban", "dban a user deleting all the replied to message")
 module.add_command("kick", "kick out someone from your group")
 module.add_command("dkick", "dkick a user deleting the replied to message")
+module.add_command("hkick", "dkick a user deleting all the replied to message")
 module.add_command("promote", "Promote someonen")
 module.add_command("demote", "Demote someone")
 module.add_command("mute", "Mute someone")
-module.add_command("dmute", "dmute a user deleting the replied to message"")
+module.add_command("dmute", "dmute a user deleting the replied to message")
+module.add_command("hmute", "dmute a user deleting all the replied to message"")
 module.add_command("pin", "to pin any message.")
 module.add_command("unpin", "To unpin any message")
 module.add_command("setgpic", "To set an group profile pic.")
