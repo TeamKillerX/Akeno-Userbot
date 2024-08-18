@@ -25,7 +25,7 @@ async def setvar(_, message: Message):
         return await message.reply_text(
             "**𝖦𝗂𝗏𝖾 𝗏𝖺𝗋𝗇𝖺𝗆𝖾 𝖺𝗇𝖽 𝗏𝖺𝗋-𝗏𝖺𝗅𝗎𝖾 𝖺𝗅𝗈𝗇𝗀 𝗐𝗂𝗍𝗁 𝗍𝗁𝖾 𝖼𝗈𝗆𝗆𝖺𝗇𝖽!**"
         )
-    input_str = (await input_user.input(message)).split(" ", 1)
+    input_str = (await input_user(message)).split(" ", 1)
     varname = input_str[0]
     varvalue = input_str[1]
     oldValue = await db.get_env(varname.upper())
