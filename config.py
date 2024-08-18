@@ -11,6 +11,7 @@ GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = ["?"]
 cohere_key = os.getenv("COHERE_KEY", "")
+LOG_ID = -1001825872637
 
 AFK_CACHE = {}
 BOT_CMD_INFO = {}
