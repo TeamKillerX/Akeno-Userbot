@@ -14,7 +14,9 @@ from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from config import *
 
-def generate_quote(messages: list[dict]) -> tuple[bool, str]:
+from typing import List, Dict, Tuple
+
+def generate_quote(messages: List[Dict]) -> Tuple[bool, str]:
     json = {
         "type": "quote",
         "format": "webp",
@@ -34,7 +36,7 @@ def generate_quote(messages: list[dict]) -> tuple[bool, str]:
     except Exception as e:
         return False, str(e)
 
-def get_entities(message: Message) -> list[dict]:
+def get_entities(message: Message) -> List[Dict]:
     entities = []
     if message.entities:
         for entity in message.entities:
@@ -45,7 +47,6 @@ def get_entities(message: Message) -> list[dict]:
                     "length": entity.length,
                 }
             )
-
     return entities
 
 @Akeno(
@@ -88,7 +89,6 @@ async def quotely(client: Client, message: Message):
             reply_message = {}
     else:
         reply_message = {}
-
     name = message.reply_to_message.from_user.first_name
     if message.reply_to_message.from_user.last_name:
         name += f" {message.reply_to_message.from_user.last_name}"
