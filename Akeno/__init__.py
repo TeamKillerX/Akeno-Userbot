@@ -9,6 +9,7 @@ from datetime import datetime as dt
 from inspect import getfullargspec
 from os import path
 from platform import python_version
+from pyrogram import __version__ as pyrogram_version
 from random import choice
 
 import aiohttp
@@ -41,6 +42,11 @@ db = {}
 SUDOERS = filters.user()
 
 aiohttpsession = ClientSession()
+
+__version__ = {
+    "pyrogram": pyrogram_version,
+    "python": python_version(),
+}
 
 client = Client(
     "one",
