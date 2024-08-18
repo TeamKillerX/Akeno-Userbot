@@ -2,8 +2,12 @@ import random
 import os
 import time
 import asyncio
+from pyrogram import Client, filters
+from pyrogram.types import *
+from pyrogram import *
 from Akeno.utils.images import generate_alive_image
 from Akeno.utils.handler import *
+from Akeno.utils.database import db
 from Akeno.plugins.ping import get_readable_time
 from Akeno import __version__
 from config import *
