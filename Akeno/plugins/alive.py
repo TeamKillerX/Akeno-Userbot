@@ -10,7 +10,10 @@ from Akeno.utils.handler import *
 from Akeno.utils.database import db
 from Akeno.plugins.ping import get_readable_time
 from Akeno import __version__
+from Akeno import StartTime
 from config import *
+
+FONT_PATH = "resources/fonts/Montserrat.ttf"
 
 ALIVE_TEMPLATES = [
     (
@@ -58,13 +61,16 @@ async def alive(client: Client, message: Message):
             del_path = False
         img = [
             generate_alive_image(
-                message.from_user.first_name, user_pfp, del_path, Config.FONT_PATH
+                message.from_user.first_name,
+                user_pfp,
+                del_path,
+                FONT_PATH
             )
         ]
     else:
         img = img.split(" ")
     img = random.choice(img)
-    uptime = get_readable_time(time.time() - START_TIME)
+    uptime = get_readable_time(time.time() - StartTime)
     caption = await alive_template(client.me.first_name, uptime)
     if img.endswith(".mp4"):
         await message.reply_video(img, caption=caption)
