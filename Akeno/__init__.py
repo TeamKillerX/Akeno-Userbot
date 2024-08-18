@@ -42,6 +42,11 @@ SUDOERS = filters.user()
 
 aiohttpsession = ClientSession()
 
+__version__ = {
+    "pyrogram": pyrogram_version,
+    "python": python_version(),
+}
+
 client = Client(
     "one",
     app_version="latest",

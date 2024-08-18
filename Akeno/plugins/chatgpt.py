@@ -28,6 +28,7 @@ from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from config import CMD_HANDLER, GOOGLE_API_KEY
 
+
 async def mistraai(messagestr):
     url = "https://randydev-ryuzaki-api.hf.space/api/v1/akeno/mistralai"
     payload = {"args": messagestr}

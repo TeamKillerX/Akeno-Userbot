@@ -4,9 +4,9 @@ from pyrogram import Client, filters
 from pyrogram.enums import ChatType
 from pyrogram.types import Message
 
-from config import ENV_TEMPLATE, CMD_HANDLER
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
+from config import CMD_HANDLER, ENV_TEMPLATE
 
 blocked_messages = [
     "🤐 User has entered the silent zone.",

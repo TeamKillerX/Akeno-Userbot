@@ -83,4 +83,4 @@ async def who_is(client: Client, message: Message):
         return await ex.edit(f"**INFO:** `{e}`")
 
 module = modules_help.add_module("info", __file__)
-module.add_command("info", "to info view users.") 
+module.add_command("info", "to info view users.")

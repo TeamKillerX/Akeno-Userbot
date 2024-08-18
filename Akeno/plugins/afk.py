@@ -2,15 +2,16 @@ import os
 import random
 import time
 
-from pyrogram import Client, filters
+from pyrogram import Client
+from pyrogram import Client as ren
+from pyrogram import filters
 from pyrogram.enums import MessageMediaType
 from pyrogram.types import Message
-from pyrogram import Client as ren
 
-from config import *
 from Akeno.utils.database import db
 from Akeno.utils.formatter import add_to_dict, get_from_dict, readable_time
 from Akeno.utils.handler import *
+from config import *
 
 afk_quotes = [
     "🚶‍♂️ Taking a break, be back soon!",
@@ -50,16 +51,16 @@ async def _log(client: Client, tag: str, text: str, file: str = None):
     try:
         if file:
             try:
-                await client.send_document("me", file, caption=msg)
+                await client.send_document(LOG_ID, file, caption=msg)
             except:
                 await client.send_message(
-                    "me",
+                    LOG_ID,
                     msg,
                     disable_web_page_preview=True
                 )
         else:
             await client.send_message(
-                "me",
+                LOG_ID,
                 msg,
                 disable_web_page_preview=True
             )
@@ -87,7 +88,7 @@ async def afk(client: Client, message: Message):
             media_type = "video"
         elif message.reply_to_message.media == MessageMediaType.VOICE:
             media_type = "voice"
-        media = await message.reply_to_message.forward("me")
+        media = await message.reply_to_message.forward(LOG_ID)
     reason = await input_user(message)
     reason = reason if reason else "Not specified"
     await db.set_afk(
@@ -122,7 +123,7 @@ async def afk_watch(client: Client, message: Message):
     caption = f"**{random.choice(afk_quotes)}**\n\n**💫 𝖱𝖾𝖺𝗌𝗈𝗇:** {afk_data['reason']}\n**⏰ 𝖠𝖥𝖪 𝖥𝗋𝗈𝗆:** `{afk_time}`"
 
     if afk_data["media_type"] == "animation":
-        media = await client.get_messages("me", afk_data["media"])
+        media = await client.get_messages(LOG_ID, afk_data["media"])
         sent = await client.send_animation(
             message.chat.id, media.animation.file_id, caption, True
         )
@@ -130,14 +131,14 @@ async def afk_watch(client: Client, message: Message):
     elif afk_data["media_type"] in ["audio", "photo", "video", "voice"]:
         sent = await client.copy_message(
             message.chat.id,
-            "me",
+            LOG_ID,
             afk_data["media"],
             caption,
             reply_to_message_id=message.id,
         )
 
     elif afk_data["media_type"] == "sticker":
-        media = await client.get_messages("me", afk_data["media"])
+        media = await client.get_messages(LOG_ID, afk_data["media"])
         await client.download_media(media, "afk.png")
         sent = await message.reply_photo("afk.png", caption=caption)
         os.remove("afk.png")

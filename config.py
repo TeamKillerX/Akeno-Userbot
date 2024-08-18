@@ -1,5 +1,6 @@
 import os
 from os import getenv
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,6 +12,7 @@ GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = ["?"]
 cohere_key = os.getenv("COHERE_KEY", "")
+LOG_ID = os.getenv("LOG_ID", None)
 
 AFK_CACHE = {}
 BOT_CMD_INFO = {}
@@ -61,3 +63,16 @@ class ENV_TEMPLATE:
     unsplash_api = "UNSPLASH_API"
     usage_template = "USAGE_TEMPLATE"
     user_info_template = "USER_INFO_TEMPLATE"
+
+os_configs = [
+    "API_HASH",
+    "API_ID",
+    "SESSION",
+    "FEDBAN_API_KEY",
+    "GOOGLE_API_KEY",
+    "CMD_HANDLER",
+    "cohere_key",
+]
+all_env: list[str] = [
+    value for key, value in ENV_TEMPLATE.__dict__.items() if not key.startswith("__")
+]
