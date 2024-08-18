@@ -16,3 +16,14 @@ modules_help = ModuleHelp()
 scheduler_jobs = []
 scheduler = AsyncIOScheduler()
 bot_uptime = perf_counter()
+
+async def input_user(message: Message) -> str:
+    """Get the input from the user"""
+    if len(message.command) < 2:
+        output = ""
+    else:
+        try:
+            output = message.text.split(" ", 1)[1].strip() or ""
+        except IndexError:
+            output = ""
+    return output
