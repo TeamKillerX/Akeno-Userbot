@@ -236,7 +236,7 @@ async def create_calendar(year: int, month: int) -> str:
     month_name = calendar.month_name[month]
     calendar_image = create_gradient((500, 500), (140, 200, 250), (0, 150, 200))
     draw = ImageDraw.Draw(calendar_image)
-    month_font = ImageFont.truetype("./Hellbot/resources/fonts/Montserrat.ttf", 40)
+    month_font = ImageFont.truetype("resources/fonts/Montserrat.ttf", 40)
     month_x = (
         calendar_image.width - draw.textlength(f"{month_name} {year}", month_font)
     ) // 2
