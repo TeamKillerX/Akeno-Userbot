@@ -70,7 +70,7 @@ os_configs = [
     "GOOGLE_API_KEY",
     "CMD_HANDLER",
     "cohere_key",
-    "HUGGING_TOKEN",
 ]
 all_env: list[str] = [
     value for key, value in ENV_TEMPLATE.__dict__.items() if not key.startswith("__")
+]
