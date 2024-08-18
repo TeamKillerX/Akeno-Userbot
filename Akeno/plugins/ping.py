@@ -10,7 +10,7 @@ from pyrogram.types import Message
 from Akeno import StartTime
 from Akeno.utils.handler import *
 from Akeno.utils.database import db
-from config import CMD_HANDLER
+from config import *
 
 def get_readable_time(seconds: int) -> str:
     count = 0
