@@ -114,3 +114,7 @@ async def quotely(client: Client, message: Message):
     await message.reply_sticker(path)
     await pro.delete()
     os.remove(path)
+
+module = modules_help.add_module("quote", __file__)
+module.add_command("q", "Generate a quote sticker of the replied message.")
+module.add_command("q r", "Generate a quote sticker of the replied message with it's reply message.")
