@@ -7,7 +7,6 @@ load_dotenv()
 API_ID = os.environ["API_ID"]
 API_HASH = os.environ["API_HASH"]
 SESSION = os.environ["SESSION"]
-FEDBAN_API_KEY = os.environ["FEDBAN_API_KEY"]
 GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = ["?"]
@@ -50,6 +49,7 @@ class ENV_TEMPLATE:
     face_token_key = "FACE_TOKEN"
     system_prompt = "SYSTEM_PROMPT"
     asupan_username = "ASUPAN_USERNAME"
+    fedban_api_key = "FEDBAN_API_KEY"
     ping_pic = "PING_PIC"
     ping_template = "PING_TEMPLATE"
     pm_logger = "PM_LOGGER"
@@ -72,7 +72,6 @@ os_configs = [
     "API_HASH",
     "API_ID",
     "SESSION",
-    "FEDBAN_API_KEY",
     "GOOGLE_API_KEY",
     "CMD_HANDLER",
 ]
