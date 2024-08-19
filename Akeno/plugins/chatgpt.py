@@ -99,7 +99,7 @@ async def chatbot_talk(client: Client, message: Message):
                 }
             )
             response = model.generate_content(query)
-            output response.text
+            output = response.text
             if len(output) > 4096:
                 with open("chat.txt", "w+", encoding="utf8") as out_file:
                     out_file.write(output)
