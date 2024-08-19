@@ -48,6 +48,7 @@ class ENV_TEMPLATE:
     cohere_api_key = "COHERE_API_KEY"
     face_clients_name = "FACE_CLIENTS_NAME"
     face_token_key = "FACE_TOKEN"
+    asupan_username = "ASUPAN_USERNAME"
     ping_pic = "PING_PIC"
     ping_template = "PING_TEMPLATE"
     pm_logger = "PM_LOGGER"
