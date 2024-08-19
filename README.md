@@ -47,7 +47,6 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 
  - `SESSION` - Get it from [`@randydev_bot`](https://t.me/randydev_bot) or [`replit pyrogram`](https://replit.com/@ABHITHEMODDER/MoonUb-Session-Gen)
 
- - `FEDBAN_API_KEY` - Get it from [`@randydev_bot`](https://t.me/randydev_bot) type `/getapikey` "read FEDBAN"
 
  - `GOOGLE_API_KEY` - Get it from [`google-api-key`](https://ai.google.dev)
 
