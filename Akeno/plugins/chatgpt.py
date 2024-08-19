@@ -21,8 +21,8 @@ import requests
 from pyrogram import *
 from pyrogram import Client, filters
 from pyrogram.types import *
-from RyuzakiLib import FullStackDev, GeminiLatest, RendyDevChat
-from RyuzakiLib import FaceAI
+from RyuzakiLib import FaceAI, FullStackDev, GeminiLatest, RendyDevChat
+
 from Akeno.utils.chat import chat_message
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
