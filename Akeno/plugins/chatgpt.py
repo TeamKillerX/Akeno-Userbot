@@ -22,8 +22,9 @@ from pyrogram import *
 from pyrogram import Client, filters
 from pyrogram.types import *
 from RyuzakiLib import FullStackDev, GeminiLatest, RendyDevChat
-
+from RyuzakiLib import FaceAI
 from Akeno.utils.chat import chat_message
+from Akeno.utils.database import db
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from config import CMD_HANDLER, GOOGLE_API_KEY
@@ -100,6 +101,36 @@ async def chatgpt_images(client: Client, message: Message):
             ],
         )
         await replys.delete()
+    except Exception as e:
+        LOGS.error(str(e))
+        return await message.reply_text(str(e))
+
+@Akeno(
+    ~filters.scheduled
+    & filters.command(["askface"], CMD_HANDLER)
+    & filters.me
+    & ~filters.forwarded
+)
+async def faceai_(client: Client, message: Message):
+    question = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
+    if not question:
+        return await message.reply_text("Give ask from mistraai")
+    try:
+        clients_name, token = await db.get_env(ENV_TEMPLATE.face_clients_name), await db.get_env(ENV_TEMPLATE.face_token_key)
+        if not clients_name and not token:
+            return await message.reply_text("Required .setvar FACE_CLIENTS_NAME xxxx and .setvar FACE_TOKEN xxxx")
+        send = FaceAI(clients_name=clients_name, token=token)
+        response = await send.chat("hello world", no_db=True)
+        if len(response) > 4096:
+            with open("chat.txt", "w+", encoding="utf8") as out_file:
+                out_file.write(response)
+            await message.reply_document(
+                document="chat.txt",
+                disable_notification=True
+            )
+            os.remove("chat.txt")
+        else:
+            await message.reply_text(response)
     except Exception as e:
         LOGS.error(str(e))
         return await message.reply_text(str(e))
