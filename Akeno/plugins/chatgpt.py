@@ -29,6 +29,7 @@ from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from config import *
 
+import google.generativeai as genai
 
 async def mistraai(messagestr):
     url = "https://randydev-ryuzaki-api.hf.space/api/v1/akeno/mistralai"
@@ -86,10 +87,13 @@ async def chatbot_talk(client: Client, message: Message):
     if chat_user:
         query = message.text.strip()
         try:
-            messager = await chatgptold(query)
-            if messager is None:
-                return await message.reply_text("No response")
-            output = messager["randydev"].get("message")
+            genai.configure(api_key=GOOGLE_API_KEY)
+            model=genai.GenerativeModel(
+                model_name="gemini-1.5-flash",
+                system_instruction="You are a cat. Your name is Neko."
+            )
+            response = model.generate_content(query)
+            output response.text
             if len(output) > 4096:
                 with open("chat.txt", "w+", encoding="utf8") as out_file:
                     out_file.write(output)
