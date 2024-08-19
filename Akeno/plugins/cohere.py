@@ -8,12 +8,14 @@ from pyrogram.types import Message
 
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
-from config import CMD_HANDLER, cohere_key
-
-co = cohere.Client(api_key=cohere_key)
+from config import *
 
 @Akeno(filters.command("cohere", CMD_HANDLER) & filters.me)
 async def coheres_(c: Client, message: Message):
+    status_key = await db.get_env(ENV_TEMPLATE.cohere_api_key)
+    if not status_key:
+        return await message.reply_text("Required `COHERE_API_KEY`")
+    co = cohere.Client(api_key=status_key)
     try:
         user_id = message.from_user.id
         chat_history = await db._get_cohere_chat_from_db(user_id)
