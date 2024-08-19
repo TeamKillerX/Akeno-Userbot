@@ -54,7 +54,7 @@ async def getvar(_, message: Message):
         return await message.reply_text("Give a varname to fetch value.")
     varname = message.command[1]
     value = None
-    if varname.upper() in os_configs:
+    if varname.upper() in all_env:
         value = await db.get_env(varname.upper())
     if isinstance(value, str):
         await message.reply_text(
