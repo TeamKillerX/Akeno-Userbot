@@ -46,6 +46,7 @@ class ENV_TEMPLATE:
     lyrics_api = "LYRICS_API"
     manga_template = "MANGA_TEMPLATE"
     ocr_api = "OCR_API"
+    cohere_api_key = "COHERE_API_KEY"
     ping_pic = "PING_PIC"
     ping_template = "PING_TEMPLATE"
     pm_logger = "PM_LOGGER"
