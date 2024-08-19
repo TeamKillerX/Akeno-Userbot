@@ -120,7 +120,7 @@ async def faceai_(client: Client, message: Message):
         if not clients_name and not token:
             return await message.reply_text("Required .setvar FACE_CLIENTS_NAME xxxx and .setvar FACE_TOKEN xxxx")
         send = FaceAI(clients_name=clients_name, token=token)
-        response = await send.chat("hello world", no_db=True)
+        response = await send.chat(question, no_db=True)
         if len(response) > 4096:
             with open("chat.txt", "w+", encoding="utf8") as out_file:
                 out_file.write(response)
