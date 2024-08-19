@@ -87,10 +87,13 @@ async def chatbot_talk(client: Client, message: Message):
     if chat_user:
         query = message.text.strip()
         try:
+            system_prompt = await db.get_env(ENV_TEMPLATE.system_prompt)
+            if not system_prompt:
+                return await message.reply_text("Required `.setvar SYSTEM_PROMPT question`")
             genai.configure(api_key=GOOGLE_API_KEY)
             model_flash = genai.GenerativeModel(
                 model_name="gemini-1.5-flash",
-                system_instruction="Kamu seekor kucing. Namamu Neko.",
+                system_instruction=system_prompt,
                 safety_settings={
                     genai.types.HarmCategory.HARM_CATEGORY_HATE_SPEECH: genai.types.HarmBlockThreshold.BLOCK_NONE,
                     genai.types.HarmCategory.HARM_CATEGORY_HARASSMENT: genai.types.HarmBlockThreshold.BLOCK_NONE,
