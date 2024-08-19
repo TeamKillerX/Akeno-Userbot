@@ -59,6 +59,22 @@ async def addchatbot_user(client: Client, message: Message):
 
 @Akeno(
     ~filters.scheduled
+    & filters.command(["rmcdb"], CMD_HANDLER)
+    & filters.me
+    & ~filters.forwarded
+)
+async def clearuserdb(client: Client, message: Message):
+    if not message.reply_to_message:
+        return await message.reply_text("why reply?")
+    reply_message = message.reply_to_message
+    if not reply_message.from_user:
+        return await message.reply_text("Why reply to message user")
+    user_id = reply_message.from_user.id
+    response = await db._clear_chatbot_database(user_id)
+    await message.reply_text(response)
+
+@Akeno(
+    ~filters.scheduled
     & filters.command(["rmchatbot"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
