@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import google.generativeai as genai
 import requests
 from pyrogram import *
 from pyrogram import Client, filters
@@ -29,7 +30,6 @@ from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from config import *
 
-import google.generativeai as genai
 
 async def mistraai(messagestr):
     url = "https://randydev-ryuzaki-api.hf.space/api/v1/akeno/mistralai"

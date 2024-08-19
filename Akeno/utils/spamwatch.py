@@ -1,8 +1,9 @@
 import requests
 
-from Akeno.utils.logger import LOGS
 from Akeno.utils.database import db
+from Akeno.utils.logger import LOGS
 from config import *
+
 
 async def auto_post_gban(user_id, reason):
     api_key = await db.get_env(ENV_TEMPLATE.fedban_api_key)
