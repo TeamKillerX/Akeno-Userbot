@@ -90,7 +90,13 @@ async def chatbot_talk(client: Client, message: Message):
             genai.configure(api_key=GOOGLE_API_KEY)
             model=genai.GenerativeModel(
                 model_name="gemini-1.5-flash",
-                system_instruction="You are a cat. Your name is Neko."
+                system_instruction="You are a cat. Your name is Neko.",
+                safety_settings={
+                    genai.types.HarmCategory.HARM_CATEGORY_HATE_SPEECH: genai.types.HarmBlockThreshold.BLOCK_NONE,
+                    genai.types.HarmCategory.HARM_CATEGORY_HARASSMENT: genai.types.HarmBlockThreshold.BLOCK_NONE,
+                    genai.types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: genai.types.HarmBlockThreshold.BLOCK_NONE,
+                    genai.types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: genai.types.HarmBlockThreshold.BLOCK_NONE,
+                }
             )
             response = model.generate_content(query)
             output response.text
