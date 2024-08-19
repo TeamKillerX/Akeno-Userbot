@@ -1,10 +1,13 @@
 import requests
 
 from Akeno.utils.logger import LOGS
-from config import FEDBAN_API_KEY as api_key
-
+from Akeno.utils.database import db
+from config import *
 
 async def auto_post_gban(user_id, reason):
+    api_key = await db.get_env(ENV_TEMPLATE.fedban_api_key)
+    if not api_key:
+        return
     url = "https://randydev-ryuzaki-api.hf.space/user/fedban"
     headers = {"accept": "application/json", "api-key": api_key}
     payload = {
@@ -22,6 +25,9 @@ async def auto_post_gban(user_id, reason):
     return is_banned, get_message
 
 async def auto_check_gban(user_id):
+    api_key = await db.get_env(ENV_TEMPLATE.fedban_api_key)
+    if not api_key:
+        return
     url = "https://randydev-ryuzaki-api.hf.space/user/get-fedban"
     headers = {"accept": "application/json", "api-key": api_key}
     payload = {"user_id": user_id}
