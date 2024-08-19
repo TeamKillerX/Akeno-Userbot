@@ -8,12 +8,15 @@ from pyrogram.types import Message
 
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
-from config import CMD_HANDLER, cohere_key
+from config import *
 
-co = cohere.Client(api_key=cohere_key)
 
 @Akeno(filters.command("cohere", CMD_HANDLER) & filters.me)
 async def coheres_(c: Client, message: Message):
+    status_key = await db.get_env(ENV_TEMPLATE.cohere_api_key)
+    if not status_key:
+        return await message.reply_text("Required `.setvar COHERE_API_KEY xxxx`")
+    co = cohere.Client(api_key=status_key)
     try:
         user_id = message.from_user.id
         chat_history = await db._get_cohere_chat_from_db(user_id)
@@ -22,12 +25,11 @@ async def coheres_(c: Client, message: Message):
         elif message.reply_to_message:
             prompt = message.reply_to_message.text
         else:
-            await message.edit_text(
+            await message.reply_text(
                 "<b>Usage: </b><code>.cohere [prompt/reply to message]</code>"
             )
             return
         chat_history.append({"role": "USER", "message": prompt})
-        pro = await message.edit_text("<code>Processing...</code>")
         response = co.chat(
             chat_history=chat_history,
             model="command-r-plus",
@@ -41,14 +43,13 @@ async def coheres_(c: Client, message: Message):
                 document="chat.txt",
                 disable_notification=True
             )
-            await pro.delete()
             os.remove("chat.txt")
         else:
-            await message.edit_text(output, disable_web_page_preview=True)
+            await message.reply_text(output, disable_web_page_preview=True)
         chat_history.append({"role": "CHATBOT", "message": output})
         await db._update_cohere_chat_in_db(user_id, chat_history)
     except Exception as e:
-        await message.edit_text(f"An error occurred: {e}")
+        await message.reply_text(f"An error occurred: {e}")
 
 module = modules_help.add_module("cohere", __file__)
 module.add_command("cohere", "to question from cohere ai.")

@@ -11,8 +11,6 @@ FEDBAN_API_KEY = os.environ["FEDBAN_API_KEY"]
 GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = ["?"]
-cohere_key = os.getenv("COHERE_KEY", "")
-LOG_ID = os.getenv("LOG_ID", None)
 
 AFK_CACHE = {}
 BOT_CMD_INFO = {}
@@ -43,9 +41,13 @@ class ENV_TEMPLATE:
     help_emoji = "HELP_EMOJI"
     help_template = "HELP_TEMPLATE"
     is_logger = "IS_LOGGER"
+    log_id = "LOG_ID"
     lyrics_api = "LYRICS_API"
     manga_template = "MANGA_TEMPLATE"
     ocr_api = "OCR_API"
+    cohere_api_key = "COHERE_API_KEY"
+    face_clients_name = "FACE_CLIENTS_NAME"
+    face_token_key = "FACE_TOKEN"
     ping_pic = "PING_PIC"
     ping_template = "PING_TEMPLATE"
     pm_logger = "PM_LOGGER"
@@ -71,7 +73,6 @@ os_configs = [
     "FEDBAN_API_KEY",
     "GOOGLE_API_KEY",
     "CMD_HANDLER",
-    "cohere_key",
 ]
 all_env: list[str] = [
     value for key, value in ENV_TEMPLATE.__dict__.items() if not key.startswith("__")
