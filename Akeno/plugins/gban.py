@@ -31,10 +31,10 @@ from pyrogram.raw.functions.messages import DeleteHistory
 from pyrogram.types import *
 from pyrogram.types import ChatPermissions, Message
 
+from Akeno.utils.database import db
 from Akeno.utils.handler import *
 from Akeno.utils.spamwatch import auto_check_gban, auto_post_gban
 from Akeno.utils.tools import get_ub_chats
-from Akeno.utils.database import db
 from config import *
 
 

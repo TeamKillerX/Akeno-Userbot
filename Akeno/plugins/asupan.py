@@ -9,6 +9,7 @@ from Akeno.utils.database import db
 from Akeno.utils.handler import *
 from config import *
 
+
 @Akeno(
     ~filters.scheduled
     & filters.command(["asupan"], CMD_HANDLER)
