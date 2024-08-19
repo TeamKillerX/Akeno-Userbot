@@ -27,7 +27,7 @@ from Akeno.utils.chat import chat_message
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
-from config import CMD_HANDLER, GOOGLE_API_KEY
+from config import *
 
 
 async def mistraai(messagestr):
