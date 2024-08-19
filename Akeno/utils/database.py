@@ -23,6 +23,8 @@ class Database:
         self.forcesub = self.db["forcesub"]
         self.gachabots = self.db["gachabots"]
         self.cohere = self.db["cohere"]
+        self.chatbot = self.db["chatbot"]
+        self.backup_chatbot = self.db["backupchatbot"]
         self.antiarabic = self.db["antiarabic"]
         self.gban = self.db["gban"]
         self.gmute = self.db["gmute"]
@@ -618,5 +620,32 @@ class Database:
         if user_data:
             return user_data.get("arabic", False)
         return False
+
+    async def add_chatbot(self, chat_id, user_id):
+        await self.chatbot.update_one(
+            {"chat_id": chat_id},
+            {"$set": {"user_id": user_id}},
+            upsert=True
+        )
+
+    async def get_chatbot(self, chat_id):
+        user_data = await self.chatbot.find_one({"chat_id": chat_id})
+        return user_data.get("user_id") if user_data else None
+
+    async def remove_chatbot(self, chat_id):
+        unset_data = {"user_id": None}
+        return await self.chatbot.update_one({"chat_id": chat_id}, {"$unset": unset_data})
+
+    async def _update_chatbot_chat_in_db(self, user_id, chatbot_chat):
+        await self.backup_chatbot.update_one(
+            {"user_id": user_id},
+            {"$set": {"chatbot_chat": chatbot_chat}},
+            upsert=True
+        )
+
+    async def _get_chatbot_chat_from_db(self, user_id):
+        user_data = await self.backup_chatbot.find_one({"user_id": user_id})
+        return user_data.get("chatbot_chat", []) if user_data else []
+
 
 db = Database(MONGO_URL)
