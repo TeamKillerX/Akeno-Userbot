@@ -53,13 +53,7 @@ async def chatgptold(messagestr):
     & ~filters.forwarded
 )
 async def addchatbot_user(client: Client, message: Message):
-    if len(message.command) > 1:
-        user_id = message.text.split(maxsplit=1)[1]
-    elif message.reply_to_message and message.reply_to_message.from_user:
-        user_id = message.reply_to_message.from_user.id 
-    else:
-        return await message.reply_text("Give chatbot user")
-    await db.add_chatbot(message.chat.id, int(user_id))
+    await db.add_chatbot(message.chat.id, client.me.id)
     await message.reply_text("Added chatbot user")
 
 @Akeno(
