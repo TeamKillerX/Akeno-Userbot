@@ -34,7 +34,8 @@ from pyrogram.types import ChatPermissions, Message
 from Akeno.utils.handler import *
 from Akeno.utils.spamwatch import auto_check_gban, auto_post_gban
 from Akeno.utils.tools import get_ub_chats
-from config import CMD_HANDLER, FEDBAN_API_KEY
+from Akeno.utils.database import db
+from config import *
 
 
 async def input_user(message: Message) -> str:
@@ -78,8 +79,9 @@ async def globalban(client: Client, message: Message):
     success = 0
     failed = 0
     pro = await message.reply_text(f"Gban initiated on {user.mention}...")
-    if not FEDBAN_API_KEY:
-        return await pro.edit_text("Required `FEDBAN_API_KEY` from @randydev_bot use /getapikey")
+    check_status = await db.get_env(ENV_TEMPLATE.fedban_api_key)
+    if not check_status:
+        return await pro.edit_text("Required `setvar FEDBAN_API_KEY xxxc` from @randydev_bot use /getapikey")
     is_banned, get_message = await auto_post_gban(user.id, reason)
     if is_banned == True:
         async for dialog in client.get_dialogs():
@@ -112,6 +114,9 @@ async def globalbanwatcher(_, u: ChatMemberUpdated):
     if not (member.new_chat_member and member.new_chat_member.status not in {CMS.BANNED, CMS.LEFT, CMS.RESTRICTED} and not member.old_chat_member):
         return
     user = member.new_chat_member.user if member.new_chat_member else member.from_user
+    check_status = await db.get_env(ENV_TEMPLATE.fedban_api_key)
+    if not check_status:
+        return
     response = await auto_check_gban(user.id)
     if response[0] == True:
         watchertext = f"**𝖦𝖻𝖺𝗇𝗇𝖾𝖽 𝖴𝗌𝖾𝗋 𝗃𝗈𝗂𝗇𝖾𝖽 𝗍𝗁𝖾 𝖼𝗁𝖺𝗍! \n\n𝖦𝖻𝖺𝗇 𝖱𝖾𝖺𝗌𝗈𝗇 𝗐𝖺𝗌:** __{response[1]}__\n\n"
@@ -134,6 +139,9 @@ async def global_spammer(client: Client, message: Message):
     if not message or not message.from_user:
         return
     user_id = message.from_user.id
+    check_status = await db.get_env(ENV_TEMPLATE.fedban_api_key)
+    if not check_status:
+        return
     response = await auto_check_gban(user_id)
     if response[0] == True:
         if message.photo:
