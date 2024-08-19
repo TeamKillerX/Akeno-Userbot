@@ -600,9 +600,9 @@ class Database:
         unset_clear = {"cohere_chat": None}
         return await self.cohere.update_one({"user_id": user_id}, {"$unset": unset_clear})
 
-    async def clear_database(self):
+    async def clear_database(self, user_id):
         """Clear the cohere history for the current user."""
-        result = await self._clear_history_in_db()
+        result = await self._clear_history_in_db(user_id)
         if result.modified_count > 0:
             return "Chat history cleared successfully."
         else:
@@ -647,5 +647,15 @@ class Database:
         user_data = await self.backup_chatbot.find_one({"user_id": user_id})
         return user_data.get("chatbot_chat", []) if user_data else []
 
+    async def _clear_chatbot_history_in_db(self, user_id):
+        unset_clear = {"chatbot_chat": None}
+        return await self.backup_chatbot.update_one({"user_id": user_id}, {"$unset": unset_clear})
+
+    async def _clear_chatbot_database(self, user_id):
+        result = await self._clear_chatbot_history_in_db(user_id)
+        if result.modified_count > 0:
+            return "Chat history cleared successfully."
+        else:
+            return "No chat history found to clear."
 
 db = Database(MONGO_URL)
