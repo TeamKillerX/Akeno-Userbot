@@ -47,20 +47,23 @@ async def input_user(message: Message) -> str:
     return output
 
 async def _log(client: Client, tag: str, text: str, file: str = None):
+    LOG_ID = await db.get_env(ENV_TEMPLATE.log_id)
+    if not LOG_ID:
+        return
     msg = f"**#{tag.upper()}**\n\n{text}"
     try:
         if file:
             try:
-                await client.send_document(LOG_ID, file, caption=msg)
+                await client.send_document(int(LOG_ID), file, caption=msg)
             except:
                 await client.send_message(
-                    LOG_ID,
+                    int(LOG_ID),
                     msg,
                     disable_web_page_preview=True
                 )
         else:
             await client.send_message(
-                LOG_ID,
+                int(LOG_ID),
                 msg,
                 disable_web_page_preview=True
             )
@@ -88,7 +91,10 @@ async def afk(client: Client, message: Message):
             media_type = "video"
         elif message.reply_to_message.media == MessageMediaType.VOICE:
             media_type = "voice"
-        media = await message.reply_to_message.forward(LOG_ID)
+        log = await db.get_env(ENV_TEMPLATE.log_id)
+        if not log:
+            return await message.reply_text("Required `.setvar LOG_ID -100xxx`")
+        media = await message.reply_to_message.forward(int(log))
     reason = await input_user(message)
     reason = reason if reason else "Not specified"
     await db.set_afk(
@@ -123,22 +129,31 @@ async def afk_watch(client: Client, message: Message):
     caption = f"**{random.choice(afk_quotes)}**\n\n**💫 𝖱𝖾𝖺𝗌𝗈𝗇:** {afk_data['reason']}\n**⏰ 𝖠𝖥𝖪 𝖥𝗋𝗈𝗆:** `{afk_time}`"
 
     if afk_data["media_type"] == "animation":
-        media = await client.get_messages(LOG_ID, afk_data["media"])
+        LOG_ID = await db.get_env(ENV_TEMPLATE.log_id)
+        if not LOG_ID:
+            return
+        media = await client.get_messages(int(LOG_ID), afk_data["media"])
         sent = await client.send_animation(
             message.chat.id, media.animation.file_id, caption, True
         )
 
     elif afk_data["media_type"] in ["audio", "photo", "video", "voice"]:
+        LOG_ID = await db.get_env(ENV_TEMPLATE.log_id)
+        if not LOG_ID:
+            return
         sent = await client.copy_message(
             message.chat.id,
-            LOG_ID,
+            int(LOG_ID),
             afk_data["media"],
             caption,
             reply_to_message_id=message.id,
         )
 
     elif afk_data["media_type"] == "sticker":
-        media = await client.get_messages(LOG_ID, afk_data["media"])
+        LOG_ID = await db.get_env(ENV_TEMPLATE.log_id)
+        if not LOG_ID:
+            return
+        media = await client.get_messages(int(LOG_ID), afk_data["media"])
         await client.download_media(media, "afk.png")
         sent = await message.reply_photo("afk.png", caption=caption)
         os.remove("afk.png")
