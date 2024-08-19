@@ -83,12 +83,15 @@ async def googlegm(client: Client, message: Message):
     & ~filters.forwarded
 )
 async def chatgpt_images(client: Client, message: Message):
-    question = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
-    if not question:
+    if len(message.command) > 1:
+        prompt = message.text.split(maxsplit=1)[1]
+    elif message.reply_to_message:
+        prompt = message.reply_to_message.text
+    else:
         return await message.reply_text("Give ask from CHATGPT images")
     try:
         replys = await message.reply_text("Prossing.....")
-        response = await RendyDevChat.image_generator(question)
+        response = await RendyDevChat.image_generator(prompt)
         x = response["randydev"].get("url")
         for i, url in enumerate(x, start=1):
             await FullStackDev.fast(url, filename=f"original_{i}.png")
@@ -112,15 +115,18 @@ async def chatgpt_images(client: Client, message: Message):
     & ~filters.forwarded
 )
 async def faceai_(client: Client, message: Message):
-    question = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
-    if not question:
-        return await message.reply_text("Give ask from mistraai")
+    if len(message.command) > 1:
+        prompt = message.text.split(maxsplit=1)[1]
+    elif message.reply_to_message:
+        prompt = message.reply_to_message.text
+    else:
+        return await message.reply_text("Give ask from FaceAI")
     try:
         clients_name, token = await db.get_env(ENV_TEMPLATE.face_clients_name), await db.get_env(ENV_TEMPLATE.face_token_key)
         if not clients_name and not token:
             return await message.reply_text("Required .setvar FACE_CLIENTS_NAME xxxx and .setvar FACE_TOKEN xxxx")
         send = FaceAI(clients_name=clients_name, token=token)
-        response = await send.chat(question, no_db=True)
+        response = await send.chat(prompt, no_db=True)
         if len(response) > 4096:
             with open("chat.txt", "w+", encoding="utf8") as out_file:
                 out_file.write(response)
@@ -142,11 +148,14 @@ async def faceai_(client: Client, message: Message):
     & ~filters.forwarded
 )
 async def mistralai_(client: Client, message: Message):
-    question = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
-    if not question:
-        return await message.reply_text("Give ask from mistraai")
+    if len(message.command) > 1:
+        prompt = message.text.split(maxsplit=1)[1]
+    elif message.reply_to_message:
+        prompt = message.reply_to_message.text
+    else:
+        return await message.reply_text("Give ask from mistralai")
     try:
-        messager = await mistraai(question)
+        messager = await mistraai(prompt)
         if messager is None:
             return await message.reply_text("No response")
         output = messager["randydev"].get("message")
@@ -171,11 +180,14 @@ async def mistralai_(client: Client, message: Message):
     & ~filters.forwarded
 )
 async def chatgpt_old_(client: Client, message: Message):
-    question = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
-    if not question:
-        return await message.reply_text("Give ask from chatgpt-3")
+    if len(message.command) > 1:
+        prompt = message.text.split(maxsplit=1)[1]
+    elif message.reply_to_message:
+        prompt = message.reply_to_message.text
+    else:
+        return await message.reply_text("Give ask from CHATGPT-3")
     try:
-        messager = await chatgptold(question)
+        messager = await chatgptold(prompt)
         if messager is None:
             return await message.reply_text("No response")
         output = messager["randydev"].get("message")
@@ -200,11 +212,14 @@ async def chatgpt_old_(client: Client, message: Message):
     & ~filters.forwarded
 )
 async def chatgpt(client: Client, message: Message):
-    question = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
-    if not question:
-        return await message.reply_text("Give ask from CHATGPT")
+    if len(message.command) > 1:
+        prompt = message.text.split(maxsplit=1)[1]
+    elif message.reply_to_message:
+        prompt = message.reply_to_message.text
+    else:
+        return await message.reply_text("Give ask from CHATGPT-4O")
     try:
-        messager = await chat_message(question)
+        messager = await chat_message(prompt)
         if len(messager) > 4096:
             with open("chat.txt", "w+", encoding="utf8") as out_file:
                 out_file.write(messager)
