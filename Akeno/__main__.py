@@ -52,6 +52,9 @@ async def main():
             except UserDeactivated as e:
                 LOGS.info(f"Error {e}")
                 sys.exit(1)
+            except AuthKeyDuplicated as e:
+                LOGS.info(f"Error {e}")
+                sys.exit(1)
             except Exception as e:
                 LOGS.info(f"Error starting userbot: {e}")
             ex = await cli.get_me()
