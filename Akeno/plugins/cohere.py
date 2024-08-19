@@ -14,7 +14,7 @@ from config import *
 async def coheres_(c: Client, message: Message):
     status_key = await db.get_env(ENV_TEMPLATE.cohere_api_key)
     if not status_key:
-        return await message.reply_text("Required `COHERE_API_KEY`")
+        return await message.reply_text("Required `.setvar COHERE_API_KEY xxxx`")
     co = cohere.Client(api_key=status_key)
     try:
         user_id = message.from_user.id
