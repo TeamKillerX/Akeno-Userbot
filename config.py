@@ -12,7 +12,6 @@ GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = ["?"]
 
-
 AFK_CACHE = {}
 BOT_CMD_INFO = {}
 BOT_CMD_MENU = {}
@@ -47,6 +46,8 @@ class ENV_TEMPLATE:
     manga_template = "MANGA_TEMPLATE"
     ocr_api = "OCR_API"
     cohere_api_key = "COHERE_API_KEY"
+    face_clients_name = "FACE_CLIENTS_NAME"
+    face_token_key = "FACE_TOKEN"
     ping_pic = "PING_PIC"
     ping_template = "PING_TEMPLATE"
     pm_logger = "PM_LOGGER"
