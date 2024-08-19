@@ -48,6 +48,70 @@ async def chatgptold(messagestr):
 
 @Akeno(
     ~filters.scheduled
+    & filters.command(["addchatbot"], CMD_HANDLER)
+    & filters.me
+    & ~filters.forwarded
+)
+async def addchatbot_user(client: Client, message: Message):
+    if len(message.command) > 1:
+        user_id = message.text.split(maxsplit=1)[1]
+    elif message.reply_to_message and message.reply_to_message.from_user:
+        user_id = message.reply_to_message.from_user.id 
+    else:
+        return await message.reply_text("Give chatbot user")
+    await db.add_chatbot(message.chat.id, int(user_id))
+    await message.reply_text("Added chatbot user")
+
+@Akeno(
+    ~filters.scheduled
+    & filters.command(["rmchatbot"], CMD_HANDLER)
+    & filters.me
+    & ~filters.forwarded
+)
+async def rmchatbot_user(client: Client, message: Message):
+    await db.remove_chatbot(message.chat.id)
+    await message.reply_text("removed chatbot user")
+
+@Akeno(
+    filters.incoming
+    & filters.text
+    & filters.reply
+    & ~filters.bot
+    & ~filters.via_bot
+    & ~filters.forwarded,
+    group=2,
+)
+async def chatbot_talk(client: Client, message: Message):
+    if not message.reply_to_message:
+        return
+    if not message.reply_to_message.from_user:
+        return
+    if message.reply_to_message.from_user.id != client.me.id:
+        return
+    chat_user = await db.get_chatbot(message.chat.id)
+    if chat_user:
+        query = message.text.strip()
+        try:
+            messager = await chatgptold(query)
+            if messager is None:
+                return await message.reply_text("No response")
+            output = messager["randydev"].get("message")
+            if len(output) > 4096:
+                with open("chat.txt", "w+", encoding="utf8") as out_file:
+                    out_file.write(output)
+                await message.reply_document(
+                    document="chat.txt",
+                    disable_notification=True
+                )
+                os.remove("chat.txt")
+            else:
+                await message.reply_text(output)
+        except Exception as e:
+            LOGS.error(str(e))
+            return await message.reply_text(str(e))
+
+@Akeno(
+    ~filters.scheduled
     & filters.command(["askf"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
