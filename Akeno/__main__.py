@@ -52,6 +52,8 @@ async def main():
             except UserDeactivated as e:
                 LOGS.info(f"Error {e}")
                 sys.exit(1)
+            except Exception as e:
+                LOGS.info(f"Error starting userbot: {e}")
             ex = await cli.get_me()
             LOGS.info(f"Started {ex.first_name}")
             await cli.send_message("me", "Starting Akeno Userbot")
@@ -59,8 +61,6 @@ async def main():
                 await cli.join_chat("RendyProjects")
             except UserIsBlocked:
                 return LOGS.info("You have been blocked. Please support @xtdevs")
-            except Exception as e:
-                LOGS.info(f"Error starting userbot: {e}")
         await idle()
     except Exception as e:
         LOGS.info(f"Error in main: {e}")
