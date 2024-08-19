@@ -88,9 +88,9 @@ async def chatbot_talk(client: Client, message: Message):
         query = message.text.strip()
         try:
             genai.configure(api_key=GOOGLE_API_KEY)
-            model=genai.GenerativeModel(
+            model_flash = genai.GenerativeModel(
                 model_name="gemini-1.5-flash",
-                system_instruction="You are a cat. Your name is Neko.",
+                system_instruction="Kamu seekor kucing. Namamu Neko.",
                 safety_settings={
                     genai.types.HarmCategory.HARM_CATEGORY_HATE_SPEECH: genai.types.HarmBlockThreshold.BLOCK_NONE,
                     genai.types.HarmCategory.HARM_CATEGORY_HARASSMENT: genai.types.HarmBlockThreshold.BLOCK_NONE,
@@ -98,8 +98,11 @@ async def chatbot_talk(client: Client, message: Message):
                     genai.types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: genai.types.HarmBlockThreshold.BLOCK_NONE,
                 }
             )
-            response = model.generate_content(query)
-            output = response.text
+            backup_chat = await db._get_chatbot_chat_from_db(message.from_user.id)
+            backup_chat.append({"role": "user", "parts": [{"text": query}]})
+            chat_session = model_flash.start_chat(history=backup_chat)
+            response_data = chat_session.send_message(query)
+            output = response_data.text
             if len(output) > 4096:
                 with open("chat.txt", "w+", encoding="utf8") as out_file:
                     out_file.write(output)
@@ -110,6 +113,8 @@ async def chatbot_talk(client: Client, message: Message):
                 os.remove("chat.txt")
             else:
                 await message.reply_text(output)
+            backup_chat.append({"role": "model", "parts": [{"text": output}]})
+            await db._update_chatbot_chat_in_db(message.from_user.id, backup_chat)
         except Exception as e:
             LOGS.error(str(e))
             return await message.reply_text(str(e))
