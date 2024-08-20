@@ -36,7 +36,7 @@ async def youtube_audio(_, message: Message):
             yt_data = ytdl.extract_info(url, False)
             yt_file = ytdl.prepare_filename(yt_data)
             ytdl.process_info(yt_data)
-        upload_text = f"**⬆️ 𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**{Symbols.anchor} 𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**{Symbols.anchor} 𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
+        upload_text = f"**⬆️ 𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
         await pro.edit_text(upload_text)
         response = requests.get(f"https://i.ytimg.com/vi/{yt_data['id']}/hqdefault.jpg")
         with open(f"{yt_file}.jpg", "wb") as f:
