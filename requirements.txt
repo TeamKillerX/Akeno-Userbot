@@ -20,7 +20,7 @@ cryptg
 typing
 Python-IO
 Pillow==9.5.0
-telegraph==1.4.1
+telegraph
 urllib3
 motor
 SQLAlchemy==1.3.23
@@ -68,7 +68,6 @@ fastapi[all]
 typing-extensions
 uvicorn[standard]
 pydantic
-pytgcalls==3.0.0.dev22
 g4f
 aiocache
 aiogram
