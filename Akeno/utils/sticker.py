@@ -2,12 +2,13 @@ from typing import Tuple
 
 from emoji import EMOJI_DATA
 from pyrogram import Client
+from pyrogram.raw import base, types
 from pyrogram.raw.functions.messages import GetStickerSet
 from pyrogram.raw.functions.stickers import AddStickerToSet, CreateStickerSet, RemoveStickerFromSet
-from pyrogram.raw import base, types
 from pyrogram.types import Message
 
 from Akeno.utils.media import get_media_from_id, upload_media
+
 
 def is_emoji(text: str) -> bool:
     return any(c in EMOJI_DATA for c in text)

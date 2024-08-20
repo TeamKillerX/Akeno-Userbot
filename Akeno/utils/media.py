@@ -5,12 +5,9 @@ import requests
 from pyrogram import Client
 from pyrogram.file_id import FileId
 from pyrogram.raw.functions.messages import UploadMedia
-from pyrogram.raw.types import (
-    DocumentAttributeFilename,
-    InputDocument,
-    InputMediaUploadedDocument,
-)
+from pyrogram.raw.types import DocumentAttributeFilename, InputDocument, InputMediaUploadedDocument
 from pyrogram.types import Animation, Audio, Document, Message, Photo, Sticker, Video
+
 
 async def get_metedata(media: Union[Animation, Audio, Document, Photo, Sticker, Video]):
     output = "📄 MetaData:\n\n"

@@ -1,10 +1,11 @@
 import os
 import time
 
-from pyrogram.types import Message
 from PIL import Image
+from pyrogram.types import Message
 
 from Akeno.utils.tools import runcmd
+
 
 async def convert_to_gif(file: str, is_video: bool = False) -> str:
     resultFileName = f"gif_{round(time.time())}.mp4"
