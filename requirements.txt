@@ -33,7 +33,7 @@ python-dotenv
 humanize
 heroku3
 flask_restful
-googlesearch-python==1.0.1
+googlesearch-python
 gitpython
 pymediainfo
 prettytable
@@ -84,4 +84,4 @@ selenium
 PyYAML==6.0.2
 git+https://github.com/KurimuzonAkuma/pyrogram.git
 git+https://github.com/TeamKillerX/RyuzakiLib
-yt-dlp
+yt-dlp==2024.8.6
