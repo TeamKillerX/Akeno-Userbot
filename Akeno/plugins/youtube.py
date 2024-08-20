@@ -9,6 +9,7 @@ from Akeno.utils.driver import YoutubeDriver
 from Akeno.utils.formatter import secs_to_mins
 from Akeno.utils.handler import *
 from Akeno.utils.database import db
+from Akeno.utils.scripts import progress
 from Akeno.utils.logger import LOGS
 from config import *
 
@@ -131,3 +132,8 @@ async def ytlink(_, message: Message):
     for result in results:
         text += f"**𝖳𝗂𝗍𝗅𝖾:** `{result['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{result['channel']}`\n**𝖵𝗂𝖾𝗐𝗌:** `{result['views']}`\n**𝖣𝗎𝗋𝖺𝗍𝗂𝗈𝗇:** `{result['duration']}`\n**𝖫𝗂𝗇𝗄:** `https://youtube.com{result['url_suffix']}`\n\n"
     await pro.edit_text(text, disable_web_page_preview=True)
+
+module = modules_help.add_module("youtube", __file__)
+module.add_command("yta", "Download the youtube video in .mp3 format!.")
+module.add_command("ytv", "Download the youtube video in .mp4 format!")
+module.add_command("ytlink", "Search for a video on youtube")
