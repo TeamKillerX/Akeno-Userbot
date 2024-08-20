@@ -118,7 +118,7 @@ class ChromeDriver:
         driver.find_element(By.XPATH, "//input[@title='filename']").send_keys(filename)
         driver.find_element(By.XPATH, "//button[@id='export-png']").click()
 
-        return f"{Config.DWL_DIR}/{filename}.png"
+        return f"{DWL_DIR}/{filename}.png"
 
 
 class ClimateDriver:
@@ -291,6 +291,7 @@ class YoutubeDriver:
                     "preferredquality": "480",
                 }
             ],
+            "cookiefile": "cookies.txt",
             "outtmpl": "%(id)s",
             "quiet": True,
             "logtostderr": False,
@@ -311,6 +312,7 @@ class YoutubeDriver:
                     "preferedformat": "mp4",
                 }
             ],
+            "cookiefile": "cookies.txt",
             "outtmpl": "%(id)s.mp4",
             "quiet": True,
             "logtostderr": False,
