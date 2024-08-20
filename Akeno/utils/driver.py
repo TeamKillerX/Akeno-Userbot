@@ -14,13 +14,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.expected_conditions import \
-    presence_of_element_located
+from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.wait import WebDriverWait
 
-from Akeno.utils.formatter import format_text
 from Akeno.utils.database import db
+from Akeno.utils.formatter import format_text
 from config import *
+
 
 class ChromeDriver:
     def __init__(self) -> None:
