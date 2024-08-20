@@ -1,14 +1,19 @@
 import asyncio
+import contextlib
 import math
 import os
 import shlex
+import shutil
 import textwrap
+import time
 from io import BytesIO
 from typing import Tuple
 
 import cv2
 import requests
 from bs4 import BeautifulSoup as bs
+from git import Repo
+from git.exc import GitCommandError, InvalidGitRepositoryError, NoSuchPathError
 from PIL import Image, ImageDraw, ImageFont
 from pymediainfo import MediaInfo
 from pyrogram import *
@@ -17,9 +22,11 @@ from pyrogram.errors import *
 from pyrogram.raw.functions.messages import *
 from pyrogram.raw.types import *
 from pyrogram.types import *
+from pyrogram.types import Message
+
+from Akeno.utils.formatter import humanbytes, readable_time
 
 DEVS = [1191668125]
-
 
 def global_no_spam_title(message: Message):
     chat = message.chat
@@ -379,3 +386,63 @@ class Media_Info:
             else None
         )
         return dict_
+
+async def get_files_from_directory(directory: str):
+    all_files = []
+    for path, _, files in os.walk(directory):
+        for file in files:
+            all_files.append(os.path.join(path, file))
+    return all_files
+
+async def runcmd(cmd: str) -> Tuple[str, str, int, int]:
+    args = shlex.split(cmd)
+    process = await asyncio.create_subprocess_exec(
+        *args, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+    )
+    stdout, stderr = await process.communicate()
+    return (
+        stdout.decode("utf-8", "replace").strip(),
+        stderr.decode("utf-8", "replace").strip(),
+        process.returncode,
+        process.pid,
+    )
+
+async def update_dotenv(key: str, value: str) -> None:
+    with open(".env", "r") as file:
+        data = file.readlines()
+    for index, line in enumerate(data):
+        if line.startswith(f"{key}="):
+            data[index] = f"{key}={value}\n"
+            break
+    with open(".env", "w") as file:
+        file.writelines(data)
+
+async def gen_changelogs(repo: Repo, branch: str) -> str:
+    changelogs = ""
+    commits = list(repo.iter_commits(branch))[:5]
+    for index, commit in enumerate(commits):
+        changelogs += f"**{index + 1}.** `{commit.summary}`\n"
+    return changelogs
+
+async def initialize_git(git_repo: str):
+    force = False
+    try:
+        repo = Repo()
+    except NoSuchPathError as pathErr:
+        repo.__del__()
+        return False, pathErr, force
+    except GitCommandError as gitErr:
+        repo.__del__()
+        return False, gitErr, force
+    except InvalidGitRepositoryError:
+        repo = Repo.init()
+        origin = repo.create_remote("upstream", f"https://github.com/{git_repo}")
+        origin.fetch()
+        repo.create_head("master", origin.refs.master)
+        repo.heads.master.set_tracking_branch(origin.refs.master)
+        repo.heads.master.checkout(True)
+        force = True
+    with contextlib.suppress(BaseException):
+        repo.create_remote("upstream", f"https://github.com/{git_repo}")
+
+    return True, repo, force
