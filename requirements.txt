@@ -86,3 +86,5 @@ icrawler
 unidecode
 git-python
 emoji
+pySmartDL
+selenium
