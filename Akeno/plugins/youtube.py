@@ -45,7 +45,7 @@ async def youtube_audio(_, message: Message):
             f"{yt_file}.mp3",
             caption=f"**🎧 𝖳𝗂𝗍𝗅𝖾:** {yt_data['title']} \n\n**👀 𝖵𝗂𝖾𝗐𝗌:** `{yt_data['view_count']}` \n**⌛ 𝖣𝗎𝗋𝖺𝗍𝗂𝗈𝗇:** `{secs_to_mins(int(yt_data['duration']))}`",
             duration=int(yt_data["duration"]),
-            performer="[тнє нєℓℓвσт]",
+            performer="[Akeno UB]",
             title=yt_data["title"],
             thumb=f"{yt_file}.jpg",
             progress=progress,
@@ -57,7 +57,7 @@ async def youtube_audio(_, message: Message):
         )
         await pro.delete()
     except Exception as e:
-        return await message.reply_text(f"**🍀 Audio not Downloaded:** `{e}`")
+        return await pro.edit_text(f"**🍀 Audio not Downloaded:** `{e}`")
     try:
         os.remove(f"{yt_file}.jpg")
         os.remove(f"{yt_file}.mp3")
@@ -105,7 +105,7 @@ async def ytvideo(client: Client, message: Message):
         )
         await pro.delete()
     except Exception as e:
-        return await message.reply_text(f"**🍀 Video not Downloaded:** `{e}`")
+        return await pro.edit_text(f"**🍀 Video not Downloaded:** `{e}`")
     try:
         os.remove(f"{yt_file}.jpg")
         os.remove(f"{yt_file}.mp4")
