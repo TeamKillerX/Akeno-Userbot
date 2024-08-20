@@ -9,7 +9,7 @@ API_HASH = os.environ["API_HASH"]
 SESSION = os.environ["SESSION"]
 GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
-CMD_HANDLER = getenv("CMD_HANDLER", ["?"])
+CMD_HANDLER = getenv("CMD_HANDLER", ".")
 
 CHROME_BIN = "/app/.chrome-for-testing/chrome-linux64/chrome"
 CHROME_DRIVER = "/app/.chrome-for-testing/chromedriver-linux64/chromedriver"
