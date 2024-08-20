@@ -64,7 +64,7 @@ class ChromeDriver:
 
         try:
             options = Options()
-            options.binary_location = Config.CHROME_BIN
+            options.binary_location = CHROME_BIN
             options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--ignore-certificate-errors")
             options.add_argument("--disable-gpu")
