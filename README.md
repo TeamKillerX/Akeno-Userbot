@@ -62,7 +62,6 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TeamKillerX/Akeno-Userbot)
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/Gl2-X1?referralCode=NzLfjZ)
 
 ### ⚠️ IMPORTANT NOTICE:
 
