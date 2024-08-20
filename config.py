@@ -11,6 +11,11 @@ GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = ["?"]
 
+CHROME_BIN = "/app/.chrome-for-testing/chrome-linux64/chrome"
+CHROME_DRIVER = "/app/.chrome-for-testing/chromedriver-linux64/chromedriver"
+DWL_DIR = "./downloads/"
+TEMP_DIR = "./temp/"
+
 AFK_CACHE = {}
 BOT_CMD_INFO = {}
 BOT_CMD_MENU = {}
