@@ -1,4 +1,3 @@
-git+https://github.com/KurimuzonAkuma/pyrogram.git
 aiofiles
 aiohttp
 future
@@ -47,22 +46,18 @@ emoji
 youtube_search_python
 youtube_search
 rich
-yt-dlp
 wget
 hachoir
 pykeyboard
 python-arq
 search-engine-parser
 uvloop
-youtube_dl
 feedparser
 fuzzysearch
 img2pdf
-pytube
 pytz
 psutil
 google-search-results
-git+https://github.com/TeamKillerX/RyuzakiLib
 uvicorn
 fastapi[all]
 typing-extensions
@@ -84,6 +79,8 @@ cohere
 icrawler
 unidecode
 git-python
-emoji
 pySmartDL
 selenium
+git+https://github.com/KurimuzonAkuma/pyrogram.git
+git+https://github.com/TeamKillerX/RyuzakiLib
+git+https://github.com/xtsea/yt-dlp
