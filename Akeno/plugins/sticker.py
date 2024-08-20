@@ -209,3 +209,9 @@ async def removeSticker(client: Client, message: Message):
         )
     except Exception as e:
         await message.reply_text(str(e))
+
+module = modules_help.add_module("sticker", __file__)
+module.add_command("kang", "Add the replied image/gif/video/sticker into your own sticker pack kang.")
+module.add_command("packkang", "Add all the stickers in the replied pack into your own sticker pack.")
+module.add_command("stickerinfo", "Get info about the replied sticker.")
+module.add_command("rmsticker", "Remove the replied sticker from the pack.")
