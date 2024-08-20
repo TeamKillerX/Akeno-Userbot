@@ -23,6 +23,12 @@ RUN apt -qq update && \
 
 WORKDIR /usr/src/app
 
+RUN chown -R 1000:0 /usr/src/app \
+    && chown -R 1000:0 . \
+    && chmod 777 . \
+    && chmod 777 /usr \
+    && chown -R 1000:0 /usr
+
 COPY . .
 RUN pip3 install --upgrade pip setuptools==59.6.0
 COPY requirements.txt .
