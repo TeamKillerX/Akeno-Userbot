@@ -34,6 +34,12 @@ RUN pip3 install --upgrade pip setuptools==59.6.0
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
+RUN wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz
+RUN wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz.md5
+RUN md5sum -c ffmpeg-git-amd64-static.tar.xz.md5
+RUN tar xvf ffmpeg-git-amd64-static.tar.xz
+RUN mv ffmpeg-git*/ffmpeg ffmpeg-git*/ffprobe /usr/local/bin/
+
 EXPOSE 7860
 
 # Run the application
