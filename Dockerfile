@@ -50,8 +50,8 @@ RUN mkdir -p /tmp/ && \
 
 RUN mkdir -p /tmp/ && \
     cd /tmp/ && \
-    wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip  && \
-    unzip /tmp/chromedriver.zip chromedriver -d /usr/bin/ && \
+    wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip && \
+    unzip -o /tmp/chromedriver.zip chromedriver -d /usr/bin/ && \
     rm /tmp/chromedriver.zip
 
 ENV CHROME_DRIVER /usr/bin/chromedriver
