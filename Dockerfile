@@ -59,7 +59,7 @@ ENV CHROME_BIN /usr/bin/google-chrome-stable
 
 COPY . .
 COPY requirements.txt .
-RUN pip3 install --upgrade pip setuptools
+RUN pip3 install --upgrade pip setuptools==59.6.0
 RUN pip3 install -r requirements.txt
 
 RUN chmod +x /usr/local/bin/chromedriver
