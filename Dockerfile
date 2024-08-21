@@ -56,6 +56,7 @@ ENV CHROME_DRIVER = "/usr/local/bin/chromedriver"
 
 COPY . .
 COPY requirements.txt .
+RUN pip3 install --upgrade pip setuptools
 RUN pip3 install -r requirements.txt
 
 RUN chmod +x /usr/local/bin/chromedriver
@@ -66,9 +67,6 @@ RUN chown -R 1000:0 /app
 RUN chmod 777 /app
 RUN chown -R 1000:0 /.cache
 RUN chmod 777 /.cache
-
-RUN pip3 install --upgrade pip setuptools
-RUN pip3 install -r requirements.txt
 
 RUN wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz
 RUN wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz.md5
