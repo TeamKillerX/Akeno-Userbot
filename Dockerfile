@@ -42,17 +42,20 @@ RUN apt -qq update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/
 
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb \
-    && apt-get -fy install \
-    && rm google-chrome-stable_current_amd64.deb
+RUN mkdir -p /tmp/ && \
+    cd /tmp/ && \
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    dpkg -i ./google-chrome-stable_current_amd64.deb; apt -fqqy install && \
+    rm ./google-chrome-stable_current_amd64.deb
 
-RUN wget -q https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip \
-    && unzip chromedriver_linux64.zip -d /usr/local/bin/ \
-    && rm chromedriver_linux64.zip
+RUN mkdir -p /tmp/ && \
+    cd /tmp/ && \
+    wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip  && \
+    unzip /tmp/chromedriver.zip chromedriver -d /usr/bin/ && \
+    rm /tmp/chromedriver.zip
 
-ENV CHROME_BIN = "/usr/bin/google-chrome"
-ENV CHROME_DRIVER = "/usr/local/bin/chromedriver"
+ENV CHROME_DRIVER /usr/bin/chromedriver
+ENV CHROME_BIN /usr/bin/google-chrome-stable
 
 COPY . .
 COPY requirements.txt .
