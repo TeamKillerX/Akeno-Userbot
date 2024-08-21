@@ -62,8 +62,6 @@ COPY requirements.txt .
 RUN pip3 install --upgrade pip setuptools==59.6.0
 RUN pip3 install -r requirements.txt
 
-RUN chmod +x /usr/local/bin/chromedriver
-RUN chmod +x /usr/bin/google-chrome
 RUN chown -R 1000:0 .
 RUN chmod 777 .
 RUN chown -R 1000:0 /app
