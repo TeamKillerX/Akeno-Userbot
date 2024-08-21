@@ -62,7 +62,6 @@ COPY requirements.txt .
 RUN pip3 install --upgrade pip setuptools==59.6.0
 RUN pip3 install -r requirements.txt
 
-RUN mount -o remount,size=2G /dev/shm
 RUN chown -R 1000:0 .
 RUN chmod 777 .
 RUN chown -R 1000:0 /app
