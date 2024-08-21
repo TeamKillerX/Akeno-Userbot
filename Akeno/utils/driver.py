@@ -72,6 +72,9 @@ class ChromeDriver:
             options.add_argument("--test-type")
             options.add_argument("--no-sandbox")
             options.add_argument("--window-size=1920x1080")
+            options.add_argument("--enable-logging")
+            options.add_argument("--v=1")
+            options.add_argument("--remote-debugging-port=9222")
             options.add_experimental_option(
                 "prefs", {"download.default_directory": "./"}
             )
