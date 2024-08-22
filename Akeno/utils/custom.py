@@ -8,7 +8,9 @@ from os import getenv
 from traceback import format_exc
 from urllib.parse import unquote
 from urllib.request import urlretrieve
+
 from telegraph import Telegraph, exceptions, upload_file
+
 
 def QuoteApi(user_id, first_name, link, text):
     json = {
