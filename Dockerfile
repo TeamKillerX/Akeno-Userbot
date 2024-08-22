@@ -62,12 +62,9 @@ COPY requirements.txt .
 RUN pip3 install --upgrade pip setuptools==59.6.0
 RUN pip3 install -r requirements.txt
 
-RUN chown -R 1000:0 .
-RUN chmod 777 .
-RUN chown -R 1000:0 /app
-RUN chmod 777 /app
-RUN chown -R 1000:0 /.cache
-RUN chmod 777 /.cache
+RUN mkdir -p /app /.cache
+RUN chown -R 1000:0 /app /.cache
+RUN chmod -R 777 /app /.cache
 
 RUN wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz
 RUN wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz.md5
