@@ -74,10 +74,23 @@ async def porno_download(client: Client, message: Message):
     if not link.startswith("https://www.xnxx.com/"):
         return await message.reply_text("invalid link.")
     try:
+        pro = await message.reply_text("Processing.....")
+        upload_text = ""
         file_path, thumb = await api.x_download(url=url, is_stream=True)
-        await message.reply_video(file_path, thumb=thumb, has_spoiler=True)
+        await message.reply_video(
+            file_path,
+            thumb=thumb,
+            has_spoiler=True,
+            progress=progress,
+            progress_args=(
+                pro,
+                time.time(),
+                upload_text
+            )
+        )
+        await pro.delete()
         os.remove(thumb)
         os.remove(file_path)
     except Exception as e:
         LOGS.error(str(e))
-        await message.edit_text(str(e))
+        await pro.edit_text(str(e))
