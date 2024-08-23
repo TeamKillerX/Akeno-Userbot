@@ -56,7 +56,16 @@ async def porno_search(client: Client, message: Message):
         res = ""
         for x in data_dict.items():
             res += f"• Title: [{x[0]}]({x[1]})\n\n"
-        await message.reply_text(res, disable_web_page_preview=True)
+        if len(res) > 4096:
+            with open("log.txt", "w+", encoding="utf8") as out_file:
+                out_file.write(res)
+            await message.reply_document(
+                document="log.txt",
+                disable_notification=True
+            )
+            os.remove("log.txt")
+        else:
+            await message.reply_text(res, disable_web_page_preview=True)
     except Exception as e:
         LOGS.error(str(e))
         await message.edit_text(str(e))
