@@ -79,7 +79,7 @@ async def porno_download(client: Client, message: Message):
     api = PornoHub()
     link = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
     if not link:
-        return await message.reply_text("Search for pornohub.")
+        return await message.reply_text("Please link for pornohub.")
     if not link.startswith("https://www.xnxx.com/"):
         return await message.reply_text("invalid link.")
     try:
