@@ -84,12 +84,12 @@ async def porno_download(client: Client, message: Message):
         return await message.reply_text("invalid link.")
     try:
         pro = await message.reply_text("Processing.....")
-        file_path, thumb, title = await api.x_download(url=url, is_stream=True)
-        upload_text = f"**⬆️ 𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 video ...**\n\nTitle: {title}"
+        file_path, thumb, _ = await api.x_download(url=link, is_stream=True)
+        upload_text = f"**⬆️ 𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 video ...**"
         await pro.edit_text(upload_text)
         await message.reply_video(
             file_path,
-            caption=f"• Title: {title}",
+            caption=f"• Powered by {client.me.mention}",
             thumb=thumb,
             has_spoiler=True,
             progress=progress,
