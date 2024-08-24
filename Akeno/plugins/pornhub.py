@@ -17,19 +17,21 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import time
-import wget
-import requests
 import os
+import time
+
+import requests
+import wget
 from pyrogram import *
 from pyrogram import Client, filters
 from pyrogram.types import *
+from RyuzakiLib import PornoHub
 
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from Akeno.utils.scripts import progress
 from config import *
-from RyuzakiLib import PornoHub
+
 
 async def pornosearch(query):
     url = "https://randydev-ryuzaki-api.hf.space/akeno/xnxxsearch"
