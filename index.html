@@ -146,6 +146,36 @@ response = requests.post(url, json=payload)
 print(response.json())</code></pre>
         </div>
 
+        <h3>TOANIME</h3>
+        <p>Mengirim permintaan ke API AkenoAi sangat sederhana. Pada dasarnya, yang Anda butuhkan hanyalah menyertakan content dalam setiap permintaan. ini kodenya:</p>
+        <div class="code-block">
+            <pre><code>import requests
+
+url = "https://randydev-ryuzaki-api.hf.space/akeno/toanime"
+
+with open(file_path, "rb") as file:
+    files = {"file": file}
+    response = requests.post(url, files=files)
+
+response_json = response.json()
+print(response_json)</code></pre>
+        </div>
+
+        <h3>REMINI ENHANCER</h3>
+        <p>Mengirim permintaan ke API AkenoAi sangat sederhana. Pada dasarnya, yang Anda butuhkan hanyalah menyertakan content dalam setiap permintaan. ini kodenya:</p>
+        <div class="code-block">
+            <pre><code>import requests
+
+url = f"https://randydev-ryuzaki-api.hf.space/akeno/remini?remini_api_key={your_api_here}"
+
+with open(file_path, "rb") as file:
+    files = {"file": file}
+    response = requests.post(url, files=files)
+
+response_json = response.json()
+print(response_json)</code></pre>
+        </div>
+
         <h2>Closing</h2>
         <p>Terima kasih kepada semua yang telah menggunakan AkenoAI. Kami berharap API ini terus memberikan manfaat positif bagi penggunanya. Jika Anda memiliki pertanyaan lebih lanjut, jangan ragu untuk menghubungi kami di Telegram: t.me/xtdevs.</p>
 
