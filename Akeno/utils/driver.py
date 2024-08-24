@@ -64,7 +64,7 @@ class ChromeDriver:
 
         try:
             options = Options()
-            options.binary_location = Config.CHROME_BIN
+            options.binary_location = CHROME_BIN
             options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--ignore-certificate-errors")
             options.add_argument("--disable-gpu")
@@ -72,6 +72,9 @@ class ChromeDriver:
             options.add_argument("--test-type")
             options.add_argument("--no-sandbox")
             options.add_argument("--window-size=1920x1080")
+            options.add_argument("--enable-logging")
+            options.add_argument("--v=1")
+            options.add_argument("--remote-debugging-port=9222")
             options.add_experimental_option(
                 "prefs", {"download.default_directory": "./"}
             )

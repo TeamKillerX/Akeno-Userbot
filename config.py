@@ -11,8 +11,8 @@ GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = getenv("CMD_HANDLER", ".")
 
-CHROME_BIN = "/app/.chrome-for-testing/chrome-linux64/chrome"
-CHROME_DRIVER = "/app/.chrome-for-testing/chromedriver-linux64/chromedriver"
+CHROME_DRIVER = "/usr/bin/chromedriver"
+CHROME_BIN = "/usr/bin/google-chrome-stable"
 DWL_DIR = "./downloads/"
 TEMP_DIR = "./temp/"
 

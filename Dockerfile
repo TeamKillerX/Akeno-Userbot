@@ -1,5 +1,8 @@
 FROM rendyprojects/python:latest
 
+WORKDIR /app
+WORKDIR /.cache
+
 RUN apt -qq update && \
     apt -qq install -y --no-install-recommends \
     ffmpeg \
@@ -8,6 +11,22 @@ RUN apt -qq update && \
     gnupg2 \
     unzip \
     wget \
+    xvfb \
+    libxi6 \
+    libgconf-2-4 \
+    libappindicator3-1 \
+    libxrender1 \
+    libxtst6 \
+    libnss3 \
+    libatk1.0-0 \
+    libxss1 \
+    fonts-liberation \
+    libasound2 \
+    libgbm-dev \
+    libu2f-udev \
+    libvulkan1 \
+    libgl1-mesa-dri \
+    xdg-utils \
     python3-dev \
     python3-pip \
     libavformat-dev \
@@ -17,22 +36,35 @@ RUN apt -qq update && \
     libavutil-dev \
     libswscale-dev \
     libswresample-dev \
+    chromium \
+    chromium-driver \
     neofetch && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/
 
-WORKDIR /usr/src/app
+RUN mkdir -p /tmp/ && \
+    cd /tmp/ && \
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    dpkg -i ./google-chrome-stable_current_amd64.deb; apt -fqqy install && \
+    rm ./google-chrome-stable_current_amd64.deb
 
-RUN chown -R 1000:0 /usr/src/app \
-    && chown -R 1000:0 . \
-    && chmod 777 . \
-    && chmod 777 /usr \
-    && chown -R 1000:0 /usr
+RUN mkdir -p /tmp/ && \
+    cd /tmp/ && \
+    wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip && \
+    unzip -o /tmp/chromedriver.zip chromedriver -d /usr/bin/ && \
+    rm /tmp/chromedriver.zip
+
+ENV CHROME_DRIVER /usr/bin/chromedriver
+ENV CHROME_BIN /usr/bin/google-chrome-stable
 
 COPY . .
-RUN pip3 install --upgrade pip setuptools==59.6.0
 COPY requirements.txt .
+RUN pip3 install --upgrade pip setuptools==59.6.0
 RUN pip3 install -r requirements.txt
+
+RUN mkdir -p /app /.cache
+RUN chown -R 1000:0 /app /.cache
+RUN chmod -R 777 /app /.cache
 
 RUN wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz
 RUN wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz.md5
@@ -42,5 +74,4 @@ RUN mv ffmpeg-git*/ffmpeg ffmpeg-git*/ffprobe /usr/local/bin/
 
 EXPOSE 7860
 
-# Run the application
 CMD ["bash", "-c", "python3 server.py & python3 -m Akeno"]
