@@ -13,7 +13,6 @@ from random import choice
 
 import aiohttp
 import pyrogram
-from aiohttp import ClientSession
 from pyrogram import Client
 from pyrogram import __version__ as pyrogram_version
 from pyrogram import filters
@@ -38,8 +37,6 @@ act = []
 db = {}
 
 SUDOERS = filters.user()
-
-aiohttpsession = ClientSession()
 
 __version__ = {
     "pyrogram": pyrogram_version,
