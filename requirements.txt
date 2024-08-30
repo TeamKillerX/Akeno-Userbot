@@ -38,7 +38,7 @@ gitpython
 pymediainfo
 prettytable
 stability_sdk[anim_ui]
-httpx[http2]
+httpx[http2]==0.27.1
 speedtest-cli
 numpy
 validators
