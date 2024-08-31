@@ -19,7 +19,7 @@ from config import *
     & ~filters.forwarded
 )
 async def lyrics_songs(_, message: Message):
-    query = message.text.split(" ")[1] if len(message.command) > 1 else None
+    query = message.text.split(" ", 1)[1] if len(message.command) > 1 else None
     if not query:
         return await message.reply_text("Search For lyrics")
     token = await db.get_env(ENV_TEMPLATE.lyrics_api)
