@@ -1,6 +1,8 @@
 import glob
-from Akeno.utils.logger import LOGS
 from os.path import basename, dirname, isfile
+
+from Akeno.utils.logger import LOGS
+
 
 def __list_all_modules():
     mod_paths = glob.glob(dirname(__file__) + "/*.py")
