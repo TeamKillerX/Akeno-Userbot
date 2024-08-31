@@ -241,7 +241,8 @@ async def ytlink(_, message: Message):
     await pro.edit_text(text, disable_web_page_preview=True)
 
 module = modules_help.add_module("youtube", __file__)
-module.add_command("yta", "Download the youtube video in .mp3 format!.")
+module.add_command("yta", "Download the youtube link video in .mp3 format!.")
+module.add_command("ytv", "Download the youtube link video in .mp3 format!.")
 module.add_command("ytsa", "Download the youtube search video in .mp3 format!.")
 module.add_command("ytva", "Download the youtube search video in .mp4 format!")
 module.add_command("ytlink", "Search for a video on youtube")
