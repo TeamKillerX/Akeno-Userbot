@@ -32,16 +32,9 @@ async def get_id(bot: Client, message: Message):
             if rep.sticker.set_name and rep.sticker.emoji:
                 file_id += f"**Sticker Set**: `{rep.sticker.set_name}`\n"
                 file_id += f"**Sticker Emoji**: `{rep.sticker.emoji}`\n"
-                if rep.sticker.is_animated:
-                    file_id += f"**Animated Sticker**: `{rep.sticker.is_animated}`\n"
-                elif rep.sticker.is_video:
-                    file_id += f"**Video Sticker**: `{rep.sticker.is_video}`\n"
-                elif rep.sticker.is_premium:
-                    file_id += f"**Premium Sticker**: `{rep.sticker.is_premium}`\n"
-                else:
-                    file_id += "**Animated Sticker**: `False`\n"
-                    file_id += "**Video Sticker**: `False`\n"
-                    file_id += "**Premium Sticker**: `False`\n"
+                file_id += f"**Animated Sticker**: `{rep.sticker.is_animated if rep.sticker else False}`\n"
+                file_id += f"**Video Sticker**: `{rep.sticker.is_video if rep.sticker else False}`\n"
+                file_id += f"**Premium Sticker**: `{rep.sticker.is_premium if rep.sticker else False}`\n"
             else:
                 file_id += "**Sticker Set**: __None__\n"
                 file_id += "**Sticker Emoji**: __None__"
@@ -75,6 +68,12 @@ async def get_id(bot: Client, message: Message):
             user_detail = (
                 f"**Forwarded User ID**: `{message.reply_to_message.forward_from.id}`\n"
             )
+        elif rep.forward_from_chat:
+            user_detail = (
+                f"**Forwarded Channel ID**: `{message.reply_to_message.forward_from_chat.id}`\n"
+                f"**Forwarded Channel Title**: `{message.reply_to_message.forward_from_chat.title}`\n"
+                f"**Forwarded Channel Username**: `@{message.reply_to_message.forward_from_chat.username if message.reply_to_message.forward_from_chat else None}`\n"
+            )
         else:
             user_detail = f"**User ID**: `{message.reply_to_message.from_user.id}`\n"
         user_detail += f"**Message ID**: `{message.reply_to_message.id}`"
@@ -85,7 +84,12 @@ async def get_id(bot: Client, message: Message):
                 f"**Forwarded User ID**: `{message.reply_to_message.forward_from.id}`\n"
             )
         else:
-            user_detail = f"**User ID**: `{message.reply_to_message.from_user.id}`\n"
+            user_detail = ( 
+                f"**User ID**: `{message.reply_to_message.from_user.id if message.reply_to_message.from_user else None}`\n"
+                f"**Sender Chat ID**: `{message.reply_to_message.sender_chat.id if message.reply_to_message.sender_chat else None}`\n"
+                f"**Sender Chat Title**: `{message.reply_to_message.sender_chat.title if message.reply_to_message.sender_chat else None}`\n"
+                f"**Sender Chat Username**: `@{message.reply_to_message.sender_chat.username if message.reply_to_message.sender_chat else None}`\n"
+            )
         user_detail += f"**Message ID**: `{message.reply_to_message.id}`\n\n"
         user_detail += file_id
         await message.edit_text(user_detail)
