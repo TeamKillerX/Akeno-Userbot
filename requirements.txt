@@ -2,7 +2,7 @@ aiofiles
 aiohttp
 future
 gTTS
-googletrans==4.0.0-rc1
+googletrans
 bs4
 pytz
 requests
@@ -38,7 +38,7 @@ gitpython
 pymediainfo
 prettytable
 stability_sdk[anim_ui]
-httpx[http2]
+httpx==0.27.1
 speedtest-cli
 numpy
 validators

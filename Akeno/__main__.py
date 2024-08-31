@@ -23,12 +23,11 @@ import logging
 import sys
 from contextlib import closing, suppress
 
-import aiohttp
 from pyrogram import idle
 from pyrogram.errors import *
 from uvloop import install
 
-from Akeno import aiohttpsession, clients
+from Akeno import clients
 from Akeno.utils.database import db
 from Akeno.utils.logger import LOGS
 
@@ -68,10 +67,6 @@ async def main():
     except Exception as e:
         LOGS.info(f"Error in main: {e}")
     finally:
-        await asyncio.gather(
-            aiohttpsession.close()
-        )
-
         for task in asyncio.all_tasks():
             task.cancel()
         LOGS.info("All tasks completed successfully!")

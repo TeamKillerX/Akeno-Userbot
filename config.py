@@ -11,6 +11,8 @@ GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = getenv("CMD_HANDLER", ".")
 
+DOMAIN_DEV_API = "https://akeno.randydev.my.id"
+
 CHROME_DRIVER = "/usr/bin/chromedriver"
 CHROME_BIN = "/usr/bin/google-chrome-stable"
 DWL_DIR = "./downloads/"
