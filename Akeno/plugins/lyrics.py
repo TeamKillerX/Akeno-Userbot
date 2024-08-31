@@ -7,8 +7,8 @@ from lyricsgenius import Genius
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
-from Akeno.utils.handler import *
 from Akeno.utils.database import db
+from Akeno.utils.handler import *
 from config import *
 
 
