@@ -65,6 +65,8 @@ async def youtube_search_audio(_, message: Message):
     try:
         os.remove(f"{yt_file}.jpg")
         os.remove(f"{yt_file}.mp3")
+    except:
+        pass
 
 @Akeno(
     ~filters.scheduled
