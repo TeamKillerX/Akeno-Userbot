@@ -39,7 +39,6 @@ def global_no_spam_title(message: Message):
         ):
             return True
 
-
 async def add_text_img(image_path, text):
     font_size = 12
     stroke_width = 1
@@ -54,7 +53,7 @@ async def add_text_img(image_path, text):
     img_info = img.info
     image_width, image_height = img.size
     font = ImageFont.truetype(
-        font="resources/default.ttf",
+        font="resources/fonts/default.ttf",
         size=int(image_height * font_size) // 100,
     )
     draw = ImageDraw.Draw(img)
@@ -444,5 +443,4 @@ async def initialize_git(git_repo: str):
         force = True
     with contextlib.suppress(BaseException):
         repo.create_remote("upstream", f"https://github.com/{git_repo}")
-
     return True, repo, force

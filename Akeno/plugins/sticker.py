@@ -1,218 +1,280 @@
+import asyncio
+import math
 import os
+import shlex
+import textwrap
+from io import BytesIO
+from random import choice
+from typing import Tuple
 
-from pyrogram import Client
-from pyrogram.errors import PeerIdInvalid, UserIsBlocked
-from pyrogram.raw.types import InputDocument, InputStickerSetItem
-from pyrogram.types import Message
+import cv2
+import requests
+from bs4 import BeautifulSoup as bs
+from PIL import Image, ImageDraw, ImageFont
+from pymediainfo import MediaInfo
+from pyrogram import Client as ren
+from pyrogram import *
+from pyrogram.enums import ParseMode
+from pyrogram.errors import *
+from pyrogram.raw.functions.messages import GetStickerSet
+from pyrogram.raw.types import InputStickerSetShortName
+from pyrogram.types import *
 
-from Akeno.utils.convert import image_to_sticker, video_to_sticker
-from Akeno.utils.database import db
 from Akeno.utils.handler import *
-from Akeno.utils.sticker import *
+from Akeno.utils.tools import *
 from config import *
 
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["kang"], CMD_HANDLER)
+    & filters.command(["kang", "tikel"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
 )
-async def kangSticker(client: Client, message: Message):
-    if not message.reply_to_message:
-        return await message.reply_text("Reply to a sticker to kang it.")
-
-    pro = await message.reply_text("__Kanging sticker...__")
-    pack_id, pack_emoji = get_emoji_and_id(message)
-    pack_type, is_animated, is_video, is_static, pack_limit = check_sticker_data(
-        message.reply_to_message
-    )
-    if pack_type is None:
-        return await pro.edit_text("Unsupported media type.")
-    nickname = f"@{client.me.username}" if client.me.username else client.me.first_name
-    pack_name = (
-        await db.get_env(ENV_TEMPLATE.sticker_packname)
-        or f"{nickname}'s Vol.{pack_id} ({pack_type.title()})"
-    )
-    pack_url_suffix = (
-        f"Akeno{client.me.id}_vol{pack_id}_{pack_type}_by_{client.me.username}"
-    )
-    if message.reply_to_message.sticker:
-        if is_static:
-            file = await message.reply_to_message.download()
-            status, path = await image_to_sticker(file)
-            if not status:
-                return await pro.edit_text(path)
+async def kang(client, message):
+    user = client.me
+    replied = message.reply_to_message
+    um = await message.edit_text("`Trying to kang...`")
+    media_ = None
+    emoji_ = None
+    is_anim = False
+    is_video = False
+    resize = False
+    ff_vid = False
+    if replied and replied.media:
+        if replied.photo:
+            resize = True
+        elif replied.document and "image" in replied.document.mime_type:
+            resize = True
+            replied.document.file_name
+        elif replied.document and "tgsticker" in replied.document.mime_type:
+            is_anim = True
+            replied.document.file_name
+        elif replied.document and "video" in replied.document.mime_type:
+            resize = True
+            is_video = True
+            ff_vid = True
+        elif replied.animation:
+            resize = True
+            is_video = True
+            ff_vid = True
+        elif replied.video:
+            resize = True
+            is_video = True
+            ff_vid = True
+        elif replied.sticker:
+            if not replied.sticker.file_name:
+                await um.edit_text("**The sticker has no Name!**")
+                return
+            emoji_ = replied.sticker.emoji
+            is_anim = replied.sticker.is_animated
+            is_video = replied.sticker.is_video
+            if not (
+                replied.sticker.file_name.endswith(".tgs")
+                or replied.sticker.file_name.endswith(".webm")
+            ):
+                resize = True
+                ff_vid = True
         else:
-            path = await message.reply_to_message.download()
+            await um.edit_text("**Unsupported Files**")
+            return
+        media_ = await client.download_media(replied, file_name="resources/")
     else:
-        if is_video:
-            await pro.edit_text("Converting to video sticker...")
-            path, status = await video_to_sticker(message.reply_to_message)
-            if not status:
-                return await pro.edit_text(path)
-        elif is_animated:
-            await pro.edit_text("Converting to animated sticker...")
-            path = await message.reply_to_message.download()
-        else:
-            await pro.edit_text("Converting to sticker...")
-            file = await message.reply_to_message.download()
-            status, path = await image_to_sticker(file)
-            if not status:
-                return await pro.edit_text(path)
-    LOGGER_ID = await db.get_env(ENV_TEMPLATE.log_id)
-    if not LOGGER_ID:
-        LOGGER_ID = "me"
-    sticker = await create_sticker(client, LOGGER_ID, path, pack_emoji)
-    os.remove(path)
-    try:
-        while True:
-            stickerset = await get_sticker_set(client, pack_url_suffix)
-            if stickerset:
-                if stickerset.set.count == pack_limit:
-                    pack_id += 1
-                    pack_name = (
-                        await db.get_env(ENV_TEMPLATE.sticker_packname)
-                        or f"{nickname}'s Vol.{pack_id} ({pack_type.title()})"
-                    )
-                    pack_url_suffix = f"Akeno{client.me.id}_vol{pack_id}_{pack_type}_by_{client.me.username}"
-                    continue
-                else:
-                    await add_sticker(client, stickerset, sticker)
+        await um.edit_text("**Please Reply to Photo/GIF/Sticker Media!**")
+        return
+    if media_:
+        args = get_arg(message)
+        pack = 1
+        if len(args) == 2:
+            emoji_, pack = args
+        elif len(args) == 1:
+            if args[0].isnumeric():
+                pack = int(args[0])
             else:
-                await new_sticker_set(
-                    client,
-                    client.me.id,
-                    pack_name,
-                    pack_url_suffix,
-                    [sticker],
-                    is_animated,
-                    is_video,
-                )
-            break
-        return await pro.edit_text(
-            f"**{pack_emoji} 𝖲𝗍𝗂𝖼𝗄𝖾𝗋 𝗄𝖺𝗇𝗀𝖾𝖽 𝗍𝗈 [this pack](t.me/addstickers/{pack_url_suffix})**",
-            disable_web_page_preview=True,
-        )
-    except Exception as e:
-        return await message.reply_text(str(e))
+                emoji_ = args[0]
 
-@Akeno(
-    ~filters.scheduled
-    & filters.command(["packkang"], CMD_HANDLER)
-    & filters.me
-    & ~filters.forwarded
-)
-async def packKang(client: Client, message: Message):
-    if not message.reply_to_message:
-        return await message.reply_text("Reply to a sticker to kang whole pack!")
-    pro = await message.reply_text("__Kanging sticker pack...__")
-    pack_id = 1
-    nickname = f"@{client.me.username}" if client.me.username else client.me.first_name
-    packname = await input_user(message) or f"{nickname}'s Pack (Vol.{pack_id})"
-    pack_url_suffix = f"Akeno{client.me.id}_pkvol{pack_id}_by_{client.me.username}"
-    if not message.reply_to_message.sticker:
-        return await pro.edit_text("Reply to a sticker to kang whole pack!")
-    is_animated = message.reply_to_message.sticker.is_animated
-    is_video = message.reply_to_message.sticker.is_video
-    stickers = []
-    replied_setname = message.reply_to_message.sticker.set_name
-    replied_set = await get_sticker_set(client, replied_setname)
-    if not replied_set:
-        return await pro.edit_text("Reply to a sticker to kang whole pack!")
-    for sticker in replied_set.documents:
-        document = InputDocument(
-            id=sticker.id,
-            access_hash=sticker.access_hash,
-            file_reference=sticker.file_reference,
-        )
-        stickers.append(InputStickerSetItem(document=document, emoji="🍀"))
-    try:
+        if emoji_ and emoji_ not in (
+            getattr(emoji, _) for _ in dir(emoji) if not _.startswith("_")
+        ):
+            emoji_ = None
+        if not emoji_:
+            emoji_ = "🗿"
+
+        u_name = user.username
+        u_name = "@" + u_name if u_name else user.first_name or user.id
+        packname = f"Sticker_u{user.id}_v{pack}"
+        custom_packnick = f"{client.me.first_name} by {u_name}"
+        packnick = f"{custom_packnick} Vol.{pack}"
+        cmd = "/newpack"
+        if resize:
+            media_ = await resize_media(media_, is_video, ff_vid)
+        if is_anim:
+            packname += "_animated"
+            packnick += " (Animated)"
+            cmd = "/newanimated"
+        if is_video:
+            packname += "_video"
+            packnick += " (Video)"
+            cmd = "/newvideo"
+        exist = False
         while True:
-            stickerset = await get_sticker_set(client, pack_url_suffix)
-            if stickerset:
-                pack_id += 1
-                pack_url_suffix = (
-                    f"Akeno{client.me.id}_pkvol{pack_id}_by_{client.me.username}"
+            try:
+                exist = await client.invoke(
+                    GetStickerSet(
+                        stickerset=InputStickerSetShortName(short_name=packname), hash=0
+                    )
                 )
-                packname = (
-                    await input_user(message) or f"{nickname}'s Pack (Vol.{pack_id})"
+            except StickersetInvalid:
+                exist = False
+                break
+            limit = 50 if (is_video or is_anim) else 120
+            if exist.set.count >= limit:
+                pack += 1
+                packname = f"a{user.id}_by_akeno_{pack}"
+                packnick = f"{custom_packnick} Vol.{pack}"
+                if is_anim:
+                    packname += f"_anim{pack}"
+                    packnick += f" (Animated){pack}"
+                if is_video:
+                    packname += f"_video{pack}"
+                    packnick += f" (Video){pack}"
+                await um.edit_text(
+                    f"`Create a New Sticker Pack {pack} Because the Sticker Pack Is Full`"
                 )
                 continue
-            else:
-                await new_sticker_set(
-                    client,
-                    client.me.id,
-                    packname,
-                    pack_url_suffix,
-                    stickers,
-                    is_animated,
-                    is_video,
+            break
+        if exist is not False:
+            try:
+                await client.send_message("stickers", "/addsticker")
+            except YouBlockedUser:
+                await client.unblock_user("stickers")
+                await client.send_message("stickers", "/addsticker")
+            except Exception as e:
+                return await um.edit(f"**ERROR:** `{e}`")
+            await asyncio.sleep(2)
+            await client.send_message("stickers", packname)
+            await asyncio.sleep(2)
+            limit = "50" if is_anim else "120"
+            while limit in await get_response(message, client):
+                pack += 1
+                packname = f"a{user.id}_by_{user.username}_{pack}"
+                packnick = f"{custom_packnick} vol.{pack}"
+                if is_anim:
+                    packname += "_anim"
+                    packnick += " (Animated)"
+                if is_video:
+                    packname += "_video"
+                    packnick += " (Video)"
+                await um.edit(
+                    "`Create a New Sticker Pack "
+                    + str(pack)
+                    + " Because the sticker pack is full`"
                 )
-                break
-        return await pro.edit_text(
-            f"**🍀 𝖲𝗍𝗂𝖼𝗄𝖾𝗋 𝖯𝖺𝖼𝗄 𝗄𝖺𝗇𝗀𝖾𝖽 𝗍𝗈 [this pack](t.me/addstickers/{pack_url_suffix})**",
-            disable_web_page_preview=True,
+                await client.send_message("stickers", packname)
+                await asyncio.sleep(2)
+                if await get_response(message, client) == "Invalid pack selected.":
+                    await client.send_message("stickers", cmd)
+                    await asyncio.sleep(2)
+                    await client.send_message("stickers", packnick)
+                    await asyncio.sleep(2)
+                    await client.send_document("stickers", media_)
+                    await asyncio.sleep(2)
+                    await client.send_message("Stickers", emoji_)
+                    await asyncio.sleep(2)
+                    await client.send_message("Stickers", "/publish")
+                    await asyncio.sleep(2)
+                    if is_anim:
+                        await client.send_message(
+                            "Stickers", f"<{packnick}>", parse_mode=ParseMode.MARKDOWN
+                        )
+                        await asyncio.sleep(2)
+                    await client.send_message("Stickers", "/skip")
+                    await asyncio.sleep(2)
+                    await client.send_message("Stickers", packname)
+                    await asyncio.sleep(2)
+                    await um.edit(
+                        f"**Sticker Added Successfully!**\n         **[CLICK HERE](https://t.me/addstickers/{packname})**\n**To Use Stickers**"
+                    )
+                    return
+            await client.send_document("stickers", media_)
+            await asyncio.sleep(2)
+            if (
+                await get_response(message, client)
+                == "Sorry, the file type is invalid."
+            ):
+                await um.edit_text(
+                    "**Failed to Add Sticker, Use @Stickers Bot To Add Your Sticker.**"
+                )
+                return
+            await client.send_message("Stickers", emoji_)
+            await asyncio.sleep(2)
+            await client.send_message("Stickers", "/done")
+        else:
+            await um.edit_text("`Create a New Sticker Pack`")
+            try:
+                await client.send_message("Stickers", cmd)
+            except YouBlockedUser:
+                await client.unblock_user("stickers")
+                await client.send_message("stickers", "/addsticker")
+            await asyncio.sleep(2)
+            await client.send_message("Stickers", packnick)
+            await asyncio.sleep(2)
+            await client.send_document("stickers", media_)
+            await asyncio.sleep(2)
+            if (
+                await get_response(message, client)
+                == "Sorry, the file type is invalid."
+            ):
+                await um.edit_text(
+                    "**Failed to Add Sticker, Use @Stickers Bot To Add Your Sticker.**"
+                )
+                return
+            await client.send_message("Stickers", emoji_)
+            await asyncio.sleep(2)
+            await client.send_message("Stickers", "/publish")
+            await asyncio.sleep(2)
+            if is_anim:
+                await client.send_message("Stickers", f"<{packnick}>")
+                await asyncio.sleep(2)
+            await client.send_message("Stickers", "/skip")
+            await asyncio.sleep(2)
+            await client.send_message("Stickers", packname)
+            await asyncio.sleep(2)
+        await um.edit_text(
+            f"**Sticker Added Successfully!**\n         **[CLICK HERE](https://t.me/addstickers/{packname})**"
         )
-    except Exception as e:
-        return await message.reply_text(str(e))
+        if os.path.exists(str(media_)):
+            os.remove(media_)
+
+async def get_response(message, client):
+    return [x async for x in client.get_chat_history("Stickers", limit=1)][0].text
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["stickerinfo"], CMD_HANDLER)
+    & filters.command(["mmf"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
 )
-async def stickerInfo(client: Client, message: Message):
-    if not message.reply_to_message or not message.reply_to_message.sticker:
-        return await message.reply_text("Reply to a sticker to get their info.")
-    pro = await message.reply_text("__Fetching sticker info ...__")
-    sticker = message.reply_to_message.sticker
-    sticker_set = await get_sticker_set(client, sticker.set_name)
-    if not sticker_set:
-        return await pro.edit_text("This sticker is not part of a pack.")
-    pack_emoji = []
-    for emojis in sticker_set.packs:
-        if emojis.emoticon not in pack_emoji:
-            pack_emoji.append(emojis.emoticon)
-    outStr = (
-        f"**🍀 𝖲𝗍𝗂𝖼𝗄𝖾𝗋 𝖯𝖺𝖼𝗄 𝖨𝗇𝖿𝗈:**\n\n"
-        f"**𝖲𝗍𝗂𝖼𝗄𝖾𝗋 𝖨𝖣:** `{sticker.file_id}`\n"
-        f"**Pack Name:** `{sticker_set.set.title}`\n"
-        f"**Pack Short Name:** `{sticker_set.set.short_name}`\n"
-        f"**𝖮𝖿𝖿𝗂𝖼𝗂𝖺𝗅:** {sticker_set.set.official}\n"
-        f"**𝖤𝗆𝗈𝗃𝗂:** `{', '.join(pack_emoji)}`\n"
-        f"**𝖣𝖺𝗍𝖾:** `{sticker_set.set.installed_date}`\n"
-        f"**𝖲𝗍𝗂𝖼𝗄𝖾𝗋 𝖲𝗂𝗓𝖾:** `{sticker_set.set.count}`\n"
+async def memify(client, message):
+    if not message.reply_to_message_id:
+        await message.edit_text("**Plz reply to an sticker!**")
+        return
+    reply_message = message.reply_to_message
+    if not reply_message.media:
+        await message.text("**Please Reply to photo or sticker!**")
+        return
+    file = await client.download_media(reply_message)
+    mm = await message.edit_text("`Processing . . .`")
+    text = get_arg(message)
+    if len(text) < 1:
+        return await mm.edit("`Please Type `.mmf text")
+    meme = await add_text_img(file, text)
+    await asyncio.gather(
+        mm.delete(),
+        client.send_sticker(
+            message.chat.id,
+            sticker=meme,
+            reply_to_message_id=message.id,
+        ),
     )
-    await pro.edit_text(outStr, disable_web_page_preview=True)
-
-@Akeno(
-    ~filters.scheduled
-    & filters.command(["rmsticker"], CMD_HANDLER)
-    & filters.me
-    & ~filters.forwarded
-)
-async def removeSticker(client: Client, message: Message):
-    if not message.reply_to_message or not message.reply_to_message.sticker:
-        return await message.reply_text(
-            "Reply to a sticker to remove it from the pack."
-        )
-    await message.reply_text("__Removing sticker from pack...__")
-    sticker = message.reply_to_message.sticker
-    sticker_set = await get_sticker_set(client, sticker.set_name)
-    if not sticker_set:
-        return await message.reply_text("This sticker is not part of a pack.")
-    try:
-        await remove_sticker(client, sticker.file_id)
-        await message.reply_text(
-            f"**𝖣𝖾𝗅𝖾𝗍𝖾𝖽 𝗍𝗁𝖾 𝗌𝗍𝗂𝖼𝗄𝖾𝗋 𝖿𝗋𝗈𝗆 𝗉𝖺𝖼𝗄:** {sticker_set.set.title}",
-        )
-    except Exception as e:
-        await message.reply_text(str(e))
-
-module = modules_help.add_module("sticker", __file__)
-module.add_command("kang", "Add the replied image/gif/video/sticker into your own sticker pack kang.")
-module.add_command("packkang", "Add all the stickers in the replied pack into your own sticker pack.")
-module.add_command("stickerinfo", "Get info about the replied sticker.")
-module.add_command("rmsticker", "Remove the replied sticker from the pack.")
+    os.remove(meme)

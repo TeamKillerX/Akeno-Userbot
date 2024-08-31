@@ -4,6 +4,7 @@ import random
 import time
 
 from pyrogram import Client, filters
+from pyrogram.errors import *
 from pyrogram.types import Message
 
 from Akeno.utils.handler import *
@@ -95,6 +96,11 @@ async def get_id(bot: Client, message: Message):
             )
         user_detail += f"**Message ID**: `{message.reply_to_message.id}`\n\n"
         user_detail += file_id
-        await message.edit_text(user_detail)
+        try:
+            await message.reply_text(user_detail)
+        except ChannelInvalid:
+            await message.reply_text("Channel Invalid")
+        except Exception as e:
+            await message.reply_text(f"Error: {e}")
     else:
-        await message.edit_text(f"**Chat ID**: `{message.chat.id}`")
+        await message.reply_text(f"**Chat ID**: `{message.chat.id}`")
