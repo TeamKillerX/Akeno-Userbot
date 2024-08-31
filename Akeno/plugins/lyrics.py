@@ -38,3 +38,6 @@ async def lyrics_songs(_, message: Message):
         os.remove("lyrics.txt")
     else:
         await message.reply_text(f"<b><blockquote>{results}</blockquote></b>")
+
+module = modules_help.add_module("lyrics", __file__)
+module.add_command("lyrics", "Get lyrics matched artist and song.")
