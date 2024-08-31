@@ -22,12 +22,14 @@ import importlib
 import logging
 import sys
 from contextlib import closing, suppress
+from importlib import import_module
 
 from pyrogram import idle
 from pyrogram.errors import *
 from uvloop import install
 
 from Akeno import clients
+from Akeno.plugins import ALL_MODULES
 from Akeno.utils.database import db
 from Akeno.utils.logger import LOGS
 
@@ -39,6 +41,8 @@ loop = asyncio.get_event_loop()
 async def main():
     try:
         await db.connect()
+        for module_name in ALL_MODULES:
+            imported_module = import_module(f"Akeno.plugins.{module_name}")
         for cli in clients:
             try:
                 await cli.start()
