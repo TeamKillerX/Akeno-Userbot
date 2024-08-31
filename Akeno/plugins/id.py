@@ -1,11 +1,14 @@
-import os
 import asyncio
+import os
 import random
 import time
+
 from pyrogram import Client, filters
 from pyrogram.types import Message
+
 from Akeno.utils.handler import *
 from config import *
+
 
 @Akeno(
     ~filters.scheduled
@@ -84,7 +87,7 @@ async def get_id(bot: Client, message: Message):
                 f"**Forwarded User ID**: `{message.reply_to_message.forward_from.id}`\n"
             )
         else:
-            user_detail = ( 
+            user_detail = (
                 f"**User ID**: `{message.reply_to_message.from_user.id if message.reply_to_message.from_user else None}`\n"
                 f"**Sender Chat ID**: `{message.reply_to_message.sender_chat.id if message.reply_to_message.sender_chat else None}`\n"
                 f"**Sender Chat Title**: `{message.reply_to_message.sender_chat.title if message.reply_to_message.sender_chat else None}`\n"
