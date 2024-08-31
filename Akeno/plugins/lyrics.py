@@ -22,9 +22,9 @@ async def lyrics_songs(_, message: Message):
     query = message.text.split(" ")[1] if len(message.command) > 1 else None
     if not query:
         return await message.reply_text("Search For lyrics")
-    token = await db.get_env(ENV_TEMPLATE.lyrics)
+    token = await db.get_env(ENV_TEMPLATE.lyrics_api)
     if not token:
-        return await message.reply_text("Required: TOKEN_LYRICS")
+        return await message.reply_text("Required: `LYRICS_API`")
     genius = Genius(token)
     artist = genius.search_song(query)
     results = artist.lyrics
@@ -37,4 +37,4 @@ async def lyrics_songs(_, message: Message):
         )
         os.remove("lyrics.txt")
     else:
-        await message.reply_text(results)
+        await message.reply_text(f"<b><blockquote>{results}</blockquote></b>")
