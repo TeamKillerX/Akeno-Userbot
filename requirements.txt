@@ -82,6 +82,7 @@ git-python
 pySmartDL
 selenium
 PyYAML==6.0.2
-git+https://github.com/KurimuzonAkuma/pyrogram.git
+git+https://github.com/KurimuzonAkuma/pyrogram
 git+https://github.com/TeamKillerX/RyuzakiLib
+git+https://github.com/johnwmillr/LyricsGenius
 yt-dlp==2024.8.6
