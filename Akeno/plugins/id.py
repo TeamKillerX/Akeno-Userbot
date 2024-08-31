@@ -34,8 +34,14 @@ async def get_id(bot: Client, message: Message):
                 file_id += f"**Sticker Emoji**: `{rep.sticker.emoji}`\n"
                 if rep.sticker.is_animated:
                     file_id += f"**Animated Sticker**: `{rep.sticker.is_animated}`\n"
+                elif rep.sticker.is_video:
+                    file_id += f"**Video Sticker**: `{rep.sticker.is_video}`\n"
+                elif rep.sticker.is_premium:
+                    file_id += f"**Video Sticker**: `{rep.sticker.is_premium}`\n"
                 else:
                     file_id += "**Animated Sticker**: `False`\n"
+                    file_id += "**Video Sticker**: `False`\n"
+                    file_id += "**Premium Sticker**: `False`\n"
             else:
                 file_id += "**Sticker Set**: __None__\n"
                 file_id += "**Sticker Emoji**: __None__"
