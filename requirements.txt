@@ -20,7 +20,6 @@ typing
 Python-IO
 Pillow==9.5.0
 telegraph
-urllib3
 motor
 SQLAlchemy==1.3.23
 opencv-python-headless
@@ -85,4 +84,5 @@ PyYAML==6.0.2
 git+https://github.com/KurimuzonAkuma/pyrogram
 git+https://github.com/TeamKillerX/RyuzakiLib
 git+https://github.com/johnwmillr/LyricsGenius
+git+https://github.com/urllib3/urllib3
 yt-dlp==2024.8.6
