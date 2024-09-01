@@ -28,6 +28,8 @@ async def lyrics_songs(_, message: Message):
     genius = Genius(token)
     artist = genius.search_song(query)
     results = artist.lyrics
+    if results is None:
+        return await message.reply_text("no search in lyrics")
     if len(results) > 4096:
         with open("lyrics.txt", "w+", encoding="utf8") as out_file:
             out_file.write(results)
