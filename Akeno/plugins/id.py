@@ -81,18 +81,21 @@ async def get_id(bot: Client, message: Message):
         else:
             user_detail = f"**User ID**: `{message.reply_to_message.from_user.id}`\n"
         user_detail += f"**Message ID**: `{message.reply_to_message.id}`"
-        await message.edit_text(user_detail)
+        await message.reply_text(user_detail)
     elif file_id:
         if rep.forward_from:
             user_detail = (
                 f"**Forwarded User ID**: `{message.reply_to_message.forward_from.id}`\n"
             )
-        else:
+        elif rep.sender_chat:
             user_detail = (
-                f"**User ID**: `{message.reply_to_message.from_user.id if message.reply_to_message.from_user else None}`\n"
                 f"**Sender Chat ID**: `{message.reply_to_message.sender_chat.id if message.reply_to_message.sender_chat else None}`\n"
                 f"**Sender Chat Title**: `{message.reply_to_message.sender_chat.title if message.reply_to_message.sender_chat else None}`\n"
                 f"**Sender Chat Username**: `@{message.reply_to_message.sender_chat.username if message.reply_to_message.sender_chat else None}`\n"
+            )
+        else:
+            user_detail = (
+                f"**User ID**: `{message.reply_to_message.from_user.id if message.reply_to_message.from_user else None}`\n"
             )
         user_detail += f"**Message ID**: `{message.reply_to_message.id}`\n\n"
         user_detail += file_id
