@@ -86,3 +86,4 @@ git+https://github.com/TeamKillerX/RyuzakiLib
 git+https://github.com/johnwmillr/LyricsGenius
 git+https://github.com/urllib3/urllib3
 yt-dlp==2024.8.6
+pytgcalls==3.0.0.dev22
