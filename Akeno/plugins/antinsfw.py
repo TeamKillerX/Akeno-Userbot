@@ -18,7 +18,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import logging
-
+import os
 from pyrogram import Client, enums, filters, idle
 from pyrogram.enums.parse_mode import ParseMode
 from pyrogram.types import Chat, ChatMember, ChatPrivileges, Message
@@ -88,6 +88,7 @@ async def antinsfw_filter(client: Client, message: Message):
     if check_anti_nsfw(media):
         if await can_delete(chat, me.id):
             return await message.delete()
+            os.remove(media)
 
 module = modules_help.add_module("antinsfw", __file__)
 module.add_command("antinsfw", "to anti nsfw auto delete messages")
