@@ -52,7 +52,6 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 
 - `MONGO_URL` - Get it from [`here`](https://mongodb.com)
 
- - `CMD_HANDLER` - default handler `["?"]`
 
 ### ☁️ Cloud Host
 
