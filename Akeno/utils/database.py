@@ -26,6 +26,7 @@ class Database:
         self.chatbot = self.db["chatbot"]
         self.backup_chatbot = self.db["backupchatbot"]
         self.antiarabic = self.db["antiarabic"]
+        self.antinsfw = self.db["antinsfw"]
         self.gban = self.db["gban"]
         self.gmute = self.db["gmute"]
         self.greetings = self.db["greetings"]
@@ -619,6 +620,19 @@ class Database:
         user_data = await self.antiarabic.find_one({"chat_id": chat_id})
         if user_data:
             return user_data.get("arabic", False)
+        return False
+
+    async def set_chat_setting_antinsfw(self, chat_id, isboolean):
+        await self.antinsfw.update_one(
+            {"chat_id": chat_id},
+            {"$set": {"antinsfw": isboolean}},
+            upsert=True
+        )
+
+    async def chat_antinsfw(self, chat_id):
+        user_data = await self.antinsfw.find_one({"chat_id": chat_id})
+        if user_data:
+            return user_data.get("antinsfw", False)
         return False
 
     async def add_chatbot(self, chat_id, user_id):
