@@ -1,44 +1,48 @@
 {
-  "name": "Akeno-userbot",
-  "description": "A Simple, Fast, Customizable, Ai powered Userbot for Telegram with most easiest installation.",
-  "logo": "https://telegra.ph/file/0534186604d2e51d4b48c.jpg",
-  "keywords": [
-    "telegram",
-    "Akeno-userbot",
-    "bot",
-    "python",
-    "pyrogram"
-  ],
-  "env": {
-    "API_ID": {
-      "description": "Get it from my.telegram.org",
-      "required": true
+    "name": "Akeno UserBot",
+    "description": "Pluggable telegram userbot, made in python using pyrogram.",
+    "logo": "https://telegra.ph/file/c08a0f31b5527480c7540.jpg",
+    "keywords": [
+        "pyrogram",
+        "telegram",
+        "userbot",
+        "python",
+        "akeno"
+    ],
+    "repository": "https://github.com/TeamKillerX/Akeno-Userbot",
+    "website": "https://akeno.randydev.my.id",
+    "success_url": "https://t.me/TeamKillerX",
+    "stack": "container",
+    "env": {
+        "API_ID": {
+            "description": "You api id, from my.telegram.org.",
+            "value": "",
+            "required": true
+        },
+        "API_HASH": {
+            "description": "You api hash, from my.telegram.org.",
+            "value": "",
+            "required": true
+        },
+        "SESSION": {
+            "description": "Session String (pyrogram) for your telegram user account. The userbot will NOT work without a session string!!",
+            "value": ""
+        },
+        "MONGO_URL": {
+            "description": "Mongodb endpoint URL, from mongodb.com",
+            "value": "",
+            "required": true
+        },
+        "GOOGLE_API_KEY": {
+            "description": "ONLY, If you want to use gemini ai plugin You can get it from https://ai.google.dev",
+            "value": "",
+            "required": true
+        },
     },
-    "API_HASH": {
-      "description": "Get it from my.telegram.org",
-      "required": true
-    },
-    "SESSION": {
-      "description": "Pyrogram V2 Session String. Don't use bots or else you'll be responsible for your actions..",
-      "required": true
-    },
-    "GOOGLE_API_KEY": {
-      "description": "ONLY, If you want to use gemini ai plugin You can get it from https://ai.google.dev",
-      "required": true
-    },
-    "MONGO_URL": {
-      "description": "ONLY, If you want to use afk etc plugin You can get it from https://mongodb.com",
-      "required": true
-  },
-  "buildpacks": [
-    {
-      "url": "heroku/python"
-    },
-    {
-      "url": "https://github.com/heroku/heroku-buildpack-apt"
-    },
-    {
-      "url": "https://github.com/heroku/heroku-buildpack-activestorage-preview"
+    "formation": {
+        "akeno": {
+            "quantity": 1,
+            "size": "eco"
+        }
     }
-  ]
 }
