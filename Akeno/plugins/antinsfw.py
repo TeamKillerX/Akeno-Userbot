@@ -43,7 +43,7 @@ def check_anti_nsfw(media) -> bool:
         response = requests.post(url, files=files)
     if response.status_code == 200:
         results = response.json()
-        return results["randydev"]["results"]["result"]["content"]["isNsfw"]
+        return results["randydev"]["results"]["result"]["content"].get("isNsfw", False)
     return False
 
 @Akeno(
