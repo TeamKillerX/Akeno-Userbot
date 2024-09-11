@@ -6,8 +6,6 @@ googletrans
 bs4
 pytz
 requests
-psycopg2-binary
-psycopg2
 TgCrypto
 pyromod==1.1.0
 ffmpeg-python
