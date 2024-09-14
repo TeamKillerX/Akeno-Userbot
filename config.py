@@ -1,5 +1,3 @@
-# test
-
 import os
 from os import getenv
 
