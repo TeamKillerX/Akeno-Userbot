@@ -17,35 +17,81 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import google.generativeai as genai
 import requests
+import time
+import json
+import asyncio
 from pyrogram import *
 from pyrogram import Client, filters
 from pyrogram.types import *
 from RyuzakiLib import FaceAI, FullStackDev, GeminiLatest, RendyDevChat
 
-from Akeno.utils.chat import chat_message
+from Akeno.utils.chat import *
+from Akeno.utils.tools import *
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
+from Akeno.utils.prefixprem import command
 from config import *
 
+import google.generativeai as genai
+from google.api_core.exceptions import InvalidArgument
 
 async def mistraai(messagestr):
-    url = "https://randydev-ryuzaki-api.hf.space/api/v1/akeno/mistralai"
+    url = "https://private-akeno.randydev.my.id/akeno/mistralai"
     payload = {"args": messagestr}
     response = requests.post(url, json=payload)
     if response.status_code != 200:
         return None
     return response.json()
 
+async def mode_web_gpt(query):
+    url = f"https://private-akeno.randydev.my.id/api/akeno-ai-web?query={query}"
+    response = requests.get(url)
+    if response.status_code != 200:
+        return None
+    return response.json()
+
 async def chatgptold(messagestr):
-    url = "https://randydev-ryuzaki-api.hf.space/ryuzaki/chatgpt-old"
+    url = "https://private-akeno.randydev.my.id/ryuzaki/chatgpt-old"
     payload = {"query": messagestr}
     response = requests.post(url, json=payload)
     if response.status_code != 200:
         return None
     return response.json()
+
+@Akeno(
+    ~filters.scheduled
+    & filters.command(["askweb"], CMD_HANDLER)
+    & filters.me
+    & ~filters.forwarded
+)
+async def askweb(client: Client, message: Message):
+    if len(message.command) > 1:
+        prompt = message.text.split(maxsplit=1)[1]
+    elif message.reply_to_message:
+        prompt = message.reply_to_message.text
+    else:
+        return await message.reply_text("Give ask from Web")
+    try:
+        response = await mode_web_gpt(prompt)
+        if not response:
+           return await message.reply_text("No response")
+        output = response["randydev"].get("message") 
+        if len(output) > 4096:
+            with open("chat.txt", "w+", encoding="utf8") as out_file:
+                out_file.write(output)
+            await message.reply_document(
+                document="chat.txt",
+                disable_notification=True
+            )
+            os.remove("chat.txt")
+        else:
+            await message.reply_text(output)
+    except Exception as e:
+        LOGS.error(str(e))
+        return await message.reply_text(str(e))
+
 
 @Akeno(
     ~filters.scheduled
@@ -85,7 +131,11 @@ async def rmchatbot_user(client: Client, message: Message):
 
 @Akeno(
     filters.incoming
-    & filters.text
+    & (
+        filters.text
+        | filters.photo
+        | filters.video
+    )
     & filters.reply
     & ~filters.bot
     & ~filters.via_bot
@@ -93,6 +143,7 @@ async def rmchatbot_user(client: Client, message: Message):
     group=2,
 )
 async def chatbot_talk(client: Client, message: Message):
+    custom_loading = "<emoji id=5974235702701853774>🗿</emoji>"
     if not message.reply_to_message:
         return
     if not message.reply_to_message.from_user:
@@ -100,22 +151,51 @@ async def chatbot_talk(client: Client, message: Message):
     if message.reply_to_message.from_user.id != client.me.id:
         return
     chat_user = await db.get_chatbot(message.chat.id)
+    genai.configure(api_key=GOOGLE_API_KEY)
     if chat_user:
-        query = message.text.strip()
+        if message.photo:
+            file_path = await message.download()
+            caption = message.caption or "What's this?"
+            x = GeminiLatest(api_keys=GOOGLE_API_KEY)
+            try:
+                response_reads = x.get_response_image(caption, file_path)
+                return await message.reply_text(response_reads)
+            except InvalidArgument as e:
+                return await message.reply_text(f"Error: {e}")
+        if message.video:
+            if client.me.is_premium:
+                ai_reply = await message.reply_text(f"{custom_loading}Processing...")
+            else:
+                ai_reply = await message.reply_text(f"Processing...")
+            video_file_name = await message.download(file_name="newvideo.mp4")
+            caption = message.caption or "What's this?"
+            model = genai.GenerativeModel(model_name="gemini-1.5-pro")
+            if client.me.is_premium:
+                await ai_reply.edit_text(f"{custom_loading}Uploading file..")
+            else:
+                await ai_reply.edit_text("Uploading file..")
+            video_file = genai.upload_file(path=video_file_name)
+            while video_file.state.name == "PROCESSING":
+                await asyncio.sleep(10)
+                video_file = genai.get_file(video_file.name)
+            if video_file.state.name == "FAILED":
+                return await ai_reply.edit_text(f"Error: {video_file.state.name}") 
+            try:
+                response = model.generate_content(
+                    [
+                        video_file,
+                        caption
+                    ],
+                    request_options={"timeout": 600}
+                )
+                return await ai_reply.edit_text(response.text)
+            except InvalidArgument as e:
+                return await ai_reply.edit_text(f"Error: {e}")
+        if message.text:
+            query = message.text.strip()
         try:
-            system_prompt = await db.get_env(ENV_TEMPLATE.system_prompt)
-            if not system_prompt:
-                return await message.reply_text("Required `.setvar SYSTEM_PROMPT question`")
-            genai.configure(api_key=GOOGLE_API_KEY)
             model_flash = genai.GenerativeModel(
-                model_name="gemini-1.5-flash",
-                system_instruction=system_prompt,
-                safety_settings={
-                    genai.types.HarmCategory.HARM_CATEGORY_HATE_SPEECH: genai.types.HarmBlockThreshold.BLOCK_NONE,
-                    genai.types.HarmCategory.HARM_CATEGORY_HARASSMENT: genai.types.HarmBlockThreshold.BLOCK_NONE,
-                    genai.types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: genai.types.HarmBlockThreshold.BLOCK_NONE,
-                    genai.types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: genai.types.HarmBlockThreshold.BLOCK_NONE,
-                }
+                model_name="gemini-1.5-flash"
             )
             backup_chat = await db._get_chatbot_chat_from_db(message.from_user.id)
             backup_chat.append({"role": "user", "parts": [{"text": query}]})
@@ -170,38 +250,6 @@ async def googlegm(client: Client, message: Message):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["askm"], CMD_HANDLER)
-    & filters.me
-    & ~filters.forwarded
-)
-async def chatgpt_images(client: Client, message: Message):
-    if len(message.command) > 1:
-        prompt = message.text.split(maxsplit=1)[1]
-    elif message.reply_to_message:
-        prompt = message.reply_to_message.text
-    else:
-        return await message.reply_text("Give ask from CHATGPT images")
-    try:
-        replys = await message.reply_text("Prossing.....")
-        response = await RendyDevChat.image_generator(prompt)
-        x = response["randydev"].get("url")
-        for i, url in enumerate(x, start=1):
-            await FullStackDev.fast(url, filename=f"original_{i}.png")
-        await message.reply_media_group(
-            [
-                InputMediaPhoto(f"original_1.png"),
-                InputMediaPhoto(f"original_2.png"),
-                InputMediaPhoto(f"original_3.png"),
-                InputMediaPhoto(f"original_4.png")
-            ],
-        )
-        await replys.delete()
-    except Exception as e:
-        LOGS.error(str(e))
-        return await message.reply_text(str(e))
-
-@Akeno(
-    ~filters.scheduled
     & filters.command(["askface"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
@@ -228,7 +276,7 @@ async def faceai_(client: Client, message: Message):
             )
             os.remove("chat.txt")
         else:
-            await message.reply_text(response)
+            await message.reply_text(response, reply_to_message_id=ReplyCheck(message))
     except Exception as e:
         LOGS.error(str(e))
         return await message.reply_text(str(e))
@@ -260,7 +308,7 @@ async def mistralai_(client: Client, message: Message):
             )
             os.remove("chat.txt")
         else:
-            await message.reply_text(output)
+            await message.reply_text(output, reply_to_message_id=ReplyCheck(message))
     except Exception as e:
         LOGS.error(str(e))
         return await message.reply_text(str(e))
@@ -292,7 +340,7 @@ async def chatgpt_old_(client: Client, message: Message):
             )
             os.remove("chat.txt")
         else:
-            await message.reply_text(output)
+            await message.reply_text(output, reply_to_message_id=ReplyCheck(message))
     except Exception as e:
         LOGS.error(str(e))
         return await message.reply_text(str(e))
@@ -321,7 +369,7 @@ async def chatgpt(client: Client, message: Message):
             )
             os.remove("chat.txt")
         else:
-            await message.reply_text(messager)
+            await message.reply_text(messager, reply_to_message_id=ReplyCheck(message))
     except Exception as e:
         LOGS.error(str(e))
         return await message.reply_text(str(e))
