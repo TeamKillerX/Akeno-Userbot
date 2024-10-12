@@ -21,6 +21,7 @@ from pyrogram.types import *
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from Akeno.utils.tools import global_no_spam_title
+from Akeno.utils.prefixprem import command
 from config import CMD_HANDLER
 
 admins_in_chat = {}
@@ -120,7 +121,7 @@ async def list_admins(client: Client, chat_id: int):
 
 
 @Akeno(
-    ~filters.scheduled & filters.command(["ban", "dban", "hban"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["ban", "dban", "hban"]) & filters.me & ~filters.forwarded
 )
 async def member_ban_user(client: Client, message: Message):
     user_id, reason = await extract_user_and_reason(message, sender_chat=True)
@@ -159,7 +160,7 @@ async def member_ban_user(client: Client, message: Message):
 
 
 @Akeno(
-    ~filters.scheduled & filters.command(["unban"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["unban"]) & filters.me & ~filters.forwarded
 )
 async def member_unban_user(client: Client, message: Message):
     reply = message.reply_to_message
@@ -184,7 +185,7 @@ async def member_unban_user(client: Client, message: Message):
 
 
 @Akeno(
-    ~filters.scheduled & filters.command(["pin", "unpin"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["pin", "unpin"]) & filters.me & ~filters.forwarded
 )
 async def pin_message(client: Client, message: Message):
     if not message.reply_to_message:
@@ -207,7 +208,7 @@ async def pin_message(client: Client, message: Message):
     )
 
 @Akeno(
-    ~filters.scheduled & filters.command(["mute", "dmute", "hmute"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["mute", "dmute", "hmute"]) & filters.me & ~filters.forwarded
 )
 async def mute_user(client: Client, message: Message):
     user_id, reason = await extract_user_and_reason(message)
@@ -238,7 +239,7 @@ async def mute_user(client: Client, message: Message):
     await rd.edit_text(msg)
 
 @Akeno(
-    ~filters.scheduled & filters.command(["unmute"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["unmute"]) & filters.me & ~filters.forwarded
 )
 async def unmute_user(client: Client, message: Message):
     user_id = await extract_user(message)
@@ -253,7 +254,7 @@ async def unmute_user(client: Client, message: Message):
     await rd.edit_text(f"Unmuted! {umention}")
 
 @Akeno(
-    ~filters.scheduled & filters.command(["kick", "dkick", "hkick"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["kick", "dkick", "hkick"]) & filters.me & ~filters.forwarded
 )
 async def kick_user(client: Client, message: Message):
     user_id, reason = await extract_user_and_reason(message)
@@ -288,7 +289,7 @@ async def kick_user(client: Client, message: Message):
         return await rd.edit_text("**Maaf Anda Bukan admin**")
 
 @Akeno(
-    ~filters.scheduled & filters.command(["promote", "fullpromote"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["promote", "fullpromote"]) & filters.me & ~filters.forwarded
 )
 async def promotte_user(client: Client, message: Message):
     user_id = await extract_user(message)
@@ -331,7 +332,7 @@ async def promotte_user(client: Client, message: Message):
     await rd.edit_text(f"Promoted! {umention}")
 
 @Akeno(
-    ~filters.scheduled & filters.command(["demote"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["demote"]) & filters.me & ~filters.forwarded
 )
 async def demote_user(client: Client, message: Message):
     user_id = await extract_user(message)
@@ -367,7 +368,7 @@ module.add_command("promote", "Promote someonen")
 module.add_command("demote", "Demote someone")
 module.add_command("mute", "Mute someone")
 module.add_command("dmute", "dmute a user deleting the replied to message")
-module.add_command("hmute", "dmute a user deleting all the replied to message")
+module.add_command("hmute", "hmute a user deleting all the replied to message")
 module.add_command("pin", "to pin any message.")
 module.add_command("unpin", "To unpin any message")
 module.add_command("setgpic", "To set an group profile pic.")
