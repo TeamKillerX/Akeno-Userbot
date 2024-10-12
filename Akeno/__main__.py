@@ -30,6 +30,7 @@ from uvloop import install
 
 from Akeno import clients
 from Akeno.plugins import ALL_MODULES
+from Akeno.utils.base_sqlite import create_index
 from Akeno.utils.database import db
 from Akeno.utils.logger import LOGS
 
@@ -41,6 +42,7 @@ loop = asyncio.get_event_loop()
 async def main():
     try:
         await db.connect()
+        await create_index()
         for module_name in ALL_MODULES:
             imported_module = import_module(f"Akeno.plugins.{module_name}")
         for cli in clients:

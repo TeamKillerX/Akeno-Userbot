@@ -28,18 +28,14 @@ from pyrogram.types import *
 
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
+from Akeno.utils.prefixprem import command
 from Akeno.utils.scripts import progress
 from config import CMD_HANDLER, DOMAIN_DEV_API
 
 
-async def schellwithflux(args, is_working_dev=False):
-    if is_working_dev:
-        API_URL = f"https://{DOMAIN_DEV_API}/api/v1/akeno/fluxai"
-    else:
-        API_URL = "https://randydev-ryuzaki-api.hf.space/api/v1/akeno/fluxai"
+async def schellwithflux(args):
+    API_URL = f"https://{DOMAIN_DEV_API}/akeno/fluxai"
     payload = {
-        "user_id": 1191668125,  # Please don't edit here
-        "api_key": "6398769dabd9fe0e49bedce0354b40a9b1a69d9594dc9d48c1d8a2a071c51e89",
         "args": args
     }
     response = requests.post(API_URL, json=payload)
@@ -49,7 +45,7 @@ async def schellwithflux(args, is_working_dev=False):
     return response.content
 
 @Akeno(
-    filters.command(["fluxai"], CMD_HANDLER)
+    command(["fluxai"])
     & filters.me
     & ~filters.forwarded
 )

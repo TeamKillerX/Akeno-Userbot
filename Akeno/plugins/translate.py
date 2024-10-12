@@ -8,13 +8,14 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 
 from Akeno.utils.handler import *
+from Akeno.utils.prefixprem import command
 from config import *
 
 trans = SyncTranslator()
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["tr", "translate"], CMD_HANDLER)
+    & command(["tr"])
     & filters.me
     & ~filters.forwarded
 )

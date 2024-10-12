@@ -6,6 +6,7 @@ from pyrogram.types import Message
 
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
+from Akeno.utils.prefixprem import command
 from config import CMD_HANDLER, ENV_TEMPLATE
 
 blocked_messages = [
@@ -48,7 +49,7 @@ async def input_user(message: Message) -> str:
     return output
 
 @Akeno(
-    ~filters.scheduled & filters.command(["allow", "approve", "a"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["allow", "approve", "a"]) & filters.me & ~filters.forwarded
 )
 async def allow_pm(client: Client, message: Message):
     if len(message.command) > 1:
@@ -76,7 +77,7 @@ async def allow_pm(client: Client, message: Message):
     await message.reply_text(f"**Allowed:** {user_mention}")
 
 @Akeno(
-    ~filters.scheduled & filters.command(["disallow", "disapprove", "d"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["disallow", "disapprove", "d"]) & filters.me & ~filters.forwarded
 )
 async def disallow_pm(client: Client, message: Message):
     if len(message.command) > 1:
@@ -108,7 +109,7 @@ async def disallow_pm(client: Client, message: Message):
     )
 
 @Akeno(
-    ~filters.scheduled & filters.command(["allowlist", "approvelist"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["allowlist", "approvelist"]) & filters.me & ~filters.forwarded
 )
 async def allowlist(client: Client, message: Message):
     x = await message.reply_text("`Fetching allowlist...`")
@@ -127,7 +128,7 @@ async def allowlist(client: Client, message: Message):
     await x.edit(text)
 
 @Akeno(
-    ~filters.scheduled & filters.command(["pmpermit"], CMD_HANDLER) & filters.me & ~filters.forwarded
+    ~filters.scheduled & command(["pmpermit"]) & filters.me & ~filters.forwarded
 )
 async def set_pmpermit(_, message: Message):
     if len(message.command) < 2:

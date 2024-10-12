@@ -11,13 +11,15 @@ from Akeno.utils.driver import YoutubeDriver
 from Akeno.utils.formatter import secs_to_mins
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
+from Akeno.utils.prefixprem import command
 from Akeno.utils.scripts import progress
 from config import *
 
+custom_loading = "<emoji id=5974235702701853774>🗿</emoji>"
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["ytsa"], CMD_HANDLER)
+    & command(["ytsa"])
     & filters.me
     & ~filters.forwarded
 )
@@ -35,13 +37,19 @@ async def youtube_search_audio(_, message: Message):
     status, url = YoutubeDriver.check_url(okk)
     if not status:
         return await pro.edit_text(url)
-    await pro.edit_text("🎼 __Downloading audio ...__")
+    if client.me_is_premium:
+        await pro.edit_text(f"{custom_loading}__Downloading audio ...__")
+    else:
+        await pro.edit_text(f"__Downloading audio ...__")
     try:
         with YoutubeDL(YoutubeDriver.song_options()) as ytdl:
             yt_data = ytdl.extract_info(url, False)
             yt_file = ytdl.prepare_filename(yt_data)
             ytdl.process_info(yt_data)
-        upload_text = f"**⬆️ 𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
+        if client.me_is_premium:
+            upload_text = f"**{custom_loading}𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
+        else:
+            upload_text = f"**𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
         await pro.edit_text(upload_text)
         response = requests.get(f"https://i.ytimg.com/vi/{yt_data['id']}/hqdefault.jpg")
         with open(f"{yt_file}.jpg", "wb") as f:
@@ -71,7 +79,7 @@ async def youtube_search_audio(_, message: Message):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["yta"], CMD_HANDLER)
+    & command(["yta"])
     & filters.me
     & ~filters.forwarded
 )
@@ -85,13 +93,19 @@ async def youtube_audio(_, message: Message):
     status, url = YoutubeDriver.check_url(query)
     if not status:
         return await pro.edit_text(url)
-    await pro.edit_text("🎼 __Downloading audio ...__")
+    if client.me_is_premium:
+        await pro.edit_text(f"{custom_loading}__Downloading audio ...__")
+    else:
+        await pro.edit_text(f"__Downloading audio ...__")
     try:
         with YoutubeDL(YoutubeDriver.song_options()) as ytdl:
             yt_data = ytdl.extract_info(url, False)
             yt_file = ytdl.prepare_filename(yt_data)
             ytdl.process_info(yt_data)
-        upload_text = f"**⬆️ 𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
+        if client.me_is_premium:
+            upload_text = f"**{custom_loading}𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
+        else:
+            upload_text = f"**𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
         await pro.edit_text(upload_text)
         response = requests.get(f"https://i.ytimg.com/vi/{yt_data['id']}/hqdefault.jpg")
         with open(f"{yt_file}.jpg", "wb") as f:
@@ -121,7 +135,7 @@ async def youtube_audio(_, message: Message):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["ytva"], CMD_HANDLER)
+    & command(["ytva"])
     & filters.me
     & ~filters.forwarded
 )
@@ -139,13 +153,19 @@ async def ytvideo_search(client: Client, message: Message):
     status, url = YoutubeDriver.check_url(okk)
     if not status:
         return await pro.edit_text(url)
-    await pro.edit_text("🎼 __Downloading video ...__")
+    if client.me_is_premium:
+        await pro.edit_text(f"{custom_loading}__Downloading audio ...__")
+    else:
+        await pro.edit_text(f"__Downloading audio ...__")
     try:
         with YoutubeDL(YoutubeDriver.video_options()) as ytdl:
             yt_data = ytdl.extract_info(url, True)
             yt_file = yt_data["id"]
 
-        upload_text = f"**⬆️ 𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
+        if client.me_is_premium:
+            upload_text = f"**{custom_loading}𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
+        else:
+            upload_text = f"**𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
         await pro.edit_text(upload_text)
         response = requests.get(f"https://i.ytimg.com/vi/{yt_data['id']}/hqdefault.jpg")
         with open(f"{yt_file}.jpg", "wb") as f:
@@ -173,7 +193,7 @@ async def ytvideo_search(client: Client, message: Message):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["ytv"], CMD_HANDLER)
+    & command(["ytv"])
     & filters.me
     & ~filters.forwarded
 )
@@ -187,13 +207,19 @@ async def ytvideo(client: Client, message: Message):
     status, url = YoutubeDriver.check_url(query)
     if not status:
         return await pro.edit_text(url)
-    await pro.edit_text("🎼 __Downloading video ...__")
+    if client.me_is_premium:
+        await pro.edit_text(f"{custom_loading}__Downloading audio ...__")
+    else:
+        await pro.edit_text(f"__Downloading audio ...__")
     try:
         with YoutubeDL(YoutubeDriver.video_options()) as ytdl:
             yt_data = ytdl.extract_info(url, True)
             yt_file = yt_data["id"]
 
-        upload_text = f"**⬆️ 𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
+        if client.me_is_premium:
+            upload_text = f"**{custom_loading}𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
+        else:
+            upload_text = f"**𝖴𝗉𝗅𝗈𝖺𝖽𝗂𝗇𝗀 𝖲𝗈𝗇𝗀 ...** \n\n**𝖳𝗂𝗍𝗅𝖾:** `{yt_data['title'][:50]}`\n**𝖢𝗁𝖺𝗇𝗇𝖾𝗅:** `{yt_data['channel']}`"
         await pro.edit_text(upload_text)
         response = requests.get(f"https://i.ytimg.com/vi/{yt_data['id']}/hqdefault.jpg")
         with open(f"{yt_file}.jpg", "wb") as f:
@@ -221,7 +247,7 @@ async def ytvideo(client: Client, message: Message):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["ytlink"], CMD_HANDLER)
+    & command(["ytlink"])
     & filters.me
     & ~filters.forwarded
 )

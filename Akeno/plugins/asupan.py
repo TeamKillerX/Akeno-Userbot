@@ -7,12 +7,13 @@ from pyrogram.types import *
 
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
+from Akeno.utils.prefixprem import command
 from config import *
 
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["asupan"], CMD_HANDLER)
+    & command(["asupan"])
     & filters.me
     & ~filters.forwarded
 )
@@ -47,6 +48,3 @@ async def asupan_channel(client: Client, message: Message):
             reply_to_message_id=message.id
         ),
     )
-
-module = modules_help.add_module("asupan", __file__)
-module.add_command("asupan", "to asupan random video")

@@ -21,13 +21,14 @@ from pyrogram.raw.types import InputStickerSetShortName
 from pyrogram.types import *
 
 from Akeno.utils.handler import *
+from Akeno.utils.prefixprem import command
 from Akeno.utils.tools import *
 from config import *
 
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["kang", "tikel"], CMD_HANDLER)
+    & command(["kang", "tikel"])
     & filters.me
     & ~filters.forwarded
 )
@@ -251,7 +252,7 @@ async def get_response(message, client):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["mmf"], CMD_HANDLER)
+    & command(["mmf"])
     & filters.me
     & ~filters.forwarded
 )

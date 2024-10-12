@@ -14,6 +14,7 @@ from pyrogram.types import *
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
+from Akeno.utils.prefixprem import command
 from config import *
 
 
@@ -52,7 +53,7 @@ def get_entities(message: Message) -> List[Dict]:
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["q"], CMD_HANDLER)
+    & command(["q"])
     & filters.me
     & ~filters.forwarded
 )
