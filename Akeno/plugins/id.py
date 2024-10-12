@@ -8,12 +8,13 @@ from pyrogram.errors import *
 from pyrogram.types import Message
 
 from Akeno.utils.handler import *
+from Akeno.utils.prefixprem import command
 from config import *
 
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["id"], CMD_HANDLER)
+    & command(["id"])
     & filters.me
     & ~filters.forwarded
 )
