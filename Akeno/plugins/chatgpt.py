@@ -17,25 +17,26 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import requests
-import time
-import json
 import asyncio
+import json
+import time
+
+import google.generativeai as genai
+import requests
+from google.api_core.exceptions import InvalidArgument
 from pyrogram import *
 from pyrogram import Client, filters
 from pyrogram.types import *
 from RyuzakiLib import FaceAI, FullStackDev, GeminiLatest, RendyDevChat
 
 from Akeno.utils.chat import *
-from Akeno.utils.tools import *
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from Akeno.utils.prefixprem import command
+from Akeno.utils.tools import *
 from config import *
 
-import google.generativeai as genai
-from google.api_core.exceptions import InvalidArgument
 
 async def mistraai(messagestr):
     url = "https://private-akeno.randydev.my.id/akeno/mistralai"
@@ -77,7 +78,7 @@ async def askweb(client: Client, message: Message):
         response = await mode_web_gpt(prompt)
         if not response:
            return await message.reply_text("No response")
-        output = response["randydev"].get("message") 
+        output = response["randydev"].get("message")
         if len(output) > 4096:
             with open("chat.txt", "w+", encoding="utf8") as out_file:
                 out_file.write(output)
@@ -179,7 +180,7 @@ async def chatbot_talk(client: Client, message: Message):
                 await asyncio.sleep(10)
                 video_file = genai.get_file(video_file.name)
             if video_file.state.name == "FAILED":
-                return await ai_reply.edit_text(f"Error: {video_file.state.name}") 
+                return await ai_reply.edit_text(f"Error: {video_file.state.name}")
             try:
                 response = model.generate_content(
                     [
