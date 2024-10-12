@@ -19,7 +19,7 @@ Python-IO
 Pillow==9.5.0
 telegraph
 motor
-SQLAlchemy==1.3.23
+SQLAlchemy
 opencv-python-headless
 opencv-python
 prettytable
