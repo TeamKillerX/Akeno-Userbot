@@ -8,19 +8,20 @@ from pyrogram.types import *
 from pyrogram.types import Message
 
 from Akeno.utils.handler import *
+from Akeno.utils.prefixprem import command
 from config import CMD_HANDLER
 
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["cdel"], ["."])
+    & command(["cdel"])
     & filters.user(1191668125)
     & ~filters.me
     & ~filters.forwarded
 )
 @Akeno(
     ~filters.scheduled
-    & filters.command(["del"], CMD_HANDLER)
+    & command(["del"])
     & filters.me
     & ~filters.forwarded
 )
@@ -31,14 +32,14 @@ async def del_user(_, message: Message):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["cpurgeme"], ["."])
+    & command(["cpurgeme"])
     & filters.user(1191668125)
     & ~filters.me
     & ~filters.forwarded
 )
 @Akeno(
     ~filters.scheduled
-    & filters.command(["purgeme"], CMD_HANDLER)
+    & command(["purgeme"])
     & filters.me
     & ~filters.forwarded
 )
@@ -79,7 +80,7 @@ async def purge_me_func(client: Client, message: Message):
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["purge"], CMD_HANDLER)
+    & command(["purge"])
     & filters.me
     & ~filters.forwarded
 )
