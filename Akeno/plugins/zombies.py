@@ -5,6 +5,7 @@ from pyrogram import filters
 from pyrogram.errors import *
 from pyrogram.types import *
 from pyrogram.types import Message
+from Akeno.utils.prefixprem import command
 
 from Akeno.utils.handler import *
 from config import CMD_HANDLER
@@ -12,7 +13,7 @@ from config import CMD_HANDLER
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["zombies"], CMD_HANDLER)
+    & command(["zombies"])
     & filters.me
     & ~filters.forwarded
 )
