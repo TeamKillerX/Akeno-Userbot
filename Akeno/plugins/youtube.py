@@ -11,8 +11,8 @@ from Akeno.utils.driver import YoutubeDriver
 from Akeno.utils.formatter import secs_to_mins
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
-from Akeno.utils.scripts import progress
 from Akeno.utils.prefixprem import command
+from Akeno.utils.scripts import progress
 from config import *
 
 custom_loading = "<emoji id=5974235702701853774>🗿</emoji>"

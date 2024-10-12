@@ -1,9 +1,11 @@
 import asyncio
+import base64
+import datetime
 import os
 import random
 import time
-import datetime
-import base64
+from typing import Dict, List, Tuple
+
 import requests
 from pyrogram import *
 from pyrogram import Client, filters
@@ -15,7 +17,6 @@ from Akeno.utils.logger import LOGS
 from Akeno.utils.prefixprem import command
 from config import *
 
-from typing import List, Dict, Tuple
 
 def generate_quote(messages: List[Dict]) -> Tuple[bool, str]:
     json = {

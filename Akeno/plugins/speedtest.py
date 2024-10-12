@@ -3,11 +3,12 @@
 # converter telethon to pyrogram by @xtdevs
 
 from datetime import datetime as dt
-from speedtest import Speedtest
+
 import speedtest
+from pyrogram import Client as ren
 from pyrogram import *
 from pyrogram.types import *
-from pyrogram import Client as ren
+from speedtest import Speedtest
 
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS

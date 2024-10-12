@@ -30,9 +30,9 @@ from uvloop import install
 
 from Akeno import clients
 from Akeno.plugins import ALL_MODULES
+from Akeno.utils.base_sqlite import create_index
 from Akeno.utils.database import db
 from Akeno.utils.logger import LOGS
-from Akeno.utils.base_sqlite import create_index
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("pyrogram.syncer").setLevel(logging.WARNING)

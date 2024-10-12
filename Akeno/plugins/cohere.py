@@ -11,6 +11,7 @@ from Akeno.utils.handler import *
 from Akeno.utils.prefixprem import command
 from config import *
 
+
 @Akeno(command(["cohere"]) & filters.me)
 async def coheres_(c: Client, message: Message):
     status_key = await db.get_env(ENV_TEMPLATE.cohere_api_key)

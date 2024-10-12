@@ -28,9 +28,9 @@ from pyrogram.types import *
 
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
+from Akeno.utils.prefixprem import command
 from Akeno.utils.scripts import progress
 from config import CMD_HANDLER, DOMAIN_DEV_API
-from Akeno.utils.prefixprem import command
 
 
 async def schellwithflux(args):
