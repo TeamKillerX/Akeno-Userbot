@@ -12,7 +12,7 @@ from typing import Union, List
 from pyrogram import Client
 from pyrogram.filters import Filter, create
 from pyrogram.types import Message
-from akn.utils.base_sqlite import get_prefix
+from Akeno.utils.base_sqlite import get_prefix
 from pyrogram.enums import MessageEntityType
 
 def command(commands: Union[str, List[str]], case_sensitive: bool = False):
