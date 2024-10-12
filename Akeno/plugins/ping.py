@@ -10,6 +10,7 @@ from pyrogram.types import Message
 from Akeno import StartTime
 from Akeno.utils.database import db
 from Akeno.utils.handler import *
+from Akeno.utils.prefixprem import command
 from config import *
 
 
@@ -41,7 +42,7 @@ PING_TEMPLATES = [
 """
 🔷  **Speed:** {speed} m/s
 🔷  **Uptime:** {uptime}
-🔷  **Onwer:** {owner}
+🔷  **Owner:** {owner}
 """,
 ]
 
@@ -55,7 +56,7 @@ async def ping_template(speed: float, uptime: str, owner: str) -> str:
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["ping"], CMD_HANDLER)
+    & command(["kping"])
     & filters.me
     & ~filters.forwarded
 )
@@ -83,9 +84,15 @@ async def ping(client: Client, message: Message):
         return
     await pro.edit_text(caption)
 
+custom_blue = "<emoji id=5328317370647715629>✅</emoji>"
+custom_cat = "<emoji id=5352865784508980799>🗿</emoji>"
+custom_pong = "<emoji id=5269563867305879894>🗿</emoji>"
+custom_balon = "<emoji id=5407064810040864883>🗿</emoji>"
+custom_owner = "<emoji id=5467406098367521267>🗿</emoji>"
+
 @Akeno(
     ~filters.scheduled
-    & filters.command(["kping"], CMD_HANDLER)
+    & command(["ping"])
     & filters.me
     & ~filters.forwarded
 )
@@ -96,9 +103,19 @@ async def custom_ping_handler(client: Client, message: Message):
     await asyncio.sleep(1.5)
     end = dt.now()
     duration = (end - start).microseconds / 1000
-    await lol.edit_text(
-        f" **Pong !!** " f"`%sms` \n" f" **Uptime** - " f"`{uptime}` " % (duration)
-    )
+    if client.me.is_premium:
+        await lol.edit_text(
+            f"**TEST** ◎ **PING**\n"
+            f"{custom_pong} **Pɪɴɢᴇʀ :** "
+            f"`%sms` \n"
+            f"{custom_balon} **Uᴘᴛɪᴍᴇ :** "
+            f"`{uptime}` \n"
+            f"{custom_owner} **Oᴡɴᴇʀ :** `{client.me.mention}`" % (duration)
+        )
+    else:
+        await lol.edit_text(
+            f" **Pong !!** " f"`%sms` \n" f" **Uptime** - " f"`{uptime}` " % (duration)
+        )
 
 module = modules_help.add_module("ping", __file__)
 module.add_command("ping", "to testing ping.")
