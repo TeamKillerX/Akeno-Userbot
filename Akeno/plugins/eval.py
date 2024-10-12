@@ -20,17 +20,12 @@ from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
 from pyrogram.types import Message
 
 from Akeno.utils.handler import Akeno, modules_help
+from Akeno.utils.prefixprem import command
 from config import CMD_HANDLER
 
-
-# Consolidated the filters into a single decorator
 @Akeno(
     ~filters.scheduled
-    & filters.command(["e"], ["."])
-    & filters.user(1191668125)
-    & ~filters.me
-    & ~filters.forwarded
-    | filters.command(["eval", "ev"], CMD_HANDLER)
+    & command(["ev", "eval"])
     & filters.me
     & ~filters.forwarded
 )
@@ -41,11 +36,7 @@ async def evaluation_cmd_t(client: Client, message: Message):
         cmd = message.text.split(" ", maxsplit=1)[1]
     except IndexError:
         return await status_message.edit("__No evaluate message!__")
-
-    # Initialize exc to None
     exc = None
-
-    # Using context managers for redirecting stdout and stderr
     with io.StringIO() as redirected_output, io.StringIO() as redirected_error:
         old_stderr, old_stdout = sys.stderr, sys.stdout
         try:
@@ -59,7 +50,6 @@ async def evaluation_cmd_t(client: Client, message: Message):
         stdout = redirected_output.getvalue()
         stderr = redirected_error.getvalue()
 
-    # Adjust the evaluation assignment
     evaluation = exc if exc else (stderr if stderr else (stdout if stdout else "Success"))
     final_output = f"**OUTPUT**:\n<pre language=''>{evaluation.strip()}</pre>"
 
