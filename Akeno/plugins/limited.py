@@ -10,12 +10,13 @@ from pyrogram.types import *
 from pyrogram.types import Message
 
 from Akeno.utils.handler import *
+from Akeno.utils.prefixprem import command
 from config import CMD_HANDLER
 
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["limit", "limited"], CMD_HANDLER)
+    & command(["limit", "limited"])
     & filters.me
     & ~filters.forwarded
 )
