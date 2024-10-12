@@ -17,6 +17,7 @@ from telegraph import upload_file as uplu
 
 from Akeno.utils.custom import humanbytes as hb
 from Akeno.utils.handler import Akeno
+from Akeno.utils.prefixprem import command
 from config import *
 
 FilesEMOJI = {
@@ -37,7 +38,7 @@ FilesEMOJI = {
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["ls"], CMD_HANDLER)
+    & command(["ls"])
     & filters.me
     & ~filters.forwarded
 )
