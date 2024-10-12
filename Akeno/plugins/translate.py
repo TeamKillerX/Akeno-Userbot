@@ -14,7 +14,7 @@ trans = SyncTranslator()
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["tr"], CMD_HANDLER)
+    & filters.command(["tr", "translate"], CMD_HANDLER)
     & filters.me
     & ~filters.forwarded
 )
