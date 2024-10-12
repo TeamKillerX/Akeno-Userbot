@@ -11,12 +11,13 @@ from pyrogram.types import Message
 from Akeno.plugins.admin import extract_user
 from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
+from Akeno.utils.prefixprem import command
 from config import CMD_HANDLER
 
 
 @Akeno(
     ~filters.scheduled
-    & filters.command(["info"], CMD_HANDLER)
+    & command(["info"])
     & filters.me
     & ~filters.forwarded
 )
@@ -34,13 +35,7 @@ async def who_is(client: Client, message: Message):
         last_name = user.last_name or "-"
         fullname = f"{user.first_name} {user.last_name}" if user.last_name else user.first_name
         user_details = (await client.get_chat(user.id)).bio or "-"
-
-        # Checking user status using isinstance
-        status = f"{user.status}"
-        if status.startswith("UserStatus"):
-            status = status.replace("UserStatus.", "").capitalize()
-        else:
-            status = "-"
+        status = user.status.replace("UserStatus.", "").capitalize() if user.status.startswith("UserStatus") else "-"
         dc_id = user.dc_id or "-"
         common = await client.get_common_chats(user.id)
         out_str = f"""<b>USER INFORMATION:</b>
@@ -55,7 +50,7 @@ async def who_is(client: Client, message: Message):
 🚫 <b>Restricted:</b> <code>{user.is_restricted}</code>
 ✅ <b>Verified:</b> <code>{user.is_verified}</code>
 ⭐ <b>Premium:</b> <code>{user.is_premium}</code>
-📝 <b>User Bio:</b> {user_details}
+📝 <b>User Bio:</b> {bio}
 
 👀 <b>Same groups seen:</b> {len(common)}
 👁️ <b>Last Seen:</b> <code>{status}</code>
@@ -81,4 +76,4 @@ async def who_is(client: Client, message: Message):
         return await ex.edit(f"**INFO:** `{e}`")
 
 module = modules_help.add_module("info", __file__)
-module.add_command("info", "to view user information.")
+module.add_command("info", "to info view users.")
