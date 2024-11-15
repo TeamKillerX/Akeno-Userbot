@@ -2,6 +2,7 @@ import datetime
 import time
 
 from motor import motor_asyncio
+from typing import *
 from motor.core import AgnosticClient
 
 from Akeno.utils.logger import LOGS
@@ -144,7 +145,7 @@ class Database:
     async def get_gban(self) -> list:
         return [i async for i in self.gban.find({})]
 
-    async def get_gban_user(self, user_id: int) -> dict | None:
+    async def get_gban_user(self, user_id: int) -> None:
         if not await self.is_gbanned(user_id):
             return None
         return await self.gban.find_one({"user_id": user_id})
@@ -228,13 +229,13 @@ class Database:
             upsert=True,
         )
 
-    async def get_flood(self, client_chat: tuple[int, int]):
+    async def get_flood(self, client_chat: Tuple[int, int]):
         data = await self.antiflood.find_one(
             {"client": client_chat[0], "chat": client_chat[1]}
         )
         return data or {}
 
-    async def is_flood(self, client_chat: tuple[int, int]) -> bool:
+    async def is_flood(self, client_chat: Tuple[int, int]) -> bool:
         data = await self.get_flood(client_chat)
 
         if not data:
@@ -545,7 +546,7 @@ class Database:
         return [i async for i in self.forcesub.find({})]
 
     async def add_gachabot(
-        self, client: int, bot: tuple[int, str], catch_command: str, chat_id: int
+        self, client: int, bot: Tuple[int, str], catch_command: str, chat_id: int
     ):
         await self.gachabots.update_one(
             {"client": client, "bot": bot[0]},
