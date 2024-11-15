@@ -34,7 +34,6 @@ googlesearch-python
 gitpython
 pymediainfo
 prettytable
-stability_sdk[anim_ui]
 httpx==0.27.1
 speedtest-cli
 numpy
@@ -82,6 +81,4 @@ PyYAML==6.0.2
 RyuzakiLib[all]
 git+https://github.com/KurimuzonAkuma/pyrogram
 git+https://github.com/johnwmillr/LyricsGenius
-git+https://github.com/urllib3/urllib3
 yt-dlp==2024.8.6
-pytgcalls==3.0.0.dev22
