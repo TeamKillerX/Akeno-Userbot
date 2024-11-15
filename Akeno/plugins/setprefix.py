@@ -37,14 +37,12 @@ async def set_prefix(client: Client, message: Message):
             for entity in message.entities:
                 if entity.type == MessageEntityType.CUSTOM_EMOJI and entity.offset >= len(message.text.split()[0]) + 1:
                     custom_emoji_id = entity.custom_emoji_id
-                    set_prefix_in_db(user_id, custom_emoji_id)
+                    await set_prefix_in_db(user_id, custom_emoji_id)
                     await message.reply_text(f"Custom emoji prefix set to: <emoji id={custom_emoji_id}>🗿</emoji>")
                     return
-    else:
-        return await message.reply_text("You need to be a premium user to set a custom emoji as your prefix!")
     if new_prefix_text.lower() == "none":
-        set_prefix_in_db(user_id, "None")
+        await set_prefix_in_db(user_id, "None")
         await message.reply_text("Prefix removed.")
         return
-    set_prefix_in_db(user_id, new_prefix_text)
+    await set_prefix_in_db(user_id, new_prefix_text)
     await message.reply_text(f"Prefix set to: {new_prefix_text}")
