@@ -1,8 +1,8 @@
 import datetime
 import time
+from typing import *
 
 from motor import motor_asyncio
-from typing import *
 from motor.core import AgnosticClient
 
 from Akeno.utils.logger import LOGS
