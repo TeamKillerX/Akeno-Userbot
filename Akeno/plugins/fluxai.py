@@ -21,6 +21,7 @@ import io
 import time
 
 import requests
+from akenoai import AkenoXToJs
 from PIL import Image
 from pyrogram import *
 from pyrogram import Client, filters
@@ -31,8 +32,6 @@ from Akeno.utils.logger import LOGS
 from Akeno.utils.prefixprem import command
 from Akeno.utils.scripts import progress
 from config import *
-
-from akenoai import AkenoXToJs
 
 js = AkenoXToJs()
 

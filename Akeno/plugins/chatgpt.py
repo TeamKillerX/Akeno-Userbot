@@ -23,6 +23,7 @@ import time
 
 import google.generativeai as genai
 import requests
+from akenoai import AkenoXToJs
 from google.api_core.exceptions import InvalidArgument
 from pyrogram import *
 from pyrogram import Client, filters
@@ -35,8 +36,6 @@ from Akeno.utils.logger import LOGS
 from Akeno.utils.prefixprem import command
 from Akeno.utils.tools import *
 from config import *
-
-from akenoai import AkenoXToJs
 
 js = AkenoXToJs()
 
