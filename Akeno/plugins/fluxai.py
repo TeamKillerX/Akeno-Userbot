@@ -30,19 +30,11 @@ from Akeno.utils.handler import *
 from Akeno.utils.logger import LOGS
 from Akeno.utils.prefixprem import command
 from Akeno.utils.scripts import progress
-from config import CMD_HANDLER, DOMAIN_DEV_API
+from config import *
 
+from akenoai import AkenoXToJs
 
-async def schellwithflux(args):
-    API_URL = f"https://{DOMAIN_DEV_API}/akeno/fluxai"
-    payload = {
-        "args": args
-    }
-    response = requests.post(API_URL, json=payload)
-    if response.status_code != 200:
-        LOGS.error(f"Error status {response.status_code}")
-        return None
-    return response.content
+js = AkenoXToJs()
 
 @Akeno(
     command(["fluxai"])
@@ -54,17 +46,25 @@ async def imgfluxai_(client: Client, message: Message):
     if not question:
         return await message.reply_text("Please provide a question for Flux.")
     try:
-        image_bytes = await schellwithflux(question)
-        if image_bytes is None:
-            return await message.reply_text("Failed to generate an image.")
+        response = await js.randydev.image.create(
+            model="black-forest-labs/flux-1-schnell",
+            api_key=AKENOX_API_KEY,
+            image_read=True,
+            query=question
+        )
         pro = await message.reply_text("Generating image, please wait...")
-        with open("flux_gen.jpg", "wb") as f:
-            f.write(image_bytes)
+        file_path = "randydev.jpg"
+        with open(file_path, "wb") as f:
+            f.write(response)
         ok = await pro.edit_text("Uploading image...")
-        await message.reply_photo("flux_gen.jpg", progress=progress, progress_args=(ok, time.time(), "Uploading image..."))
+        await message.reply_photo(
+            file_path,
+            progress=progress,
+            progress_args=(ok, time.time(), "Uploading image...")
+        )
         await ok.delete()
-        if os.path.exists("flux_gen.jpg"):
-            os.remove("flux_gen.jpg")
+        if os.path.exists(file_path):
+            os.remove(file_path)
     except Exception as e:
         LOGS.error(str(e))
         await message.edit_text(str(e))
