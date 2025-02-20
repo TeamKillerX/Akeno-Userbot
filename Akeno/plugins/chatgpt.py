@@ -59,6 +59,9 @@ async def chatgpt(client: Client, message: Message):
             is_obj=True,
             query=prompt
         )
+        if not hasattr(response, "results") or not isinstance(response.results, str):
+            await message.reply_text("Unexpected response format from chat API.")
+            return
         if len(response.results) > 4096:
             with open("chat.txt", "w+", encoding="utf8") as out_file:
                 out_file.write(response.results)
