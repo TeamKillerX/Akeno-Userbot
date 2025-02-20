@@ -28,7 +28,6 @@ reportlab
 uwuify
 python-dotenv
 humanize
-heroku3
 flask_restful
 googlesearch-python
 gitpython
@@ -78,7 +77,7 @@ git-python
 pySmartDL
 selenium
 PyYAML==6.0.2
-RyuzakiLib[all]
-git+https://github.com/KurimuzonAkuma/pyrogram
+kurigram
+akenoai[fast]
 git+https://github.com/johnwmillr/LyricsGenius
 yt-dlp==2024.8.6

@@ -28,31 +28,6 @@
 - Koyeb
 - Bypass server API + Userbot
 
-### 🐳 Docker Run
-```Dockerfile
-docker run -it -p 7860:7860 --platform=linux/amd64 \
-	-e API_ID="YOUR_VALUE_HERE" \
-	-e API_HASH="YOUR_VALUE_HERE" \
-	-e SESSION="YOUR_VALUE_HERE" \
-	-e GOOGLE_API_KEY="YOUR_VALUE_HERE" \
-	-e FEDBAN_API_KEY="YOUR_VALUE_HERE" \
-	rendyprojects/akeno:dev
-```
-
-### 📊 Necessary Vars
-
- - `API_ID` - Get it from [my.telegram.org](https://my.telegram.org/)
-
- - `API_HASH` - Get it from [my.telegram.org](https://my.telegram.org/)
-
- - `SESSION` - Get it from [`@randydev_bot`](https://t.me/randydev_bot) or [`replit pyrogram`](https://replit.com/@ABHITHEMODDER/MoonUb-Session-Gen)
-
-
- - `GOOGLE_API_KEY` - Get it from [`google-api-key`](https://ai.google.dev)
-
-- `MONGO_URL` - Get it from [`here`](https://mongodb.com)
-
-
 ### ☁️ Cloud Host
 
 [![Deploy To Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=github.com/TeamKillerX/Akeno-Userbot&branch=main&name=akeno)
@@ -60,11 +35,6 @@ docker run -it -p 7860:7860 --platform=linux/amd64 \
 [![Deploy To Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/TeamKillerX/Akeno-Userbot)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TeamKillerX/Akeno-Userbot)
-
-
-### ⚠️ IMPORTANT NOTICE:
-
-This project is no longer maintained. __Use at your own risk__.
 
 ## Licence
 

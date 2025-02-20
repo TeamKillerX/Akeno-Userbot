@@ -8,10 +8,10 @@ API_ID = os.environ["API_ID"]
 API_HASH = os.environ["API_HASH"]
 SESSION = os.environ["SESSION"]
 GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
+AKENOX_API_KEY = getenv("AKENOX_API_KEY", "demo")
+AKENOX_API_KEY_PREMIUM = getenv("AKENOX_API_KEY_PREMIUM", "Demo")
 MONGO_URL = os.environ["MONGO_URL"]
 CMD_HANDLER = getenv("CMD_HANDLER", ".")
-
-DOMAIN_DEV_API = "https://akeno.randydev.my.id"
 
 CHROME_DRIVER = "/usr/bin/chromedriver"
 CHROME_BIN = "/usr/bin/google-chrome-stable"

@@ -1,5 +1,6 @@
 import datetime
 import time
+from typing import *
 
 from motor import motor_asyncio
 from typing import *
