@@ -33,7 +33,7 @@ from Akeno.utils.prefixprem import command
 from Akeno.utils.scripts import progress
 from config import *
 
-js = AkenoXToJs()
+js = AkenoXToJs().connect()
 
 @Akeno(
     command(["fluxai"])
@@ -45,8 +45,8 @@ async def imgfluxai_(client: Client, message: Message):
     if not question:
         return await message.reply_text("Please provide a question for Flux.")
     try:
-        response = await js.randydev.image.create(
-            model="black-forest-labs/flux-1-schnell",
+        response = await js.image.create(
+            "black-forest-labs/flux-1-schnell",
             api_key=AKENOX_API_KEY,
             image_read=True,
             query=question
