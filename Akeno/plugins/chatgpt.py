@@ -37,7 +37,7 @@ from Akeno.utils.prefixprem import command
 from Akeno.utils.tools import *
 from config import *
 
-js = AkenoXToJs()
+js = AkenoXToJs().connect()
 
 @Akeno(
     ~filters.scheduled
@@ -53,9 +53,9 @@ async def chatgpt(client: Client, message: Message):
     else:
         return await message.reply_text("Give ask from CHATGPT-4O")
     try:
-        response = await js.randydev.chat.create(
-            model="openai/gpt-old",
-            api_key=AKENOX_API_KEY,
+        response = await js.chat.create(
+            model="cohere/command-plus",
+            api_key=AKENOX_API_KEY_PREMIUM,
             is_obj=True,
             query=prompt
         )
