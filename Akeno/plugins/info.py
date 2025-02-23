@@ -35,7 +35,7 @@ async def who_is(client: Client, message: Message):
         last_name = user.last_name or "-"
         fullname = f"{user.first_name} {user.last_name}" if user.last_name else user.first_name
         user_details = (await client.get_chat(user.id)).bio or "-"
-        status = user.status.replace("UserStatus.", "").capitalize() if user.status.startswith("UserStatus") else "-"
+        status = user.status.name
         dc_id = user.dc_id or "-"
         common = await client.get_common_chats(user.id)
         out_str = f"""<b>USER INFORMATION:</b>
