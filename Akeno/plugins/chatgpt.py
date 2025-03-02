@@ -54,8 +54,8 @@ async def chatgpt(client: Client, message: Message):
         response = await js.chat.create(
             "cohere/command-plus",
             api_key=AKENOX_API_KEY_PREMIUM,
+            query=prompt,
             is_obj=True,
-            query=prompt
         )
         if not hasattr(response, "results") or not isinstance(response.results, str):
             await message.reply_text("Unexpected response format from chat API.")
