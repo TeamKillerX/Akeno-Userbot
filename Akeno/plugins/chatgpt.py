@@ -21,10 +21,8 @@ import asyncio
 import json
 import time
 
-import google.generativeai as genai
 import requests
 from akenoai import AkenoXToJs
-from google.api_core.exceptions import InvalidArgument
 from pyrogram import *
 from pyrogram import Client, filters
 from pyrogram.types import *
@@ -54,7 +52,7 @@ async def chatgpt(client: Client, message: Message):
         return await message.reply_text("Give ask from CHATGPT-4O")
     try:
         response = await js.chat.create(
-            model="cohere/command-plus",
+            "cohere/command-plus",
             api_key=AKENOX_API_KEY_PREMIUM,
             is_obj=True,
             query=prompt
