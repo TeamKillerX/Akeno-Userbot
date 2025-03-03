@@ -17,6 +17,7 @@ from pyrogram.types import Message
 
 from Akeno.utils.base_sqlite import get_prefix
 
+
 def command(commands: Union[str, List[str]], case_sensitive: bool = False):
     command_re = re.compile(
         r"([\"'])(.*?)(?<!\\)\1|(\S+)",
@@ -49,7 +50,7 @@ def command(commands: Union[str, List[str]], case_sensitive: bool = False):
         if text.startswith(stored_prefix):
             without_prefix = text[len(stored_prefix.encode("utf-16-le")) // 2:].strip()
             return await process_command(flt, client, message, without_prefix, command_re, username)
-    
+
         return False
 
     commands = commands if isinstance(commands, list) else [commands]
